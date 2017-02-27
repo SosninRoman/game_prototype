@@ -1,0 +1,13 @@
+# Игнор-лист файлов проекта
+
+*.vcxproject
+*.ilk
+*.pdb
+*.sdf
+*.sln
+*.suo
+*.filters
+*.user
+
+/PingPong/PingPong/Debug/*
+
