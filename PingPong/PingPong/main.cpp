@@ -4,8 +4,9 @@
 #include <cmath>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "Application.h"
 
-int main(int argc, char* argv[])
+int main_old(int argc, char* argv[])
 {
 	std::srand(time(NULL));
 	const float pi = 3.14159; 
@@ -172,5 +173,14 @@ int main(int argc, char* argv[])
 		window.display();
 	}
 	//The end of game loop
+	return 0;
+}
+
+
+int main(int argc, char* argv[])
+{
+	std::srand(time(NULL));
+	Application app;
+	app.run();
 	return 0;
 }
