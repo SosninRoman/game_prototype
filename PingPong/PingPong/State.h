@@ -8,7 +8,8 @@ class StateStack;
 
 enum ID{None,
 	Game,
-	Title
+	Title,
+	MainMenu
 };
 
 class State

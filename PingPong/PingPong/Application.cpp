@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "TitleState.h"
 #include "GameState.h"
+#include "ManeMenuState.h"
 
 const sf::Time TPF = sf::seconds(1.f/60.f);
 
@@ -60,4 +61,5 @@ void Application::registerStates()
 {
 	mStateStack.registerState<TitleState>(Title);
 	mStateStack.registerState<GameState>(Game);
+	mStateStack.registerState<MainMenuState>(MainMenu);
 }

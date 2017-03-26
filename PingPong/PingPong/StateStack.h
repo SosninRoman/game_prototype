@@ -51,7 +51,7 @@ private:
 	Context                                    mContext;
 	std::vector<State::Ptr>                    mStack;
 	std::vector<PendingChange>                 mPendingChanges;
-	std::map<ID,std::function<State::Ptr ()> > mStatesFactory;
+	std::map<ID,std::function<State::Ptr()> > mStatesFactory;
 };
 
 template<class T>
