@@ -5,9 +5,7 @@
 TitleState::TitleState(StateStack& stack, Context context):
 	State(stack, context), mTextEffectTime(sf::Time::Zero), mShow(true)
 {
-	assert(mFont.loadFromFile("res/sansation.ttf"));
-
-	mText.setFont(mFont);
+	mText.setFont(getContext().fonts->get(MainMenuFont));
 	mText.setColor(sf::Color::Black);
 	mText.setCharacterSize(20);
 	mText.setString("PRESS TO START GAME");

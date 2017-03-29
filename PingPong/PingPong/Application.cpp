@@ -7,10 +7,12 @@ const sf::Time TPF = sf::seconds(1.f/60.f);
 
 Application::Application():
 	mWindow(sf::VideoMode(640, 480), "PingPong", sf::Style::Default),
-	mStateStack(Context(mWindow))
+	mStateStack(Context(mWindow, mFontHolder))
 {
 	registerStates();
 	mStateStack.pushState(Title);
+
+	mFontHolder.load(MainMenuFont, "res/sansation.ttf");
 }
 
 

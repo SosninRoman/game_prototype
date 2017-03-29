@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "StateStack.h"
+#include "ResourceHolder.h"
 
 class Application
 {
@@ -14,5 +15,6 @@ private:
 	void handleInput();
 	sf::RenderWindow mWindow;
 	StateStack       mStateStack;
+	FontHolder       mFontHolder;
 };
 

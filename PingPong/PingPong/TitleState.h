@@ -12,7 +12,6 @@ public:
 	bool update(sf::Time dt);
 	virtual bool handleEvent(const sf::Event& event);
 private:
-	sf::Font mFont;
 	sf::Text mText;
 
 	bool mShow;
