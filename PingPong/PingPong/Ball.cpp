@@ -7,3 +7,7 @@ Ball::Ball(sf::CircleShape& ball):
 }
 
 
+void Ball::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const 
+{
+	target.draw(mBall,states);
+}

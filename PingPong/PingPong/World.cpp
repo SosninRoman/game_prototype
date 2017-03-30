@@ -16,6 +16,17 @@ void World::buildScene()
 		mSceneLayers[i] = std::move(layer);
 	}
 
+	sf::View gameView = mWindow.getView();
+
+	std::unique_ptr<Ball> gBall(new Ball(sf::CircleShape(10.f)));
+	mBall = gBall.get();
+	mBall->setOutlineColor(sf::Color::Black);
+	mBall->setOutlineThickness(1);
+	mBall->setFillColor(sf::Color::White);
+	mBall->setOrigin(sf::Vector2f(mBall->getSize() / 2, mBall->getSize() / 2));
+	mBall->setPosition(gameView.getCenter().x, gameView.getCenter().y);
+	ball_direction = rand() / static_cast<float>(RAND_MAX) * pi;//?
+	mSceneLayers[Ground]->attachChild(std::move(gBall));
 }
 
 void World::draw()

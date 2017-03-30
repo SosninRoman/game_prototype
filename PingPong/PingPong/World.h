@@ -2,6 +2,7 @@
 #include <array>
 #include <SFML\Graphics.hpp>
 #include "SceneNode.h"
+#include "Ball.h"
 
 class World: public sf::NonCopyable
 {
@@ -28,7 +29,7 @@ private:
 	float ball_velocity;
 	float paddle_velocity;
 	sf::Vector2f paddle_size;
-	sf::CircleShape ball;
+	Ball* mBall;
 	sf::RectangleShape right_puddle, left_puddle;
 };
 

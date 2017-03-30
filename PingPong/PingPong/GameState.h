@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "World.h"
 
 class GameState: public State
 {
@@ -19,5 +20,7 @@ private:
 	sf::Vector2f paddle_size;
 	sf::CircleShape ball;
 	sf::RectangleShape right_puddle, left_puddle;
+
+	World mWorld;
 };
 
