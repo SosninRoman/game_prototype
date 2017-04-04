@@ -3,6 +3,7 @@
 #include <SFML\Graphics.hpp>
 #include "SceneNode.h"
 #include "Ball.h"
+#include "Paddle.h"
 
 class World: public sf::NonCopyable
 {
@@ -16,6 +17,9 @@ public:
 	World(sf::RenderWindow& window);
 	void draw();
 	void update(sf::Time dt);
+	//
+	void handleEvent(const sf::Event& event);
+	bool theEnd(){return the_end;}
 private:
 	std::array<SceneNode::Ptr, LayerCount> mSceneLayers;
 	sf::RenderWindow& mWindow;
@@ -23,13 +27,9 @@ private:
 
 	void buildScene();
 
-	float ball_direction;
-	float ball_size;
-	const float pi;
-	float ball_velocity;
-	float paddle_velocity;
+	bool the_end;
 	sf::Vector2f paddle_size;
 	Ball* mBall;
-	sf::RectangleShape right_puddle, left_puddle;
+	Paddle* mRightPaddle, *mLeftPaddle;
 };
 

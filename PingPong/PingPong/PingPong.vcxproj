@@ -73,6 +73,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManeMenuState.cpp" />
     <ClCompile Include="MoveableNode.cpp" />
+    <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateStack.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="ManeMenuState.h" />
     <ClInclude Include="MoveableNode.h" />
+    <ClInclude Include="Paddle.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="State.h" />

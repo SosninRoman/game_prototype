@@ -24,6 +24,10 @@ public:
 	{
 		return mBall.getRadius();
 	}
+	sf::FloatRect getGlobalBounds()
+	{
+		return getTransform().transformRect(mBall.getGlobalBounds());
+	}
 private:
 	sf::CircleShape mBall;
 };
