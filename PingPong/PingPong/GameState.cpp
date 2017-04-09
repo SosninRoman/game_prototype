@@ -4,7 +4,7 @@
 
 
 GameState::GameState(StateStack& stack, Context context):
-	State(stack, context),  mWorld(*context.window)
+	State(stack, context),  mWorld(*context.window), mPlayer(context.player)
 {
 }
 
@@ -19,7 +19,7 @@ bool GameState::update(sf::Time dt)
 	if (mWorld.theEnd())
 	{
 		requestStateCLear();
-		requestStackPush(Title);
+		requestStackPush(ID::Title);
 	}
 	return true;
 }

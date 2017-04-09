@@ -42,7 +42,7 @@ private:
 	{
 		Action action;
 		ID stateID;
-		PendingChange(Action action, ID id = None):action(action), stateID(id){}
+		PendingChange(Action action, ID id = ID::None):action(action), stateID(id){}
 	};
 
 	State::Ptr createState(ID dtateID);

@@ -1,10 +1,10 @@
 #include "World.h"
 #include <iostream>
 
-float pi = 3.14159;
+float pi = 3.14159f;
 
 World::World(sf::RenderWindow& window):
-	mWindow(window), mWorldBounds(0.f, 0.f, mWindow.getSize().x, mWindow.getSize().y), the_end(false)
+	mWindow(window), mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)), the_end(false), mCommandQueue()
 {
 	buildScene();
 }
@@ -27,7 +27,7 @@ void World::buildScene()
 	mBall->setOrigin(sf::Vector2f(mBall->getSize() / 2, mBall->getSize() / 2));
 	mBall->setPosition(gameView.getCenter().x, gameView.getCenter().y);
 	///
-	mBall->setVelocity(mWindow.getSize().x / 5,0.000001);
+	mBall->setVelocity(static_cast<float>(mWindow.getSize().x) / 5,0.000001f);
 	///
 	mSceneLayers[Ground]->attachChild(std::move(gBall));
 	//
@@ -64,17 +64,24 @@ void World::draw()
 
 void World::update(sf::Time dt)
 {
+	////
+	while(!mCommandQueue.isEmpty())
+		for(int i = 0; i < LayerCount; ++i)
+		{
+			mSceneLayers[i]->onCommand(mCommandQueue.Pop(), dt);
+		}
+	////
 	for(int i = 0; i < LayerCount; ++i)
 	{
 		mSceneLayers[i]->update(dt);
 	}
-
+	///Ниже идет проверка столкновений сущностей и обработка попытки выхода мяча за пределы поля
 	sf::FloatRect b = mBall->getGlobalBounds();
 	std::cout << b.top << ' ' << b.left << ' ' << b.height << ' ' << b.width << '\n';
 
 	if (mBall->getGlobalBounds().intersects(mLeftPaddle->getGlobalBounds())) 
 	{
-		auto rand_ball_direction = rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi;
+		float rand_ball_direction = static_cast<float>(rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
 		auto balvel = mBall->getVelocity();
 		float ball_direction;
 		if(!balvel.x || !balvel.y) ball_direction = pi;
@@ -83,7 +90,7 @@ void World::update(sf::Time dt)
 	}
 	if (mBall->getGlobalBounds().intersects(mRightPaddle->getGlobalBounds())) 
 	{
-		auto rand_ball_direction = rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi;
+		float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
 		auto balvel = mBall->getVelocity();
 		float ball_direction;
 		if(!balvel.x || !balvel.y) ball_direction = pi;
@@ -119,14 +126,14 @@ void World::handleEvent(const sf::Event& event)
 				if(event.key.code == sf::Keyboard::S) 
 				{
 					if(mLeftPaddle->getPosition().y + mLeftPaddle->getSize().y / 2 < mWindow.getSize().y)
-						mLeftPaddle->accelerate(0,mWindow.getSize().y / 5);
+						mLeftPaddle->accelerate(0,static_cast<float>(mWindow.getSize().y / 5));
 				}
 				if(event.key.code == sf::Keyboard::W)
 				{
 					if(mLeftPaddle->getPosition().y - mLeftPaddle->getSize().y / 2 > 0)
 					{
-						int wnd = mWindow.getSize().y;
-						int tmp = - wnd / 5;
+						float wnd = static_cast<float>(mWindow.getSize().y);
+						float tmp = - wnd / 5;
 						mLeftPaddle->accelerate(0,tmp);
 					}
 				}
@@ -134,15 +141,20 @@ void World::handleEvent(const sf::Event& event)
 				{
 					if(mRightPaddle->getPosition().y - mRightPaddle->getSize().y / 2 > 0)
 					{
-						int wnd = mWindow.getSize().y;
-						int tmp = - wnd / 5;
+						float wnd = static_cast<float>(mWindow.getSize().y);
+						float tmp = - wnd / 5;
 						mRightPaddle->accelerate(0, tmp);
 					}
 				}
 				if(event.key.code == sf::Keyboard::Down)
 				{
 					if(mRightPaddle->getPosition().y + mRightPaddle->getSize().y / 2 < mWindow.getSize().y)
-						mRightPaddle->accelerate(0,mWindow.getSize().y / 5);
+						mRightPaddle->accelerate(0,static_cast<float>(mWindow.getSize().y) / 5);
 				}
 			}
+}
+
+CommandQueue& World::getCommandQueue() 
+{
+	return mCommandQueue;
 }

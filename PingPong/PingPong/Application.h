@@ -2,6 +2,7 @@
 #include <SFML\Graphics.hpp>
 #include "StateStack.h"
 #include "ResourceHolder.h"
+#include "Player.h"
 
 class Application
 {
@@ -14,7 +15,8 @@ private:
 	void draw();
 	void handleInput();
 	sf::RenderWindow mWindow;
+	Player           mPlayer;
 	StateStack       mStateStack;
-	FontHolder       mFontHolder;
+	FontHolder       mFontHolder;	
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "World.h"
+#include "Player.h"
 
 class GameState: public State
 {
@@ -12,7 +13,7 @@ public:
 	bool update(sf::Time dt);
 	bool handleEvent(const sf::Event& event);
 private:
-
-	World mWorld;
+	Player* mPlayer;
+	World   mWorld;
 };
 

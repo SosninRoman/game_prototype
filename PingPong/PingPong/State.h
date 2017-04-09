@@ -6,7 +6,7 @@
 
 class StateStack;
 
-enum ID{None,
+enum class ID{None,
 	Game,
 	Title,
 	MainMenu

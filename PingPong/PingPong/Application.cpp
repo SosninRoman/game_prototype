@@ -7,10 +7,10 @@ const sf::Time TPF = sf::seconds(1.f/60.f);
 
 Application::Application():
 	mWindow(sf::VideoMode(640, 480), "PingPong", sf::Style::Default),
-	mStateStack(Context(mWindow, mFontHolder))
+	mStateStack(Context(mWindow, mFontHolder, mPlayer))
 {
 	registerStates();
-	mStateStack.pushState(Title);
+	mStateStack.pushState(ID::Title);
 
 	mFontHolder.load(MainMenuFont, "res/sansation.ttf");
 }
@@ -61,7 +61,7 @@ void Application::run()
 
 void Application::registerStates()
 {
-	mStateStack.registerState<TitleState>(Title);
-	mStateStack.registerState<GameState>(Game);
-	mStateStack.registerState<MainMenuState>(MainMenu);
+	mStateStack.registerState<TitleState>(ID::Title);
+	mStateStack.registerState<GameState>(ID::Game);
+	mStateStack.registerState<MainMenuState>(ID::MainMenu);
 }

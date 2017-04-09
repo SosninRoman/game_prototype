@@ -3,6 +3,7 @@
 #include <memory>
 #include <algorithm>
 #include <SFML\Graphics.hpp>
+#include "Command.h"
 
 class SceneNode: public sf::Drawable, public sf::Transformable
 {
@@ -17,6 +18,9 @@ public:
 
 	sf::Transform getWorldTransform() const;
 	sf::Vector2f getWorldPosition() const;
+
+	virtual RecieverType getActionType() const;
+	void onCommand(Command& command, sf::Time dt);
 private:
 	std::vector<Ptr> mChildren;
 	SceneNode* mParent;

@@ -4,6 +4,7 @@
 #include "SceneNode.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "CommandQueue.h"
 
 class World: public sf::NonCopyable
 {
@@ -20,6 +21,8 @@ public:
 	//
 	void handleEvent(const sf::Event& event);
 	bool theEnd(){return the_end;}
+
+	CommandQueue& getCommandQueue() ;
 private:
 	std::array<SceneNode::Ptr, LayerCount> mSceneLayers;
 	sf::RenderWindow& mWindow;
@@ -28,8 +31,9 @@ private:
 	void buildScene();
 
 	bool the_end;
-	sf::Vector2f paddle_size;
 	Ball* mBall;
 	Paddle* mRightPaddle, *mLeftPaddle;
+
+	CommandQueue mCommandQueue;
 };
 

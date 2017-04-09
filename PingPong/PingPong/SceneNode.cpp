@@ -64,3 +64,19 @@ sf::Vector2f SceneNode::getWorldPosition() const
 {
 	return getWorldTransform() * sf::Vector2f();
 }
+
+RecieverType SceneNode::getActionType() const
+{
+	return RecieverType::Scene;
+}
+
+void SceneNode::onCommand(Command& command, sf::Time dt)
+{
+	if (command.category == getActionType())
+		command.action(*this, dt);
+	std::for_each(mChildren.begin(), mChildren.end(), [&command,dt](Ptr& child)mutable{child->onCommand(command,dt);});
+	/*for(std::vector<Ptr>::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
+	{
+		(*itr)->onCommand(command, dt);
+	}*/
+}
