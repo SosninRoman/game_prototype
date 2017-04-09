@@ -85,6 +85,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="CommandCatalogue.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="Player.h" />

@@ -13,7 +13,7 @@ public:
 	bool update(sf::Time dt);
 	bool handleEvent(const sf::Event& event);
 private:
-	Player* mPlayer;
+	Player& mPlayer;
 	World   mWorld;
 };
 

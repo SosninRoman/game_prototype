@@ -3,6 +3,7 @@
 #include "CommandQueue.h"
 #include <SFML\Graphics.hpp>
 #include "Paddle.h"
+#include "CommandCatalogue.h"
 
 class Player
 {
@@ -17,7 +18,7 @@ public:
 	};
 
 	Player();
-
+public:
 	void handleEvent(const sf::Event& event, CommandQueue& commands);
 	void handleRealtimeInput(CommandQueue& commands);
 

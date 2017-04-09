@@ -9,7 +9,6 @@ World::World(sf::RenderWindow& window):
 	buildScene();
 }
 
-
 void World::buildScene()
 {
 	for(int i = 0; i < LayerCount; ++i)
@@ -31,7 +30,7 @@ void World::buildScene()
 	///
 	mSceneLayers[Ground]->attachChild(std::move(gBall));
 	//
-	std::unique_ptr<Paddle> gLPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100))));
+	std::unique_ptr<Paddle> gLPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::LeftPaddle));
 	sf::Vector2f tmp_sz = (*gLPaddle).getSize();
 	mLeftPaddle = gLPaddle.get();
 	mLeftPaddle->setOrigin(tmp_sz.x / 2, tmp_sz.y / 2);
@@ -43,7 +42,7 @@ void World::buildScene()
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
 	//
-	std::unique_ptr<Paddle> gRPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100))));
+	std::unique_ptr<Paddle> gRPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::RightPaddle));
 	mRightPaddle = gRPaddle.get();
 	mRightPaddle->setOrigin(tmp_sz.x / 2, tmp_sz.y / 2);
 	sf::Vector2f r_pos(static_cast<float>(mWindow.getSize().x - tmp_sz.x / 2), static_cast<float>(mWindow.getSize().y / 2)); 
@@ -64,18 +63,30 @@ void World::draw()
 
 void World::update(sf::Time dt)
 {
-	////
+	//Выполняем все команды из стека команд//
 	while(!mCommandQueue.isEmpty())
+	{
 		for(int i = 0; i < LayerCount; ++i)
 		{
-			mSceneLayers[i]->onCommand(mCommandQueue.Pop(), dt);
+			mSceneLayers[i]->onCommand(mCommandQueue.Top(), dt);
 		}
-	////
+		mCommandQueue.Pop();
+	}
+	//Обновляем все слои//
 	for(int i = 0; i < LayerCount; ++i)
 	{
 		mSceneLayers[i]->update(dt);
 	}
-	///Ниже идет проверка столкновений сущностей и обработка попытки выхода мяча за пределы поля
+	//Запускаем команды, поправляющую выход ракеток за границы
+	Command LeftPaddleAdopter;
+	LeftPaddleAdopter.action = derivedAction<Paddle>(PositionAdopter<Paddle>(mWindow.getView()));
+	LeftPaddleAdopter.category = RecieverType::LeftPaddle;
+	mCommandQueue.Push(LeftPaddleAdopter);
+	Command RightPaddleAdopter;
+	RightPaddleAdopter.action = derivedAction<Paddle>(PositionAdopter<Paddle>(mWindow.getView()));
+	RightPaddleAdopter.category = RecieverType::RightPaddle;
+	mCommandQueue.Push(RightPaddleAdopter);
+	///Проверка столкновений сущностей 
 	sf::FloatRect b = mBall->getGlobalBounds();
 	std::cout << b.top << ' ' << b.left << ' ' << b.height << ' ' << b.width << '\n';
 
@@ -97,61 +108,17 @@ void World::update(sf::Time dt)
 		else ball_direction = std::atan(balvel.x / balvel.y );
 		mBall->rotate_velocity(2*ball_direction + rand_ball_direction);
 	}
+	//Проверка выхода шара за пределы области
 	auto pos = mBall->getPosition();
-	if (mBall->getPosition().y - mBall->getSize() < 0.f)
-    {
-		mBall->setVelocity(mBall->getVelocity().x, -mBall->getVelocity().y);
-    }
-	if (mBall->getPosition().y + mBall->getSize() > mWindow.getSize().y)
-    {
-		mBall->setVelocity(mBall->getVelocity().x, -mBall->getVelocity().y);
-	}
-
+	Command ballCommand;
+	ballCommand.category = RecieverType::Ball;
+	ballCommand.action = derivedAction<Ball>(BallWallCollider<Ball>(mWindow.getView()));
+	mCommandQueue.Push(ballCommand);
+	//
 	if (mBall->getPosition().x - mBall->getSize() < 0.f || mBall->getPosition().x + mBall->getSize() > mWindow.getSize().x)
     {
 		the_end = true;
     }
-}
-
-void World::handleEvent(const sf::Event& event)
-{
-	switch(event.type)
-			{
-			case sf::Event::EventType::KeyPressed:
-				if(event.key.code == sf::Keyboard::Space)
-				{
-					mBall->setPosition(mWindow.getView().getCenter().x, mWindow.getView().getCenter().y);
-					float ball_direction = rand() / static_cast<float>(RAND_MAX) * pi;
-				}
-				if(event.key.code == sf::Keyboard::S) 
-				{
-					if(mLeftPaddle->getPosition().y + mLeftPaddle->getSize().y / 2 < mWindow.getSize().y)
-						mLeftPaddle->accelerate(0,static_cast<float>(mWindow.getSize().y / 5));
-				}
-				if(event.key.code == sf::Keyboard::W)
-				{
-					if(mLeftPaddle->getPosition().y - mLeftPaddle->getSize().y / 2 > 0)
-					{
-						float wnd = static_cast<float>(mWindow.getSize().y);
-						float tmp = - wnd / 5;
-						mLeftPaddle->accelerate(0,tmp);
-					}
-				}
-				if(event.key.code == sf::Keyboard::Up)
-				{
-					if(mRightPaddle->getPosition().y - mRightPaddle->getSize().y / 2 > 0)
-					{
-						float wnd = static_cast<float>(mWindow.getSize().y);
-						float tmp = - wnd / 5;
-						mRightPaddle->accelerate(0, tmp);
-					}
-				}
-				if(event.key.code == sf::Keyboard::Down)
-				{
-					if(mRightPaddle->getPosition().y + mRightPaddle->getSize().y / 2 < mWindow.getSize().y)
-						mRightPaddle->accelerate(0,static_cast<float>(mWindow.getSize().y) / 5);
-				}
-			}
 }
 
 CommandQueue& World::getCommandQueue() 

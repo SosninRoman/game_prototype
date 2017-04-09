@@ -28,6 +28,8 @@ public:
 	{
 		return getTransform().transformRect(mBall.getGlobalBounds());
 	}
+
+	RecieverType getActionType() const;
 private:
 	sf::CircleShape mBall;
 };

@@ -1,18 +1,5 @@
 #include "Player.h"
 
-template <class MoveableNode>
-class Mover
-{
-public:
-	Mover(float vx, float vy):v(vx,vy){}
-	void operator() (MoveableNode& node, sf::Time dt) const
-	{
-		node.accelerate(v);
-	}
-private:
-	sf::Vector2f v;
-};
-
 Player::Player()
 {
 	mKeyBinding[sf::Keyboard::Up]   =    ActionType::RightPaddleUp;
@@ -65,7 +52,7 @@ void Player::handleRealtimeInput(CommandQueue& commands)
 	);
 }
 
-void handleEvent(const sf::Event& event, CommandQueue& commands)
+void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
 
 }

@@ -12,6 +12,11 @@ public:
 		mQueue.pop();
 		return result;
 	}
+	
+	Command Top()
+	{
+		return mQueue.front();
+	}
 
 	void Push(const Command& command)
 	{

@@ -4,7 +4,7 @@
 class Paddle: public MoveableNode
 {
 public:
-	Paddle(sf::RectangleShape&rect):mRect(rect){}
+	Paddle(sf::RectangleShape&rect, RecieverType type ):mRect(rect), mRecieverType(type){}
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const ;
 	void setOutlineColor(sf::Color clr)
 	{
@@ -31,7 +31,11 @@ public:
 		MoveableNode::updateCurrent(dt);
 		MoveableNode::setVelocity(0,0);
 	}
+	
+	RecieverType getActionType() const;
+
 private:
 	sf::RectangleShape mRect;
+	RecieverType mRecieverType;
 };
 

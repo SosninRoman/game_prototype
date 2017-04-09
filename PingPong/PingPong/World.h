@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "CommandQueue.h"
+#include "CommandCatalogue.h"
 
 class World: public sf::NonCopyable
 {
