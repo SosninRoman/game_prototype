@@ -24,6 +24,7 @@ public:
 	bool theEnd(){return the_end;}
 
 	CommandQueue& getCommandQueue() ;
+	void handleCollisions();
 private:
 	std::array<SceneNode::Ptr, LayerCount> mSceneLayers;
 	sf::RenderWindow& mWindow;

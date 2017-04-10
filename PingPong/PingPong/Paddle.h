@@ -22,7 +22,7 @@ public:
 	{
 		return mRect.getSize();
 	}
-	sf::FloatRect getGlobalBounds()
+	sf::FloatRect getGlobalBounds() const
 	{
 		return getWorldTransform().transformRect(mRect.getGlobalBounds());
 	}
@@ -31,7 +31,7 @@ public:
 		MoveableNode::updateCurrent(dt);
 		MoveableNode::setVelocity(0,0);
 	}
-	
+	NodeType getNodeType() const;
 	RecieverType getActionType() const;
 
 private:

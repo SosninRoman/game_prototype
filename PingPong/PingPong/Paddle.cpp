@@ -10,3 +10,8 @@ RecieverType Paddle::getActionType() const
 {
 	return mRecieverType;
 }
+
+NodeType Paddle::getNodeType() const
+{
+	return NodeType::Paddle;
+}

@@ -38,8 +38,6 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-
-
 void SceneNode::update(sf::Time dt)
 {
 	updateCurrent(dt);
@@ -48,7 +46,6 @@ void SceneNode::update(sf::Time dt)
 		(*itr)->update(dt);
 	}
 }
-
 
 sf::Transform SceneNode::getWorldTransform() const
 {
@@ -70,13 +67,39 @@ RecieverType SceneNode::getActionType() const
 	return RecieverType::Scene;
 }
 
+NodeType SceneNode::getNodeType() const
+{
+	return NodeType::Scene;
+}
+
 void SceneNode::onCommand(Command& command, sf::Time dt)
 {
 	if (command.category == getActionType())
 		command.action(*this, dt);
 	std::for_each(mChildren.begin(), mChildren.end(), [&command,dt](Ptr& child)mutable{child->onCommand(command,dt);});
-	/*for(std::vector<Ptr>::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
-	{
-		(*itr)->onCommand(command, dt);
-	}*/
+}
+
+sf::FloatRect SceneNode::getGlobalBounds() const
+{
+	return sf::FloatRect();
+}
+
+bool collision(const SceneNode& lhs, const SceneNode& rhs)
+{
+	return lhs.getGlobalBounds().intersects(rhs.getGlobalBounds());
+}
+
+void SceneNode::checkNodeCollision(SceneNode& node, std::set<SceneNode::Pair>& collisions)
+{
+	if (this != &node && collision(*this, node)) 
+		collisions.insert(std::minmax(this, &node));
+
+	std::for_each(mChildren.begin(), mChildren.end(), [&node, &collisions](Ptr& ptr_child){ptr_child->checkNodeCollision(node, collisions);});
+}
+
+void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisions)
+{
+	checkNodeCollision(node, collisions);
+
+	std::for_each(node.mChildren.begin(), node.mChildren.end(), [&node, &collisions, this](Ptr& ptr_child){this->checkSceneCollision(*ptr_child, collisions);});
 }

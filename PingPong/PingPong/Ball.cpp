@@ -14,3 +14,8 @@ RecieverType Ball::getActionType() const
 {
 	return RecieverType::Ball;
 }
+
+NodeType Ball::getNodeType() const
+{
+	return NodeType::Ball;
+}

@@ -2,6 +2,7 @@
 #include <iostream>
 
 float pi = 3.14159f;
+bool matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2);
 
 World::World(sf::RenderWindow& window):
 	mWindow(window), mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)), the_end(false), mCommandQueue()
@@ -87,7 +88,8 @@ void World::update(sf::Time dt)
 	RightPaddleAdopter.category = RecieverType::RightPaddle;
 	mCommandQueue.Push(RightPaddleAdopter);
 	///Проверка столкновений сущностей 
-	sf::FloatRect b = mBall->getGlobalBounds();
+	handleCollisions();
+	/*sf::FloatRect b = mBall->getGlobalBounds();
 	std::cout << b.top << ' ' << b.left << ' ' << b.height << ' ' << b.width << '\n';
 
 	if (mBall->getGlobalBounds().intersects(mLeftPaddle->getGlobalBounds())) 
@@ -107,7 +109,7 @@ void World::update(sf::Time dt)
 		if(!balvel.x || !balvel.y) ball_direction = pi;
 		else ball_direction = std::atan(balvel.x / balvel.y );
 		mBall->rotate_velocity(2*ball_direction + rand_ball_direction);
-	}
+	}*/
 	//Проверка выхода шара за пределы области
 	auto pos = mBall->getPosition();
 	Command ballCommand;
@@ -121,7 +123,45 @@ void World::update(sf::Time dt)
     }
 }
 
+void World::handleCollisions()
+{
+	std::set<SceneNode::Pair> collisions;
+	mSceneLayers[Ground]->checkSceneCollision(*mSceneLayers[Ground],collisions);
+	for(std::set<SceneNode::Pair>::iterator itr = collisions.begin(); itr != collisions.end(); ++itr)
+	{
+		SceneNode::Pair p = *itr;
+		if (matchesCategories(p, NodeType::Ball, NodeType::Paddle))
+		{
+			Ball* t_ball = dynamic_cast<Ball*>(p.first);
+			Paddle* t_paddle = dynamic_cast<Paddle*>(p.second);
+			//
+			float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
+			auto balvel = t_ball->getVelocity();
+			float ball_direction;
+			if(!balvel.x || !balvel.y) ball_direction = pi;
+			else ball_direction = std::atan(balvel.x / balvel.y );
+			t_ball->rotate_velocity(2*ball_direction + rand_ball_direction);
+		}
+	}
+}
+
 CommandQueue& World::getCommandQueue() 
 {
 	return mCommandQueue;
+}
+
+bool matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2)
+{
+	auto category1 = colliders.first->getNodeType();
+	auto category2 = colliders.second->getNodeType();
+
+	if(static_cast<unsigned int>(type1) & static_cast<unsigned int>(category1) && 
+		static_cast<unsigned int>(type2) & static_cast<unsigned int>(category2)) return true;
+	else if (static_cast<unsigned int>(type1) & static_cast<unsigned int>(category2) && 
+		static_cast<unsigned int>(type2) & static_cast<unsigned int>(category1)) 
+		{
+			std::swap(colliders.first, colliders.second);
+			return true;
+		}
+	return false;
 }

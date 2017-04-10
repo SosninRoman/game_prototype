@@ -24,11 +24,11 @@ public:
 	{
 		return mBall.getRadius();
 	}
-	sf::FloatRect getGlobalBounds()
+	sf::FloatRect getGlobalBounds() const
 	{
 		return getTransform().transformRect(mBall.getGlobalBounds());
 	}
-
+	NodeType getNodeType() const;
 	RecieverType getActionType() const;
 private:
 	sf::CircleShape mBall;
