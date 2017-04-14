@@ -1,5 +1,10 @@
 #include "Paddle.h"
+#include "GameData.h"
 
+namespace
+{
+	const std::vector<PaddleData> Table = initializePaddleData();
+}
 
 void Paddle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const 
 {
@@ -14,4 +19,9 @@ RecieverType Paddle::getActionType() const
 NodeType Paddle::getNodeType() const
 {
 	return NodeType::Paddle;
+}
+
+float Paddle::getSpeed() const
+{
+	return Table[static_cast<int>(mType)].speed;
 }

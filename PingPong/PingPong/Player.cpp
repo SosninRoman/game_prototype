@@ -13,16 +13,16 @@ Player::Player()
 
 void Player::InitializeCommands()
 {
-	mActions[ActionType::RightPaddleDown].action = derivedAction<Paddle>(Mover<Paddle>(0,200));
+	mActions[ActionType::RightPaddleDown].action = derivedAction<Paddle>(Mover<Paddle>(0,1));
 	mActions[ActionType::RightPaddleDown].category = RecieverType::RightPaddle;
 
-	mActions[ActionType::RightPaddleUp].action = derivedAction<Paddle>(Mover<Paddle>(0,-200));
+	mActions[ActionType::RightPaddleUp].action = derivedAction<Paddle>(Mover<Paddle>(0,-1));
 	mActions[ActionType::RightPaddleUp].category = RecieverType::RightPaddle;
 
-	mActions[ActionType::LeftPaddleDown].action = derivedAction<Paddle>(Mover<Paddle>(0,200));
+	mActions[ActionType::LeftPaddleDown].action = derivedAction<Paddle>(Mover<Paddle>(0,1));
 	mActions[ActionType::LeftPaddleDown].category = RecieverType::LeftPaddle;
 
-	mActions[ActionType::LeftPaddleUp].action = derivedAction<Paddle>(Mover<Paddle>(0,-200));
+	mActions[ActionType::LeftPaddleUp].action = derivedAction<Paddle>(Mover<Paddle>(0,-1));
 	mActions[ActionType::LeftPaddleUp].category = RecieverType::LeftPaddle;
 }
 

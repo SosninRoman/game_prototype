@@ -8,7 +8,8 @@ public:
 	Mover(float vx, float vy):v(vx,vy){}
 	void operator() (MoveableNode& node, sf::Time dt) const
 	{
-		node.accelerate(v);
+		float speed = node.getSpeed();
+		node.accelerate(v * speed);
 	}
 private:
 	sf::Vector2f v;
