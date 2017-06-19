@@ -1,11 +1,13 @@
 #pragma once
 #include "MoveableNode.h"
+#include "Animator.h"
+#include "ResourceHolder.h"
 
 class Ball :
 	public MoveableNode
 {
 public:
-	Ball(sf::CircleShape& ball);
+	Ball(sf::CircleShape& ball, TextureHolder& textures);
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	//
 	void setOutlineColor(sf::Color clr)
@@ -30,7 +32,10 @@ public:
 	}
 	NodeType getNodeType() const;
 	RecieverType getActionType() const;
+protected:
+	void updateCurrent(sf::Time dt);
 private:
 	sf::CircleShape mBall;
+	Animator mAnimator;
 };
 

@@ -5,11 +5,12 @@
 
 struct Context
 {
-	Context(sf::RenderWindow& window, FontHolder& fonts, Player& player):window(&window), fonts(&fonts), player(&player){}
+	Context(sf::RenderWindow& window, FontHolder& fonts, Player& player, TextureHolder& textures):window(&window), fonts(&fonts), player(&player), textures(&textures){}
 	~Context(){}
 
 	sf::RenderWindow* window;
 	FontHolder*       fonts;
+	TextureHolder*    textures;
 	Player*           player;
 };
 

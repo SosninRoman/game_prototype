@@ -21,6 +21,7 @@ public:
 	typedef std::pair<SceneNode*, SceneNode*> Pair;
 
 	SceneNode():mParent(nullptr){}
+	virtual ~SceneNode(){}
 
 	void attachChild(Ptr Child);
 	Ptr detachChild(const SceneNode& Child);
@@ -31,7 +32,7 @@ public:
 
 	virtual RecieverType getActionType() const;
 	virtual NodeType getNodeType() const;
-	void onCommand(Command& command, sf::Time dt);
+	void onCommand(const Command& command, sf::Time dt);
 
 	virtual sf::FloatRect getGlobalBounds() const;
 

@@ -5,6 +5,8 @@ StateStack::~StateStack()
 {
 }
 
+//States managament
+
 State::Ptr StateStack::createState(ID stateID)
 {
 	auto ptr = mStatesFactory.find(stateID);
@@ -46,6 +48,8 @@ void StateStack::applyPendingChanges()
 	}
 	mPendingChanges.clear();
 }
+
+//Game loop
 
 void StateStack::update(sf::Time dt)
 {

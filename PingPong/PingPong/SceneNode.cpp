@@ -72,7 +72,7 @@ NodeType SceneNode::getNodeType() const
 	return NodeType::Scene;
 }
 
-void SceneNode::onCommand(Command& command, sf::Time dt)
+void SceneNode::onCommand(const Command& command, sf::Time dt)
 {
 	if (command.category == getActionType())
 		command.action(*this, dt);

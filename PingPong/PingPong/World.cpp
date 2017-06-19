@@ -4,8 +4,8 @@
 float pi = 3.14159f;
 bool matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2);
 
-World::World(sf::RenderWindow& window):
-	mWindow(window), mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)), the_end(false), mCommandQueue()
+World::World(sf::RenderWindow& window, TextureHolder& textures):
+	mWindow(window), mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getSize().x), static_cast<float>(mWindow.getSize().y)), the_end(false), mCommandQueue(), mTextures(textures)
 {
 	buildScene();
 }
@@ -19,7 +19,7 @@ void World::buildScene()
 	}
 	sf::View gameView = mWindow.getView();	
 	//
-	std::unique_ptr<Ball> gBall(new Ball(sf::CircleShape(10.f)));
+	std::unique_ptr<Ball> gBall(new Ball(sf::CircleShape(10.f), mTextures));
 	mBall = gBall.get();
 	mBall->setOutlineColor(sf::Color::Black);
 	mBall->setOutlineThickness(1);
@@ -52,6 +52,9 @@ void World::buildScene()
 	mRightPaddle->setOutlineColor(sf::Color::Black);
 	mRightPaddle->setFillColor(sf::Color::Green);
 	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
+	//BackGround
+	mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture)))));
+
 }
 
 void World::draw()
@@ -89,27 +92,6 @@ void World::update(sf::Time dt)
 	mCommandQueue.Push(RightPaddleAdopter);
 	///Проверка столкновений сущностей 
 	handleCollisions();
-	/*sf::FloatRect b = mBall->getGlobalBounds();
-	std::cout << b.top << ' ' << b.left << ' ' << b.height << ' ' << b.width << '\n';
-
-	if (mBall->getGlobalBounds().intersects(mLeftPaddle->getGlobalBounds())) 
-	{
-		float rand_ball_direction = static_cast<float>(rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
-		auto balvel = mBall->getVelocity();
-		float ball_direction;
-		if(!balvel.x || !balvel.y) ball_direction = pi;
-		else ball_direction = std::atan(balvel.x / balvel.y);
-		mBall->rotate_velocity(2*ball_direction + rand_ball_direction);
-	}
-	if (mBall->getGlobalBounds().intersects(mRightPaddle->getGlobalBounds())) 
-	{
-		float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
-		auto balvel = mBall->getVelocity();
-		float ball_direction;
-		if(!balvel.x || !balvel.y) ball_direction = pi;
-		else ball_direction = std::atan(balvel.x / balvel.y );
-		mBall->rotate_velocity(2*ball_direction + rand_ball_direction);
-	}*/
 	//Проверка выхода шара за пределы области
 	auto pos = mBall->getPosition();
 	Command ballCommand;

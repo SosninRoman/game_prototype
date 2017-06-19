@@ -7,12 +7,14 @@ const sf::Time TPF = sf::seconds(1.f/60.f);
 
 Application::Application():
 	mWindow(sf::VideoMode(640, 480), "PingPong", sf::Style::Default),
-	mStateStack(Context(mWindow, mFontHolder, mPlayer))
+	mStateStack(Context(mWindow, mFontHolder, mPlayer, mTextureHolder))
 {
 	registerStates();
 	mStateStack.pushState(ID::Title);
 
 	mFontHolder.load(MainMenuFont, "res/sansation.ttf");
+	mTextureHolder.load(BackGroundTexture,"res/back.jpg");
+	mTextureHolder.load(BallTexture,"res/ball.png");
 }
 
 

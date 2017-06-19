@@ -8,7 +8,6 @@
 class Player
 {
 public:
-
 	enum class ActionType
 	{
 		LeftPaddleUp,

@@ -1,10 +1,8 @@
 #include "GameState.h"
 #include <random>
 
-
-
 GameState::GameState(StateStack& stack, Context context):
-	State(stack, context),  mWorld(*context.window), mPlayer(*context.player)
+	State(stack, context),  mWorld(*context.window, *context.textures), mPlayer(*context.player)
 {
 }
 
@@ -40,7 +38,6 @@ bool GameState::handleEvent(const sf::Event& event)
 				{
 					CommandQueue& queue = mWorld.getCommandQueue();
 					mPlayer.handleEvent(event, queue);
-				//mWorld.handleEvent(event);
 				}
 			}
 	return true;

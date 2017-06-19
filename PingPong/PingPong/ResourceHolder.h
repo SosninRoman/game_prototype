@@ -6,6 +6,7 @@
 #include <SFML\Graphics.hpp>
 
 enum FontID{MainMenuFont};
+enum TextureID{BackGroundTexture,BallTexture,PaddleTexture};
 
 template<class ID, class Resourse>
 class ResourceHolder
@@ -39,3 +40,4 @@ private:
 };
 
 typedef ResourceHolder<FontID,sf::Font> FontHolder;
+typedef ResourceHolder<TextureID,sf::Texture> TextureHolder;

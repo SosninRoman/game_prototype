@@ -4,8 +4,10 @@
 #include "SceneNode.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "SpriteNode.h"
 #include "CommandQueue.h"
 #include "CommandCatalogue.h"
+#include "ResourceHolder.h"
 
 class World: public sf::NonCopyable
 {
@@ -16,7 +18,7 @@ public:
 		Ground,
 		LayerCount
 	};
-	World(sf::RenderWindow& window);
+	World(sf::RenderWindow& window, TextureHolder& textures);
 	void draw();
 	void update(sf::Time dt);
 	//
@@ -37,5 +39,7 @@ private:
 	Paddle* mRightPaddle, *mLeftPaddle;
 
 	CommandQueue mCommandQueue;
+
+	TextureHolder& mTextures;
 };
 
