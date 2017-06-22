@@ -42,11 +42,11 @@ public:
 	{
 		sf::FloatRect viewBounds(mView.getCenter() - mView.getSize() / 2.f, mView.getSize());
 
-		if (node.getPosition().y - node.getSize() < viewBounds.top)
+		if (node.getPosition().y - node.getSize().x / 2 < viewBounds.top)
 		{
 			node.setVelocity(node.getVelocity().x, -node.getVelocity().y);
 		}
-		if (node.getPosition().y + node.getSize() > viewBounds.height)
+		if (node.getPosition().y + node.getSize().y / 2 > viewBounds.height)
 		{
 			node.setVelocity(node.getVelocity().x, -node.getVelocity().y);
 		}

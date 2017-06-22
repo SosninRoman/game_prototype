@@ -19,42 +19,35 @@ void World::buildScene()
 	}
 	sf::View gameView = mWindow.getView();	
 	//
-	std::unique_ptr<Ball> gBall(new Ball(sf::CircleShape(10.f), mTextures));
+	std::unique_ptr<Ball> gBall(new Ball(mTextures));
 	mBall = gBall.get();
-	mBall->setOutlineColor(sf::Color::Black);
-	mBall->setOutlineThickness(1);
-	mBall->setFillColor(sf::Color::White);
-	mBall->setOrigin(sf::Vector2f(mBall->getSize() / 2, mBall->getSize() / 2));
+	mBall->centerOrigin();
 	mBall->setPosition(gameView.getCenter().x, gameView.getCenter().y);
 	///
 	mBall->setVelocity(static_cast<float>(mWindow.getSize().x) / 5,0.000001f);
 	///
 	mSceneLayers[Ground]->attachChild(std::move(gBall));
 	//
-	std::unique_ptr<Paddle> gLPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::LeftPaddle));
-	sf::Vector2f tmp_sz = (*gLPaddle).getSize();
-	mLeftPaddle = gLPaddle.get();
-	mLeftPaddle->setOrigin(tmp_sz.x / 2, tmp_sz.y / 2);
+	std::unique_ptr<Paddle> gLPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::LeftPaddle, mTextures));
+	sf::Vector2u tmp_sz = (*gLPaddle).getSize();
+	gLPaddle->centerOrigin();
 	sf::Vector2f l_pos(static_cast<float>(tmp_sz.x), static_cast<float>(mWindow.getSize().y / 2));
-	mLeftPaddle->setPosition(l_pos);
-	mLeftPaddle->setOutlineThickness(1);
-	mLeftPaddle->setOutlineColor(sf::Color::Black);
-	mLeftPaddle->setFillColor(sf::Color::Red);
+	gLPaddle->setPosition(l_pos);
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
 	//
-	std::unique_ptr<Paddle> gRPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::RightPaddle));
-	mRightPaddle = gRPaddle.get();
-	mRightPaddle->setOrigin(tmp_sz.x / 2, tmp_sz.y / 2);
+	std::unique_ptr<Paddle> gRPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::RightPaddle, mTextures));
+	gRPaddle->centerOrigin();
 	sf::Vector2f r_pos(static_cast<float>(mWindow.getSize().x - tmp_sz.x / 2), static_cast<float>(mWindow.getSize().y / 2)); 
-	mRightPaddle->setPosition(r_pos);
-	mRightPaddle->setOutlineThickness(1);
-	mRightPaddle->setOutlineColor(sf::Color::Black);
-	mRightPaddle->setFillColor(sf::Color::Green);
+	gRPaddle->setPosition(r_pos);
 	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
 	//BackGround
 	mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture)))));
-
+	//
+	std::unique_ptr<Cube> gCube(new Cube(mTextures));
+	gCube->centerOrigin();
+	gCube->setPosition(100,100);
+	mSceneLayers[Ground]->attachChild(std::move(gCube));
 }
 
 void World::draw()
@@ -99,10 +92,15 @@ void World::update(sf::Time dt)
 	ballCommand.action = derivedAction<Ball>(BallWallCollider<Ball>(mWindow.getView()));
 	mCommandQueue.Push(ballCommand);
 	//
-	if (mBall->getPosition().x - mBall->getSize() < 0.f || mBall->getPosition().x + mBall->getSize() > mWindow.getSize().x)
+	auto sz = mBall->getSize();
+	auto posit = mBall->getPosition();
+	auto ws = mWindow.getSize();
+	if (mBall->getPosition().x - mBall->getSize().x / 2 < 0.f || mBall->getPosition().x + mBall->getSize().x / 2 > mWindow.getSize().x)
     {
 		the_end = true;
     }
+	//
+	mSceneLayers[Ground]->removeWrecks();
 }
 
 void World::handleCollisions()
@@ -123,6 +121,20 @@ void World::handleCollisions()
 			if(!balvel.x || !balvel.y) ball_direction = pi;
 			else ball_direction = std::atan(balvel.x / balvel.y );
 			t_ball->rotate_velocity(2*ball_direction + rand_ball_direction);
+		}
+		if (matchesCategories(p, NodeType::Ball, NodeType::Cube))
+		{
+			Ball* t_ball = dynamic_cast<Ball*>(p.first);
+			Cube* t_cube = dynamic_cast<Cube*>(p.second);
+			//
+			float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
+			auto balvel = t_ball->getVelocity();
+			float ball_direction;
+			if(!balvel.x || !balvel.y) ball_direction = pi;
+			else ball_direction = std::atan(balvel.x / balvel.y );
+			t_ball->rotate_velocity(2*ball_direction + rand_ball_direction);
+			//
+			t_cube->kill();
 		}
 	}
 }

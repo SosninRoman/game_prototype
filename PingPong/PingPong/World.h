@@ -4,6 +4,7 @@
 #include "SceneNode.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Cube.h"
 #include "SpriteNode.h"
 #include "CommandQueue.h"
 #include "CommandCatalogue.h"
@@ -36,7 +37,6 @@ private:
 
 	bool the_end;
 	Ball* mBall;
-	Paddle* mRightPaddle, *mLeftPaddle;
 
 	CommandQueue mCommandQueue;
 

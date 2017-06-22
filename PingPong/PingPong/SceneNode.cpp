@@ -103,3 +103,15 @@ void SceneNode::checkSceneCollision(SceneNode& node, std::set<Pair>& collisions)
 
 	std::for_each(node.mChildren.begin(), node.mChildren.end(), [&node, &collisions, this](Ptr& ptr_child){this->checkSceneCollision(*ptr_child, collisions);});
 }
+
+bool SceneNode::isMarkedForRemove()
+{
+	return false;
+}
+
+void SceneNode::removeWrecks()
+{
+	auto itr = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemove));
+	mChildren.erase(itr, mChildren.end());
+	std::for_each(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::removeWrecks));
+}

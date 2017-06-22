@@ -12,6 +12,7 @@ enum class NodeType
 	Scene = 1,
 	Paddle = 1 << 1,
 	Ball = 1 << 2,
+	Cube = 1 << 3,
 };
 
 class SceneNode: public sf::Drawable, public sf::Transformable
@@ -38,6 +39,12 @@ public:
 
 	void checkNodeCollision(SceneNode& node, std::set<Pair>& collisions);
 	void checkSceneCollision(SceneNode& node, std::set<Pair>& collisions);
+
+	virtual void centerOrigin(){}
+
+	virtual bool isMarkedForRemove();
+
+	void removeWrecks();
 private:
 	std::vector<Ptr> mChildren;
 	SceneNode* mParent;

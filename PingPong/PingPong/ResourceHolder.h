@@ -6,7 +6,7 @@
 #include <SFML\Graphics.hpp>
 
 enum FontID{MainMenuFont};
-enum TextureID{BackGroundTexture,BallTexture,PaddleTexture};
+enum TextureID{BackGroundTexture,BallTexture,PaddleTexture,CubeTexture};
 
 template<class ID, class Resourse>
 class ResourceHolder

@@ -13,6 +13,7 @@ enum class RecieverType
 	LeftPaddle = 1 << 1,
 	RightPaddle = 1 << 2,
 	Ball = 1 << 3,
+	Cube = 1 << 4,
 };
 
 struct Command

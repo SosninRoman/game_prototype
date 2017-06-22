@@ -15,6 +15,8 @@ Application::Application():
 	mFontHolder.load(MainMenuFont, "res/sansation.ttf");
 	mTextureHolder.load(BackGroundTexture,"res/back.jpg");
 	mTextureHolder.load(BallTexture,"res/ball.png");
+	mTextureHolder.load(PaddleTexture,"res/paddle.jpg");
+	mTextureHolder.load(CubeTexture,"res/box.png");
 }
 
 
