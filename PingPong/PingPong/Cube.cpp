@@ -3,9 +3,7 @@
 Cube::Cube(TextureHolder& textures):
 	SceneNode(), AnimatedNode(textures), mAnimator(textures), mRemove(false)
 {
-	AnimatedNode::createAnimation("cub1",CubeTexture,sf::seconds(2),false);
-	AnimatedNode::addFrames(string("cub1"), sf::Vector2i(0,0), sf::Vector2i(32,32),1);
-	AnimatedNode::switchAnimation("cub1");
+	
 }
 
 RecieverType Cube::getActionType() const

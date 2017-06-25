@@ -105,3 +105,13 @@ TileSheet::frames_vector TileSheet::getFrame(string name) const
 	assert(itr != mFrames.end());
 	return itr->second;
 }
+
+string TileSheet::getFileName()
+{
+	return mFileName;
+}
+
+string TileSheet::getFileName() const
+{
+	return mFileName;
+}

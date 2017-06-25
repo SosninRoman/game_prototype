@@ -23,6 +23,8 @@ public:
 	frames_vector getFrame(string name) const;
 
 	operator sf::Texture&(){return mTexture;}
+	string getFileName();
+	string getFileName() const;
 private:
 	string mName;
 	string mFileName;

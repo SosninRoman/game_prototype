@@ -69,7 +69,11 @@ void World::buildScene()
 	mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture).getTexture(), 2, 2) )));
 	//CUBE CREATING
 	std::unique_ptr<Cube> gCube(new Cube(mTextures));
-	gCube->centerOrigin();
+
+	gCube->createAnimation("cub1",CubeTexture,sf::seconds(2),false);
+	gCube->addFrames(string("cub1"), sf::Vector2i(0,0), sf::Vector2i(32,32),1);
+	gCube->switchAnimation("cub1");
+
 	gCube->setPosition(100,100);
 	mSceneLayers[Ground]->attachChild(std::move(gCube));
 }
