@@ -2,7 +2,7 @@
 #include "SceneNode.h"
 
 class MoveableNode :
-	public SceneNode
+	public virtual SceneNode
 {
 public:
 	void setVelocity(sf::Vector2f v);

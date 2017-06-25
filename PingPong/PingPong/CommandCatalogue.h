@@ -25,6 +25,7 @@ public:
 		sf::FloatRect viewBounds(mView.getCenter() - mView.getSize() / 2.f, mView.getSize());
 
 		sf::Vector2f position = node.getPosition();
+		auto sz = node.getSize();
 		if ( (position.y - node.getSize().y / 2) < viewBounds.top) position.y = viewBounds.top + node.getSize().y / 2;
 		if ( (position.y + node.getSize().y / 2) > viewBounds.top + viewBounds.height) position.y = viewBounds.top + viewBounds.height - node.getSize().y / 2;
 		node.setPosition(position);

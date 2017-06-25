@@ -1,8 +1,9 @@
 #pragma once
 #include "MoveableNode.h"
 #include "Animator.h"
+#include "AnimatedNode.h"
 
-class Paddle: public MoveableNode
+class Paddle: public MoveableNode, public AnimatedNode
 {
 public:
 	enum class PaddleType
@@ -12,9 +13,7 @@ public:
 		NumOfTypes = 1 << 1,
 	};
 
-	Paddle(sf::RectangleShape&rect, RecieverType type , TextureHolder& textures);
-
-	sf::Vector2u getSize();
+	Paddle(RecieverType type , TextureHolder& textures);
 	
 	sf::FloatRect getGlobalBounds() const;
 	
@@ -31,7 +30,5 @@ private:
 
 	RecieverType mRecieverType;
 	PaddleType mType;
-
-	Animator mAnimator;
 };
 

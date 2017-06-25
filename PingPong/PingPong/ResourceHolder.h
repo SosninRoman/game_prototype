@@ -4,16 +4,17 @@
 #include <memory>
 #include <assert.h>
 #include <SFML\Graphics.hpp>
+#include "TileSheet.h"
 
 enum FontID{MainMenuFont};
 enum TextureID{BackGroundTexture,BallTexture,PaddleTexture,CubeTexture};
+
+class TileSheet;
 
 template<class ID, class Resourse>
 class ResourceHolder
 {
 public:
-	
-
 	void load(ID id, const std::string& filename)
 	{
 		std::unique_ptr<Resourse> res(new Resourse());
@@ -40,4 +41,4 @@ private:
 };
 
 typedef ResourceHolder<FontID,sf::Font> FontHolder;
-typedef ResourceHolder<TextureID,sf::Texture> TextureHolder;
+typedef ResourceHolder<TextureID,TileSheet> TextureHolder;

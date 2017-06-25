@@ -1,8 +1,8 @@
 #pragma once
-#include "SceneNode.h"
 #include "Animator.h"
+#include "AnimatedNode.h"
 
-class Cube: public SceneNode
+class Cube: public AnimatedNode
 {
 public:
 	Cube(TextureHolder& textures);

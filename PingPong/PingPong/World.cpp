@@ -18,32 +18,56 @@ void World::buildScene()
 		mSceneLayers[i] = std::move(layer);
 	}
 	sf::View gameView = mWindow.getView();	
-	//
+	//BALL CREATING
 	std::unique_ptr<Ball> gBall(new Ball(mTextures));
 	mBall = gBall.get();
-	mBall->centerOrigin();
 	mBall->setPosition(gameView.getCenter().x, gameView.getCenter().y);
+	mBall->createAnimation("roll_ball",BallTexture,sf::seconds(2),true);
+	mBall->addFrames(string("roll_ball"), sf::Vector2i(0,0), sf::Vector2i(32,32),2);
+	mBall->switchAnimation(string("roll_ball"));
+	//
+	gBall->createAnimation("ball_animation",BallTexture,sf::seconds(2),true);
+	const TileSheet& sheet = mTextures.get(BallTexture);
+	vector<sf::IntRect> v = sheet.getFrame("ball_animation");
+	gBall->addFrames(string("ball_animation"), v);
+	gBall->switchAnimation("ball_animation");
 	///
 	mBall->setVelocity(static_cast<float>(mWindow.getSize().x) / 5,0.000001f);
 	///
 	mSceneLayers[Ground]->attachChild(std::move(gBall));
-	//
-	std::unique_ptr<Paddle> gLPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::LeftPaddle, mTextures));
+	//LEFT PADDLE CREATING
+	std::unique_ptr<Paddle> gLPaddle(new Paddle(RecieverType::LeftPaddle, mTextures));
+
+	gLPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
+	gLPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gLPaddle->switchAnimation("paddle_up");
+
+	gLPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
+	gLPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gLPaddle->switchAnimation("paddle_down");
+
 	sf::Vector2u tmp_sz = (*gLPaddle).getSize();
-	gLPaddle->centerOrigin();
 	sf::Vector2f l_pos(static_cast<float>(tmp_sz.x), static_cast<float>(mWindow.getSize().y / 2));
 	gLPaddle->setPosition(l_pos);
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
-	//
-	std::unique_ptr<Paddle> gRPaddle(new Paddle(sf::RectangleShape(sf::Vector2f(25,100)),RecieverType::RightPaddle, mTextures));
-	gRPaddle->centerOrigin();
+	//RIGHT PADDLE CREATING
+	std::unique_ptr<Paddle> gRPaddle(new Paddle(RecieverType::RightPaddle, mTextures));
 	sf::Vector2f r_pos(static_cast<float>(mWindow.getSize().x - tmp_sz.x / 2), static_cast<float>(mWindow.getSize().y / 2)); 
 	gRPaddle->setPosition(r_pos);
-	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
-	//BackGround
-	mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture)))));
+
+	gRPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
+	gRPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gRPaddle->switchAnimation("paddle_up");
+
+	gRPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
+	gRPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	//gRPaddle->switchAnimation("paddle_down");
 	//
+	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
+	//BACKGROUND CREATING
+	mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture).getTexture(), 2, 2) )));
+	//CUBE CREATING
 	std::unique_ptr<Cube> gCube(new Cube(mTextures));
 	gCube->centerOrigin();
 	gCube->setPosition(100,100);

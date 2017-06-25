@@ -2,9 +2,10 @@
 #include "MoveableNode.h"
 #include "Animator.h"
 #include "ResourceHolder.h"
+#include "AnimatedNode.h"
 
 class Ball :
-	public MoveableNode
+	public MoveableNode, public AnimatedNode
 {
 public:
 	Ball(TextureHolder& textures);
@@ -15,10 +16,7 @@ public:
 	RecieverType getActionType() const;
 
 	virtual void centerOrigin();
-	sf::Vector2u getSize();
 protected:
 	void updateCurrent(sf::Time dt);
-private:
-	Animator mAnimator;
 };
 

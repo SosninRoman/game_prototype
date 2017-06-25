@@ -1,11 +1,11 @@
 #include "Cube.h"
 
 Cube::Cube(TextureHolder& textures):
-	mAnimator(textures), mRemove(false)
+	SceneNode(), AnimatedNode(textures), mAnimator(textures), mRemove(false)
 {
-	auto animation = mAnimator.createAnimation("cub1",CubeTexture,sf::seconds(2),false);
-	animation->AddFrames(sf::Vector2i(0,0), sf::Vector2i(32,32),1);
-	mAnimator.switchAnimation("cub1");
+	AnimatedNode::createAnimation("cub1",CubeTexture,sf::seconds(2),false);
+	AnimatedNode::addFrames(string("cub1"), sf::Vector2i(0,0), sf::Vector2i(32,32),1);
+	AnimatedNode::switchAnimation("cub1");
 }
 
 RecieverType Cube::getActionType() const
@@ -20,22 +20,22 @@ NodeType Cube::getNodeType() const
 
 sf::FloatRect Cube::getGlobalBounds() const
 {
-	return getWorldTransform().transformRect(mAnimator.getSprite().getGlobalBounds());
+	return AnimatedNode::getGlobalBounds();
 }
 
 void Cube::centerOrigin()
 {
-	mAnimator.centerOrigin();
+	AnimatedNode::centerOrigin();
 }
 
 void Cube::updateCurrent(sf::Time dt)
 {
-	mAnimator.update(dt);
+	AnimatedNode::updateCurrent(dt);
 }
 
 void Cube::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	mAnimator.drawCurrent(target, states);
+	AnimatedNode::drawCurrent(target, states);
 }
 
 void Cube::kill()

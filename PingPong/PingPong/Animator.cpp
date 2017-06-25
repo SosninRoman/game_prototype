@@ -5,7 +5,7 @@ Animator::Animator(TextureHolder& textures):
 {
 }
 
-Animator::Animation* Animator::createAnimation(const string& name, TextureID id, sf::Time duration, bool loop, bool rotate, int degree)
+Animator::Animation* Animator::createAnimation(const string& name, TextureID id, sf::Time duration, bool loop, bool rotate, float degree)
 {
 	Animation anim(id, duration, loop, rotate, degree);
 	auto pair = mAnimations.insert(std::make_pair(name, anim));
@@ -15,18 +15,14 @@ Animator::Animation* Animator::createAnimation(const string& name, TextureID id,
 
 void Animator::switchAnimation(const string& name)
 {
-	if(mCurrentAnimation != mAnimations.end() && mCurrentAnimation->second.mRotation) 
-		mSprite.rotate(-mCurrentAnimation->second.mAngle);
-	//
 	mCurrentAnimation = mAnimations.find(name);
 	assert(mCurrentAnimation != mAnimations.end());
-	mSprite.setTexture(mTextures.get(mCurrentAnimation->second.mTextureID));
+	TileSheet& sheet = mTextures.get(mCurrentAnimation->second.mTextureID);
+	const sf::Texture& texture = sheet.getTexture();
+	mSprite.setTexture(texture);
 	mCurrentTime = sf::Time::Zero;
 	//
 	mSprite.setTextureRect(mCurrentAnimation->second.mFrames[0]);
-	//
-	if(mCurrentAnimation->second.mRotation) 
-		mSprite.rotate(mCurrentAnimation->second.mAngle);
 }
 
 void Animator::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -49,15 +45,6 @@ void Animator::update(sf::Time dt)
 	}
 }
 
-void Animator::Animation::AddFrames(sf::Vector2i startFrom, const sf::Vector2i& frameSize, size_t frames)
-{
-	for(size_t i = 0; i < frames; ++i)
-	{
-		mFrames.emplace_back(sf::IntRect(startFrom.x, startFrom.y, frameSize.x, frameSize.y));
-		startFrom.x += frameSize.x;
-	}
-}
-
 const sf::Sprite& Animator::getSprite() const
 {
 	return mSprite;
@@ -68,8 +55,23 @@ sf::Vector2u Animator::getSize()
 	return sf::Vector2u(mSprite.getTextureRect().width, mSprite.getTextureRect().height);
 }
 
-void Animator::centerOrigin()
+void Animator::Animation::AddFrames(sf::Vector2i startFrom, const sf::Vector2i& frameSize, size_t frames)
 {
-	auto sz = getSize();
-	mSprite.setOrigin(sf::Vector2f(getSize().x / 2, getSize().y / 2));
+	for(size_t i = 0; i < frames; ++i)
+	{
+		mFrames.emplace_back(sf::IntRect(startFrom.x, startFrom.y, frameSize.x, frameSize.y));
+		startFrom.x += frameSize.x;
+	}
+}
+
+void Animator::Animation::AddFrames(vector<sf::IntRect> frames)
+{
+	mFrames.assign(frames.begin(), frames.end());
+}
+
+Animator::Animation* Animator::findAnimation(string& name)
+{
+	auto itr = mAnimations.find(name);
+	assert(itr != mAnimations.end());
+	return &(itr->second);
 }
