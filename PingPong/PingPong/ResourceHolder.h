@@ -55,6 +55,7 @@ public:
 			if (itr->second->getFileName() == filename)
 				return *(itr->second);
 		}
+		throw std::runtime_error("Can't find resourse " + filename);
 	}
 private:
 	std::map<ID, std::unique_ptr<Resourse> > mResourseMap;

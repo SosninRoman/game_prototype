@@ -44,6 +44,7 @@ public:
 
 	Animation* findAnimation(string& name);
 
+	const Animation* getCurrentAnimation(){return (mCurrentAnimation == mAnimations.end())? nullptr : &(mCurrentAnimation->second);}
 private:
 	sf::Sprite					mSprite;
 	sf::Time					mCurrentTime;

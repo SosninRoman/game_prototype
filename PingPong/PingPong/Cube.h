@@ -1,11 +1,12 @@
 #pragma once
 #include "Animator.h"
 #include "AnimatedNode.h"
+#include "SpriteNode.h"
 
-class Cube: public AnimatedNode
+class Cube: public SpriteNode
 {
 public:
-	Cube(TextureHolder& textures);
+	Cube(sf::Sprite& textures);
 
 	virtual RecieverType getActionType() const;
 	virtual NodeType getNodeType() const;
@@ -18,7 +19,7 @@ private:
 	void updateCurrent(sf::Time dt);
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	Animator mAnimator;
+	//Animator mAnimator;
 	bool mRemove;
 };
 

@@ -37,13 +37,23 @@ std::string JoinPaths(const std::string &path, const std::string &subpath)
 
 bool TileSheet::loadFromFile(const std::string& filename, const sf::IntRect& area)
 {
-	mFileName = filename;
+	const size_t slashPos = filename.find_last_of('/');
+	string file = filename.substr(slashPos+1, filename.size()-1);
+	mFileName = file;
+	//
 	tinyxml2::XMLDocument doc;
 	if(doc.LoadFile(filename.c_str()) != tinyxml2::XML_SUCCESS)
     {
 		//Trying to load just texture
 		if(mTexture.loadFromFile(filename))
+		{
+			mColumns = 1;
+			mCount = 1;
+			auto sz = mTexture.getSize();
+			mTileHeight = sz.y;
+			mTileWidth = sz.x;
 			return true;
+		}
 		else
 			throw std::runtime_error("Loading TileSheet \"" + filename + " failed."); 
     }
@@ -99,6 +109,11 @@ sf::Texture& TileSheet::getTexture()
 	return mTexture;
 }
 
+const sf::Texture& TileSheet::getTexture() const
+{
+	return mTexture;
+}
+
 TileSheet::frames_vector TileSheet::getFrame(string name) const
 {
 	auto itr = mFrames.find(name);
@@ -114,4 +129,15 @@ string TileSheet::getFileName()
 string TileSheet::getFileName() const
 {
 	return mFileName;
+}
+
+sf::Sprite TileSheet::getTile(int tileid)
+{
+	int column = tileid % mColumns;
+	int row = tileid / mColumns;
+	assert((column+1) * (row+1) <= tileid+1); 
+	sf::Sprite result(mTexture);
+	sf::IntRect frame(column * mTileWidth, row * mTileHeight, mTileWidth, mTileHeight);
+	result.setTextureRect(frame);
+	return result;
 }

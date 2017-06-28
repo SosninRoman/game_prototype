@@ -12,6 +12,8 @@ World::World(sf::RenderWindow& window, TextureHolder& textures):
 
 void World::buildScene()
 {
+	mLevel.loadFromFile("res/pong_map.tmx", mTextures);
+	//
 	for(int i = 0; i < LayerCount; ++i)
 	{
 		SceneNode::Ptr layer(new SceneNode());
@@ -62,24 +64,34 @@ void World::buildScene()
 
 	gRPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
 	gRPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,100),1);
-	//gRPaddle->switchAnimation("paddle_down");
+	gRPaddle->switchAnimation("paddle_down");
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
 	//BACKGROUND CREATING
-	mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture).getTexture(), 2, 2) )));
-	//CUBE CREATING
-	std::unique_ptr<Cube> gCube(new Cube(mTextures));
-
-	gCube->createAnimation("cub1",CubeTexture,sf::seconds(2),false);
-	gCube->addFrames(string("cub1"), sf::Vector2i(0,0), sf::Vector2i(32,32),1);
-	gCube->switchAnimation("cub1");
-
-	gCube->setPosition(100,100);
-	mSceneLayers[Ground]->attachChild(std::move(gCube));
+	//mSceneLayers[BackGround]->attachChild(std::move(std::unique_ptr<SpriteNode>(new SpriteNode(mTextures.get(BackGroundTexture).getTexture(), 2, 2) )));
+	//FILLING SCENE BY OBJECTS FROM THE MAP
+	vector<LevelObject>& objects = mLevel.getAllObjects();
+	for( auto& obj : objects)
+	{
+		if(obj.type == "Cube")
+		{
+			std::unique_ptr<Cube> map_Cube(new Cube(obj.sprite));
+			map_Cube->setPosition(obj.rect.left, obj.rect.top - obj.rect.height);
+			mSceneLayers[Ground]->attachChild(std::move(map_Cube));
+		}
+		if(obj.type == "Wall")
+		{
+			std::unique_ptr<Wall> map_Wall(new Wall());
+			map_Wall->setRectangle(obj.rect);
+			map_Wall->setPosition(obj.rect.left, obj.rect.top);
+			mSceneLayers[Ground]->attachChild(std::move(map_Wall));
+		}
+	}
 }
 
 void World::draw()
 {
+	mLevel.draw(mWindow);
 	for(int i = 0; i < LayerCount; ++i)
 	{
 		mWindow.draw(*mSceneLayers[i]);
@@ -113,12 +125,6 @@ void World::update(sf::Time dt)
 	mCommandQueue.Push(RightPaddleAdopter);
 	///Проверка столкновений сущностей 
 	handleCollisions();
-	//Проверка выхода шара за пределы области
-	auto pos = mBall->getPosition();
-	Command ballCommand;
-	ballCommand.category = RecieverType::Ball;
-	ballCommand.action = derivedAction<Ball>(BallWallCollider<Ball>(mWindow.getView()));
-	mCommandQueue.Push(ballCommand);
 	//
 	auto sz = mBall->getSize();
 	auto posit = mBall->getPosition();
@@ -127,7 +133,7 @@ void World::update(sf::Time dt)
     {
 		the_end = true;
     }
-	//
+	//	
 	mSceneLayers[Ground]->removeWrecks();
 }
 
@@ -163,6 +169,33 @@ void World::handleCollisions()
 			t_ball->rotate_velocity(2*ball_direction + rand_ball_direction);
 			//
 			t_cube->kill();
+		}
+		if (matchesCategories(p, NodeType::Ball, NodeType::Wall))
+		{
+			Ball* t_ball = dynamic_cast<Ball*>(p.first);
+			Cube* t_wall = dynamic_cast<Cube*>(p.second);
+			//
+			float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
+			auto balvel = t_ball->getVelocity();
+			t_ball->setVelocity(balvel.x, -balvel.y);
+		}
+		if (matchesCategories(p, NodeType::Paddle, NodeType::Wall))
+		{
+			Paddle* t_paddle = dynamic_cast<Paddle*>(p.first);
+			Wall* t_wall = dynamic_cast<Wall*>(p.second);
+			auto balvel = t_paddle->getVelocity();
+			sf::FloatRect p_rect = t_paddle->getGlobalBounds();
+			sf::FloatRect w_rect = t_wall->getGlobalBounds();
+			if(w_rect.top - p_rect.top < 0)
+			{
+				float delta = w_rect.height - (p_rect.top - w_rect.top);
+				t_paddle->move(0, delta );
+			}
+			else
+			{
+				float delta = p_rect.top + p_rect.height - w_rect.top;
+				t_paddle->move(0,- delta );
+			}
 		}
 	}
 }

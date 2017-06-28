@@ -8,6 +8,16 @@ SpriteNode::SpriteNode(sf::Texture& texture, float xscale, float yscale):
 	centerOrigin();
 }
 
+SpriteNode::SpriteNode(sf::Sprite& sprite, float xscale, float yscale):
+	mScaleFactor(xscale, yscale)
+{
+	if(sprite.getTexture() != nullptr)
+	{
+		mSprite.setTexture(*sprite.getTexture());
+	}
+	mSprite.setTextureRect(sprite.getTextureRect());
+}
+
 void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const 
 {
 	target.draw(mSprite, states);
@@ -27,4 +37,16 @@ void SpriteNode::centerOrigin()
 sf::Vector2u SpriteNode::getSize()
 {
 	return sf::Vector2u( static_cast<unsigned int>(mSprite.getTexture()->getSize().x * mScaleFactor.x), static_cast<unsigned int>(mSprite.getTexture()->getSize().y * mScaleFactor.y));
+}
+
+void SpriteNode::setSprite(sf::Sprite& sprite)
+{
+	mSprite.setTexture(*sprite.getTexture());
+	mSprite.setTextureRect(sprite.getTextureRect());
+	mSprite.setColor(sprite.getColor());
+}
+
+void SpriteNode::setRectangle(sf::IntRect& rect)
+{
+	mSprite.setTextureRect(rect);
 }

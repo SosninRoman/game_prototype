@@ -13,6 +13,7 @@ enum class NodeType
 	Paddle = 1 << 1,
 	Ball = 1 << 2,
 	Cube = 1 << 3,
+	Wall = 1 << 4,
 };
 
 class SceneNode: public sf::Drawable, public sf::Transformable

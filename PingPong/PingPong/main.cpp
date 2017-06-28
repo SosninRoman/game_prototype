@@ -1,9 +1,6 @@
 #include <iostream>
 #include <random>
 #include <ctime>
-#include <cmath>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 #include "Application.h"
 
 

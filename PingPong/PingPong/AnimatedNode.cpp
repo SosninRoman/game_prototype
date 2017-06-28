@@ -43,8 +43,8 @@ void AnimatedNode::switchAnimation(string& name)
 
 void AnimatedNode::switchAnimation(char* name)
 {
-	if (findAnimation(string(name))->mRotation)
-		rotate(findAnimation(string(name))->mAngle);
+	if (mAnimator.getCurrentAnimation() != nullptr && mAnimator.getCurrentAnimation()->mRotation)
+		rotate(mAnimator.getCurrentAnimation()->mAngle);
 	mAnimator.switchAnimation(name);
 	if (findAnimation(string(name))->mRotation)
 		rotate(-findAnimation(string(name))->mAngle);

@@ -20,11 +20,18 @@ public:
 
 	bool loadFromFile(const std::string& filename, const sf::IntRect& area = sf::IntRect());
 	sf::Texture& getTexture();
+	const sf::Texture& getTexture() const;
 	frames_vector getFrame(string name) const;
 
-	operator sf::Texture&(){return mTexture;}
+	operator sf::Texture&() {return mTexture;}
 	string getFileName();
 	string getFileName() const;
+
+	sf::Sprite getTile(int tileid);
+	
+	int getColumns() const {return mColumns;}
+	int getTileWidth() const {return mTileWidth;}
+	int getTileHeight() const {return mTileHeight;}
 private:
 	string mName;
 	string mFileName;

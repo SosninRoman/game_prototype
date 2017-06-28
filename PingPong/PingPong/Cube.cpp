@@ -1,7 +1,7 @@
 #include "Cube.h"
 
-Cube::Cube(TextureHolder& textures):
-	SceneNode(), AnimatedNode(textures), mAnimator(textures), mRemove(false)
+Cube::Cube(sf::Sprite& textures):
+	SceneNode(), SpriteNode(textures),  mRemove(false)
 {
 	
 }
@@ -18,22 +18,22 @@ NodeType Cube::getNodeType() const
 
 sf::FloatRect Cube::getGlobalBounds() const
 {
-	return AnimatedNode::getGlobalBounds();
+	return SpriteNode::getGlobalBounds();
 }
 
 void Cube::centerOrigin()
 {
-	AnimatedNode::centerOrigin();
+	SpriteNode::centerOrigin();
 }
 
 void Cube::updateCurrent(sf::Time dt)
 {
-	AnimatedNode::updateCurrent(dt);
+	//SpriteNode::updateCurrent(dt);
 }
 
 void Cube::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	AnimatedNode::drawCurrent(target, states);
+	SpriteNode::drawCurrent(target, states);
 }
 
 void Cube::kill()

@@ -5,10 +5,12 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Cube.h"
+#include "Wall.h"
 #include "SpriteNode.h"
 #include "CommandQueue.h"
 #include "CommandCatalogue.h"
 #include "ResourceHolder.h"
+#include "Level.h"
 
 class World: public sf::NonCopyable
 {
@@ -41,5 +43,7 @@ private:
 	CommandQueue mCommandQueue;
 
 	TextureHolder& mTextures;
+
+	Level mLevel;
 };
 
