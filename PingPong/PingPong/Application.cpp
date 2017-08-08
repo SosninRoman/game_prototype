@@ -50,6 +50,7 @@ void Application::run()
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	while(mWindow.isOpen())
 	{
+		mWindow.setFramerateLimit(90);
 		sf::Time dt = clock.restart();
 		timeSinceLastUpdate += dt;
 		while(timeSinceLastUpdate > TPF)
