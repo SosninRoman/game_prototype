@@ -22,7 +22,9 @@ NodeType Ball::getNodeType() const
 
 void Ball::updateCurrent(sf::Time dt)
 {
-	MoveableNode::updateCurrent(dt);
+	
+	//MoveableNode::updateCurrent(dt);
+	SceneNode::updateCurrent(dt);
 	AnimatedNode::updateCurrent(dt);
 }
 

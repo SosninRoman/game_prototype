@@ -29,6 +29,7 @@ void Cube::centerOrigin()
 void Cube::updateCurrent(sf::Time dt)
 {
 	//SpriteNode::updateCurrent(dt);
+	SceneNode::updateCurrent(dt);
 }
 
 void Cube::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

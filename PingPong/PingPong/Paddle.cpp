@@ -39,8 +39,9 @@ sf::FloatRect Paddle::getGlobalBounds() const
 
 void Paddle::updateCurrent(sf::Time dt)
 {
-	MoveableNode::updateCurrent(dt);
-	MoveableNode::setVelocity(0,0);
+	SceneNode::updateCurrent(dt);
+	//MoveableNode::updateCurrent(dt);
+	//MoveableNode::setVelocity(0,0);
 	AnimatedNode::updateCurrent(dt);
 }
 

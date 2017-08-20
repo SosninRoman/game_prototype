@@ -47,6 +47,20 @@ void SceneNode::update(sf::Time dt)
 	}
 }
 
+void SceneNode::updateCurrent(sf::Time dt)
+{
+	if(mBody != nullptr)
+	{
+		auto p = mBody->GetPosition().x;
+		auto pp = mBody->GetPosition().y;
+		auto act = mBody->IsActive();
+		auto awak = mBody->IsAwake();
+		auto vel = mBody->GetLinearVelocity();
+		setPosition( metr_to_pixel(mBody->GetPosition().x), metr_to_pixel(mBody->GetPosition().y) );
+		setRotation(mBody->GetAngle() * 180 / b2_pi);
+	}
+}
+
 sf::Transform SceneNode::getWorldTransform() const
 {
 	sf::Transform result = sf::Transform::Identity;
@@ -114,4 +128,15 @@ void SceneNode::removeWrecks()
 	auto itr = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemove));
 	mChildren.erase(itr, mChildren.end());
 	std::for_each(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::removeWrecks));
+}
+
+void SceneNode::setBody(b2Body* b_ptr)
+{
+	mBody = b_ptr;
+	mBody->SetUserData(this);
+}
+
+void SceneNode::SetLinearVelocity(b2Vec2 vel)
+{
+	mBody->SetLinearVelocity(vel);
 }

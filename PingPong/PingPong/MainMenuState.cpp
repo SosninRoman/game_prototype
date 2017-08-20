@@ -1,4 +1,4 @@
-#include "ManeMenuState.h"
+#include "MainMenuState.h"
 #include <assert.h>
 #include "Utility.h"
 
@@ -8,7 +8,7 @@ MainMenuState::MainMenuState(StateStack& stack, Context context):
 	assert(mFont.loadFromFile("res/sansation.ttf"));
 	sf::Text playText;
 	playText.setFont(mFont);
-	playText.setString("PLAYS");
+	playText.setString("PLAY");
 	centerOrigin(playText);
 	playText.setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 4.f);
 

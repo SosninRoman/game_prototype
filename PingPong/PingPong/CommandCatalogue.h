@@ -16,6 +16,20 @@ private:
 };
 
 template <class MoveableNode>
+class PaddleMover
+{
+public:
+	PaddleMover(float vx, float vy):v(vx,vy){}
+	void operator() (SceneNode& node, sf::Time dt) const
+	{
+		float speed = dynamic_cast<MoveableNode&>(node).getSpeed();
+		node.SetLinearVelocity(b2Vec2(v.x * pixel_to_metr(speed),v.y * pixel_to_metr(speed)));
+	}
+private:
+	sf::Vector2f v;
+};
+
+template <class MoveableNode>
 class PositionAdopter
 {
 public:

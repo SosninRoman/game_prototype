@@ -14,6 +14,8 @@ public:
 		LeftPaddleDown,
 		RightPaddleUp,
 		RightPaddleDown,
+		StopLeftPaddle,
+		StopRightPaddle
 	};
 
 	Player();

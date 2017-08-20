@@ -1,9 +1,8 @@
 #pragma once
-#include "MoveableNode.h"
 #include "Animator.h"
 #include "AnimatedNode.h"
 
-class Paddle: public MoveableNode, public AnimatedNode
+class Paddle: public AnimatedNode
 {
 public:
 	enum class PaddleType

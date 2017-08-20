@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "TitleState.h"
 #include "GameState.h"
-#include "ManeMenuState.h"
+#include "MainMenuState.h"
 
 const sf::Time TPF = sf::seconds(1.f/60.f);
 

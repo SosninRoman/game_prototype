@@ -9,16 +9,16 @@ public:
 	SpriteNode(sf::Texture& texture, float xscale = 1, float yscale = 1);
 	SpriteNode(sf::Sprite& sprite, float xscale = 1, float yscale = 1);
 
-	virtual sf::FloatRect getGlobalBounds() const;
-	virtual void centerOrigin();
+	virtual sf::FloatRect	getGlobalBounds() const;
+	virtual void			centerOrigin();
 
-	sf::Vector2u getSize();
-	void setSprite(sf::Sprite& sprite);
-	void setRectangle(sf::IntRect& rect);
+	sf::Vector2u			getSize();
+	void					setSprite(sf::Sprite& sprite);
+	void					setRectangle(sf::IntRect& rect);
 protected:
-	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 private:	
-	sf::Sprite mSprite;
-	sf::Vector2f mScaleFactor; 
+	sf::Sprite				mSprite;
+	sf::Vector2f			mScaleFactor; 
 };
 

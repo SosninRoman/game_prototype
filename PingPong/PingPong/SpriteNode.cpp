@@ -30,8 +30,10 @@ sf::FloatRect SpriteNode::getGlobalBounds() const
 
 void SpriteNode::centerOrigin()
 {
-	auto* text = mSprite.getTexture();
-	setOrigin(static_cast<float>(text->getSize().x) / 2 * mScaleFactor.x, static_cast<float>(text->getSize().y) / 2 * mScaleFactor.y);
+	auto rect = mSprite.getTextureRect();
+	//auto* text = mSprite.getTexture();
+	//setOrigin(static_cast<float>(text->getSize().x) / 2 * mScaleFactor.x, static_cast<float>(text->getSize().y) / 2 * mScaleFactor.y);
+	setOrigin(static_cast<float>(rect.width) / 2 * mScaleFactor.x, static_cast<float>(rect.height) / 2 * mScaleFactor.y);
 }
 
 sf::Vector2u SpriteNode::getSize()

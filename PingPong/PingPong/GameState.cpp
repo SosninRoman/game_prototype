@@ -39,6 +39,11 @@ bool GameState::handleEvent(const sf::Event& event)
 					CommandQueue& queue = mWorld.getCommandQueue();
 					mPlayer.handleEvent(event, queue);
 				}
+			case sf::Event::KeyReleased:
+				{
+					CommandQueue& queue = mWorld.getCommandQueue();
+					mPlayer.handleEvent(event, queue);
+				}
 			}
 	return true;
 }
