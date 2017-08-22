@@ -9,7 +9,8 @@ class StateStack;
 enum class ID{None,
 	Game,
 	Title,
-	MainMenu
+	MainMenu,
+	Pause
 };
 
 class State
@@ -20,16 +21,16 @@ public:
 	State(StateStack& stack, Context context):mStack(&stack), mContext(context){}
 	virtual ~State();
 
-	virtual void draw() = 0;
-	virtual bool update(sf::Time dt) = 0;
-	virtual bool handleEvent(const sf::Event& event) = 0;
+	virtual void	draw() = 0;
+	virtual bool	update(sf::Time dt) = 0;
+	virtual bool	handleEvent(const sf::Event& event) = 0;
 protected:
-	void requestStackPush(ID stateID);
-	void requestStackPop();
-	void requestStateCLear();
+	void			requestStackPush(ID stateID);
+	void			requestStackPop();
+	void			requestStateCLear();
 
-	Context getContext() const;
+	Context			getContext() const;
 private:
-	StateStack* mStack;
-	Context mContext;
+	StateStack*		mStack;
+	Context			mContext;
 };

@@ -7,7 +7,7 @@ class Ball :
 	public AnimatedNode
 {
 public:
-	Ball(TextureHolder& textures);
+	Ball(TextureHolder& textures, sf::Vector2f center);
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	//
 	sf::FloatRect getGlobalBounds() const;

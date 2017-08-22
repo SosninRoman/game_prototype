@@ -104,16 +104,18 @@ public:
 	World(sf::RenderWindow& window, TextureHolder& textures);
 	~World();
 	
-	void			draw();
-	void			update(sf::Time dt);
+	void									draw();
+	void									update(sf::Time dt);
 	//
-	void			handleEvent(const sf::Event& event);
-	bool			theEnd(){return the_end;}
+	void									handleEvent(const sf::Event& event);
+	bool									theEnd(){return the_end;}
 
-	CommandQueue&	getCommandQueue() ;
-	void			handleCollisions();
+	CommandQueue&							getCommandQueue() ;
+	void									handleCollisions();
+	sf::RenderWindow&						getWindow() const;
 
 	bool									matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2, b2Contact* contact = nullptr);
+	void									setEndGame();
 private:
 	std::array<SceneNode::Ptr, LayerCount>	mSceneLayers;
 	sf::RenderWindow&						mWindow;
@@ -122,7 +124,6 @@ private:
 	void									buildScene();
 
 	bool									the_end;
-	//Ball*									mBall;
 
 	CommandQueue							mCommandQueue;
 
@@ -133,6 +134,7 @@ private:
 	b2World									mPhysicWorld; 
 
 	b2Body*									createBoxBody(float pos_x, float pos_y, float height, float width, b2BodyType type, float dens = 0.f);
+	b2Body*									createCircleBody(float pos_x, float pos_y, float r, b2BodyType type, float dens = 0.f);
 	myContactListener						mContactListener;
 
 	

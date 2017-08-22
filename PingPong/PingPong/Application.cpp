@@ -2,6 +2,7 @@
 #include "TitleState.h"
 #include "GameState.h"
 #include "MainMenuState.h"
+#include "PauseState.h"
 
 const sf::Time TPF = sf::seconds(1.f/60.f);
 
@@ -14,9 +15,10 @@ Application::Application():
 
 	mFontHolder.load(MainMenuFont, "res/sansation.ttf");
 	mTextureHolder.load(BackGroundTexture,"res/back.jpg");
-	mTextureHolder.load(BallTexture,"res/ball.tsx");
-	mTextureHolder.load(PaddleTexture,"res/paddle.jpg");
+	mTextureHolder.load(BallTexture,"res/ball_sprites.png");
+	mTextureHolder.load(PaddleTexture,"res/paddle.png");
 	mTextureHolder.load(CubeTexture,"res/box.tsx");
+	mTextureHolder.load(ServiceTexture, "res/ball.tsx");
 }
 
 
@@ -69,4 +71,5 @@ void Application::registerStates()
 	mStateStack.registerState<TitleState>(ID::Title);
 	mStateStack.registerState<GameState>(ID::Game);
 	mStateStack.registerState<MainMenuState>(ID::MainMenu);
+	mStateStack.registerState<PauseState>(ID::Pause);
 }

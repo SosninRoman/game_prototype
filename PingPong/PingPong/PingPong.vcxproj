@@ -74,6 +74,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="PauseState.h" />
     <ClInclude Include="SpriteNode.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameState.h" />

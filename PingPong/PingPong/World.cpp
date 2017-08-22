@@ -42,38 +42,14 @@ void World::buildScene()
 	}
 	sf::View gameView = mWindow.getView();	
 	//BALL CREATING
-	std::unique_ptr<Ball> gBall(new Ball(mTextures));
-	/*mBall = gBall.get();
-	mBall->setPosition(gameView.getCenter().x, gameView.getCenter().y);
-	mBall->createAnimation("roll_ball",BallTexture,sf::seconds(2),true);
-	mBall->addFrames(string("roll_ball"), sf::Vector2i(0,0), sf::Vector2i(32,32),2);
-	mBall->switchAnimation(string("roll_ball"));*/
-	//
-	gBall->createAnimation("ball_animation",BallTexture,sf::seconds(2),true);
-	const TileSheet& sheet = mTextures.get(BallTexture);
-	vector<sf::IntRect> v = sheet.getFrame("ball_animation");
-	gBall->addFrames(string("ball_animation"), v);
+	sf::Vector2f ball_center(gameView.getCenter().x, gameView.getCenter().y);
+	std::unique_ptr<Ball> gBall( new Ball(mTextures, ball_center) );
+
+	gBall->createAnimation("ball_animation", BallTexture, sf::seconds(2), false);
+	gBall->addFrames(string("ball_animation"),sf::Vector2i(0,0), sf::Vector2i(25,25),1);
 	gBall->switchAnimation("ball_animation");
 	///
-	b2BodyDef BodyDef;
-	auto posx = pixel_to_metr<double>(mBall->getPosition().x);
-	auto posy = pixel_to_metr<double>(mBall->getPosition().y);
-	BodyDef.position = b2Vec2(posx, posy);
-    BodyDef.type = b2_dynamicBody;
-    
-	b2Body* Body = mPhysicWorld.CreateBody(&BodyDef);
-
-    b2PolygonShape Shape;
-	Shape.SetAsBox(pixel_to_metr<float>(mBall->getSize().x/2), pixel_to_metr<float>(mBall->getSize().y/2));
-	//
-    
-	b2FixtureDef FixtureDef;
-    FixtureDef.density = 1.f;
-    FixtureDef.friction = 0.7f;
-    FixtureDef.shape = &Shape;	
-	FixtureDef.restitution = 1;
-    Body->CreateFixture(&FixtureDef);
-	Body->SetUserData(gBall.get());
+	b2Body* Body = createCircleBody(gBall->getPosition().x, gBall->getPosition().y, gBall->getSize().x/2, b2_dynamicBody, 1.f);
 
 	Body->SetLinearVelocity(b2Vec2(-5, 0.f));
 
@@ -84,11 +60,11 @@ void World::buildScene()
 	std::unique_ptr<Paddle> gLPaddle(new Paddle(RecieverType::LeftPaddle, mTextures));
 
 	gLPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
-	gLPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gLPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,128),1);
 	gLPaddle->switchAnimation("paddle_up");
 
 	gLPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
-	gLPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gLPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,128),1);
 	gLPaddle->switchAnimation("paddle_down");
 
 	gLPaddle->centerOrigin();
@@ -97,9 +73,8 @@ void World::buildScene()
 	sf::Vector2f l_pos(static_cast<float>(tmp_sz.x) / 2, static_cast<float>(mWindow.getSize().y / 2));
 	gLPaddle->setPosition(l_pos);
 	//
-	auto gb = gLPaddle->getGlobalBounds();
-	gLPaddle->setBody(createBoxBody(12.5, 240, 25, 100, b2_dynamicBody, 1000) );
-	//
+	auto gLbounds = gLPaddle->getGlobalBounds();
+	gLPaddle->setBody(createBoxBody(l_pos.x, l_pos.y, gLbounds.width, gLbounds.height, b2_dynamicBody, 1000) );
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
 	//RIGHT PADDLE CREATING
@@ -108,18 +83,17 @@ void World::buildScene()
 	gRPaddle->setPosition(r_pos);
 
 	gRPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
-	gRPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gRPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,128),1);
 	gRPaddle->switchAnimation("paddle_up");
 
 	gRPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
-	gRPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,100),1);
+	gRPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,128),1);
 	gRPaddle->switchAnimation("paddle_down");
 	//
-	auto boun = gRPaddle->getGlobalBounds();
-	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRPaddle->getGlobalBounds().width, gRPaddle->getGlobalBounds().height, b2_dynamicBody, 1000) );
+	auto gRbounds = gRPaddle->getGlobalBounds();
+	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRbounds.width, gRbounds.height, b2_dynamicBody, 1000) );
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
-	//BACKGROUND CREATING
 	//FILLING SCENE BY OBJECTS FROM THE MAP
 	vector<LevelObject>& objects = mLevel.getAllObjects();
 	for( auto& obj : objects)
@@ -129,7 +103,8 @@ void World::buildScene()
 			std::unique_ptr<Cube> map_Cube(new Cube(obj.sprite));
 			sf::Rect<int> rect = obj.rect;
 			map_Cube->centerOrigin();
-			map_Cube->setPosition(rect.left + static_cast<double>(rect.width) / 2 , rect.top - static_cast<double>(rect.height) / 2);
+			map_Cube->setPosition(static_cast<float>(rect.left) + static_cast<float>(rect.width) / 2 , 
+				static_cast<float>(rect.top) - static_cast<float>(rect.height) / 2);
 			//
 			map_Cube->setBody(createBoxBody(map_Cube->getPosition().x, map_Cube->getPosition().y, 
 				obj.sprite.getTextureRect().height, obj.sprite.getTextureRect().width, b2_staticBody));
@@ -162,8 +137,8 @@ void World::draw()
             if (BodyIterator->GetType() == b2_dynamicBody)
             {
 				SceneNode* node = static_cast<SceneNode*>(BodyIterator->GetUserData());
-				sf::RectangleShape Sprite;
-				Sprite.setSize(sf::Vector2f(32,32) );
+				sf::CircleShape Sprite;
+				Sprite.setRadius(16);
 				Sprite.setFillColor(sf::Color::Red);
                 Sprite.setOrigin(16.f, 16.f);
                 Sprite.setPosition(30 * BodyIterator->GetPosition().x, 30 * BodyIterator->GetPosition().y);
@@ -217,90 +192,23 @@ void World::update(sf::Time dt)
 	{
 		mSceneLayers[i]->update(dt);
 	}
-	//Запускаем команды, поправляющую выход ракеток за границы
+	//Запускаем команды реакций объектов на мир
 	Command LeftPaddleAdopter;
 	LeftPaddleAdopter.action = derivedAction<Paddle>(PositionAdopter<Paddle>(mWindow.getView()));
 	LeftPaddleAdopter.category = RecieverType::LeftPaddle;
 	mCommandQueue.Push(LeftPaddleAdopter);
+	
 	Command RightPaddleAdopter;
 	RightPaddleAdopter.action = derivedAction<Paddle>(PositionAdopter<Paddle>(mWindow.getView()));
 	RightPaddleAdopter.category = RecieverType::RightPaddle;
 	mCommandQueue.Push(RightPaddleAdopter);
-	///Проверка столкновений сущностей 
-	//handleCollisions();
-	//
-	auto sz = mBall->getSize();
-	auto posit = mBall->getPosition();
-	auto ws = mWindow.getSize();
-	if (mBall->getPosition().x - mBall->getSize().x / 2 < 0.f || mBall->getPosition().x + mBall->getSize().x / 2 > mWindow.getSize().x)
-    {
-		the_end = true;
-    }
+
+	Command CheckEnd;
+	CheckEnd.action = derivedAction<Ball>(CheckEndOfGame<Ball, World>(this));
+	CheckEnd.category = RecieverType::Ball;
+	mCommandQueue.Push(CheckEnd);
 	//	
 	mSceneLayers[Ground]->removeWrecks();
-}
-
-void World::handleCollisions()
-{
-	std::set<SceneNode::Pair> collisions;
-	mSceneLayers[Ground]->checkSceneCollision(*mSceneLayers[Ground],collisions);
-	for(std::set<SceneNode::Pair>::iterator itr = collisions.begin(); itr != collisions.end(); ++itr)
-	{
-		SceneNode::Pair p = *itr;
-		if (matchesCategories(p, NodeType::Ball, NodeType::Paddle))
-		{
-			Ball* t_ball = dynamic_cast<Ball*>(p.first);
-			Paddle* t_paddle = dynamic_cast<Paddle*>(p.second);
-			//
-			float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
-			//auto balvel = t_ball->getVelocity();
-			//float ball_direction;
-			//if(!balvel.x || !balvel.y) ball_direction = pi;
-			//else ball_direction = std::atan(balvel.x / balvel.y );
-			//t_ball->rotate_velocity(2*ball_direction + rand_ball_direction);
-		}
-		if (matchesCategories(p, NodeType::Ball, NodeType::Cube))
-		{
-			Ball* t_ball = dynamic_cast<Ball*>(p.first);
-			Cube* t_cube = dynamic_cast<Cube*>(p.second);
-			//
-			//float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
-			//auto balvel = t_ball->getVelocity();
-			//float ball_direction;
-			//if(!balvel.x || !balvel.y) ball_direction = pi;
-			//else ball_direction = std::atan(balvel.x / balvel.y );
-			//t_ball->rotate_velocity(2*ball_direction + rand_ball_direction);
-			//
-			t_cube->kill();
-		}
-		if (matchesCategories(p, NodeType::Ball, NodeType::Wall))
-		{
-			Ball* t_ball = dynamic_cast<Ball*>(p.first);
-			Cube* t_wall = dynamic_cast<Cube*>(p.second);
-			//
-			//float rand_ball_direction = static_cast<float>( rand() / static_cast<float>(RAND_MAX) * 0.5 * pi - 0.25 * pi);
-			//auto balvel = t_ball->getVelocity();
-			//t_ball->setVelocity(balvel.x, -balvel.y);
-		}
-		if (matchesCategories(p, NodeType::Paddle, NodeType::Wall))
-		{
-			Paddle* t_paddle = dynamic_cast<Paddle*>(p.first);
-			Wall* t_wall = dynamic_cast<Wall*>(p.second);
-			//auto balvel = t_paddle->getVelocity();
-			sf::FloatRect p_rect = t_paddle->getGlobalBounds();
-			sf::FloatRect w_rect = t_wall->getGlobalBounds();
-			if(w_rect.top - p_rect.top < 0)
-			{
-				float delta = w_rect.height - (p_rect.top - w_rect.top);
-				t_paddle->move(0, delta );
-			}
-			else
-			{
-				float delta = p_rect.top + p_rect.height - w_rect.top;
-				t_paddle->move(0,- delta );
-			}
-		}
-	}
 }
 
 CommandQueue& World::getCommandQueue() 
@@ -346,3 +254,35 @@ b2Body* World::createBoxBody(float pos_x, float pos_y, float height, float width
 	return Body;
 }
 
+b2Body* World::createCircleBody(float pos_x, float pos_y, float r, b2BodyType type, float dens)
+{
+	b2BodyDef BodyDef;
+	BodyDef.position = b2Vec2(pixel_to_metr<double>(pos_x), pixel_to_metr<double>(pos_y));
+	BodyDef.type = type;
+
+	b2Body* Body = mPhysicWorld.CreateBody(&BodyDef);
+
+	b2CircleShape Shape;
+	Shape.m_radius = pixel_to_metr<double>(r);
+
+	b2FixtureDef fixDef;
+	fixDef.density = dens;
+	fixDef.shape = &Shape;
+	fixDef.restitution = 1;
+	fixDef.friction = 0.7;
+	
+	Body->SetLinearDamping(0);
+
+	Body->CreateFixture(&fixDef);
+	return Body;
+}
+
+sf::RenderWindow& World::getWindow() const
+{
+	return mWindow;
+}
+
+void World::setEndGame()
+{
+	the_end = true;
+}

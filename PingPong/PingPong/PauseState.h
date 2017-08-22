@@ -2,17 +2,18 @@
 #include "State.h"
 #include <vector>
 
-class MainMenuState: public State
+class PauseState: public State
 {
 public:
-	enum OptionNames{Play, Exit};
+	enum OptionNames{BackToPlay, ExitToMenu};
 
-	MainMenuState(StateStack& stack, Context context);
-	~MainMenuState(){}
+	PauseState(StateStack& stack, Context context);
+	~PauseState();
 
 	void						draw();
 	bool						update(sf::Time dt);
 	bool						handleEvent(const sf::Event& event);
+
 protected:
 	void						setColorOfText();
 private:

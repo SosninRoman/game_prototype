@@ -7,7 +7,7 @@
 #include "TileSheet.h"
 
 enum FontID{MainMenuFont};
-enum TextureID{BackGroundTexture,BallTexture,PaddleTexture,CubeTexture};
+enum TextureID{BackGroundTexture,BallTexture,PaddleTexture,CubeTexture, ServiceTexture};
 
 class TileSheet;
 

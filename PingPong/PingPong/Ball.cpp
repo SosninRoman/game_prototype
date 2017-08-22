@@ -1,8 +1,9 @@
 #include "Ball.h"
 
-Ball::Ball(TextureHolder& textures):
+Ball::Ball(TextureHolder& textures, sf::Vector2f center):
 	SceneNode(),AnimatedNode(textures)
 {
+	setPosition(center);
 }
 
 void Ball::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const 

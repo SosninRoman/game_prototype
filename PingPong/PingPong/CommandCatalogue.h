@@ -69,3 +69,19 @@ public:
 private:
 	const sf::View& mView;
 };
+
+template<class Node, class World>
+class CheckEndOfGame
+{
+public:
+	CheckEndOfGame(World* wor):
+		world(wor){}
+	void operator()(Node& node, sf::Time dt) const
+	{
+		sf::RenderWindow& window = world->getWindow();
+		if(node.getPosition().x - node.getSize().x / 2 < 0.f || node.getPosition().x + node.getSize().x / 2 > window.getSize().x )
+			world->setEndGame();
+	}
+private:
+	World* world;
+};
