@@ -14,20 +14,20 @@ public:
 
 	Paddle(RecieverType type , TextureHolder& textures);
 	
-	sf::FloatRect getGlobalBounds() const;
+	sf::FloatRect			getGlobalBounds() const;
 	
-	float getSpeed() const;
+	float					getSpeed() const;
+		
+	NodeType				getNodeType() const;
+	RecieverType			getActionType() const;
 
-	NodeType getNodeType() const;
-	RecieverType getActionType() const;
-
-	virtual void centerOrigin();
+	virtual void			centerOrigin();
 
 private:
-	void updateCurrent(sf::Time dt);
-	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void					updateCurrent(sf::Time dt);
+	void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	RecieverType mRecieverType;
-	PaddleType mType;
+	RecieverType			mRecieverType;
+	PaddleType				mType;
 };
 

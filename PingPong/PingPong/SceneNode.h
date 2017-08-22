@@ -35,13 +35,9 @@ public:
 	typedef std::unique_ptr<SceneNode> Ptr;
 	typedef std::pair<SceneNode*, SceneNode*> Pair;
 
-	SceneNode():
-		mParent(nullptr), mBody(nullptr)
-	{
-	}
-	virtual ~SceneNode()
-	{
-	}
+	SceneNode();
+
+	virtual ~SceneNode();
 
 	void					attachChild(Ptr Child);
 	Ptr						detachChild(const SceneNode& Child);
@@ -67,6 +63,7 @@ public:
 
 	void					setBody(b2Body* b_ptr);
 	void					SetLinearVelocity(b2Vec2 vel);
+	b2Body* getBody(){return mBody;}
 protected:
 	virtual void			updateCurrent(sf::Time dt);
 	b2Body*					mBody;
@@ -76,5 +73,7 @@ private:
 
 	virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {}	
+	void removeBody();
+	
 };
 

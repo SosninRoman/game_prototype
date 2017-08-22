@@ -13,6 +13,17 @@ private:
 	const SceneNode* node;
 };
 
+SceneNode::SceneNode():
+		mParent(nullptr), mBody(nullptr)
+{
+}
+
+SceneNode::~SceneNode()
+{
+	//if(mBody != nullptr)
+	//	mBody->GetWorld()->DestroyBody(mBody);
+}
+
 void SceneNode::attachChild(Ptr Child)
 {
 	mChildren.push_back(std::move(Child));
@@ -125,7 +136,10 @@ bool SceneNode::isMarkedForRemove()
 
 void SceneNode::removeWrecks()
 {
-	auto itr = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemove));
+	//
+	std::for_each(mChildren.begin(), mChildren.end(), [](Ptr& node){if (node->isMarkedForRemove()) node->removeBody() ;});
+	//
+	auto itr = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemove));	
 	mChildren.erase(itr, mChildren.end());
 	std::for_each(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::removeWrecks));
 }
@@ -139,4 +153,9 @@ void SceneNode::setBody(b2Body* b_ptr)
 void SceneNode::SetLinearVelocity(b2Vec2 vel)
 {
 	mBody->SetLinearVelocity(vel);
+}
+
+void SceneNode::removeBody()
+{
+	mBody->GetWorld()->DestroyBody(mBody);
 }

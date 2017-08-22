@@ -2,7 +2,7 @@
 #include <iostream>
 
 float pi = 3.14159f;
-bool matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2);
+
 
 b2Body* tstBody;
 
@@ -13,10 +13,22 @@ World::World(sf::RenderWindow& window, TextureHolder& textures):
 	the_end(false), 
 	mCommandQueue(), 
 	mTextures(textures),
-	mPhysicWorld(b2Vec2(0,00))
+	mPhysicWorld(b2Vec2(0,00)),
+	mContactListener(this)
 {
 	mPhysicWorld.SetContactListener(&mContactListener);
 	buildScene();
+}
+
+World::~World()
+{
+	//b2Body* BodyIterator = mPhysicWorld.GetBodyList();
+	//while ( BodyIterator != 0 )
+	//{
+	//	//b2Body* tmp = BodyIterator;
+	//	BodyIterator = BodyIterator->GetNext();
+	//	//mPhysicWorld.DestroyBody(tmp);
+	//}
 }
 
 void World::buildScene()
@@ -31,11 +43,11 @@ void World::buildScene()
 	sf::View gameView = mWindow.getView();	
 	//BALL CREATING
 	std::unique_ptr<Ball> gBall(new Ball(mTextures));
-	mBall = gBall.get();
+	/*mBall = gBall.get();
 	mBall->setPosition(gameView.getCenter().x, gameView.getCenter().y);
 	mBall->createAnimation("roll_ball",BallTexture,sf::seconds(2),true);
 	mBall->addFrames(string("roll_ball"), sf::Vector2i(0,0), sf::Vector2i(32,32),2);
-	mBall->switchAnimation(string("roll_ball"));
+	mBall->switchAnimation(string("roll_ball"));*/
 	//
 	gBall->createAnimation("ball_animation",BallTexture,sf::seconds(2),true);
 	const TileSheet& sheet = mTextures.get(BallTexture);
@@ -54,7 +66,6 @@ void World::buildScene()
     b2PolygonShape Shape;
 	Shape.SetAsBox(pixel_to_metr<float>(mBall->getSize().x/2), pixel_to_metr<float>(mBall->getSize().y/2));
 	//
-	//
     
 	b2FixtureDef FixtureDef;
     FixtureDef.density = 1.f;
@@ -64,7 +75,7 @@ void World::buildScene()
     Body->CreateFixture(&FixtureDef);
 	Body->SetUserData(gBall.get());
 
-	Body->ApplyLinearImpulseToCenter(b2Vec2(-5, 0.f), true);
+	Body->SetLinearVelocity(b2Vec2(-5, 0.f));
 
 	gBall->setBody(Body);
 	///
@@ -87,7 +98,7 @@ void World::buildScene()
 	gLPaddle->setPosition(l_pos);
 	//
 	auto gb = gLPaddle->getGlobalBounds();
-	gLPaddle->setBody(createBoxBody(12.5, 240, 25, 100, b2_kinematicBody) );
+	gLPaddle->setBody(createBoxBody(12.5, 240, 25, 100, b2_dynamicBody, 1000) );
 	//
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
@@ -105,7 +116,7 @@ void World::buildScene()
 	gRPaddle->switchAnimation("paddle_down");
 	//
 	auto boun = gRPaddle->getGlobalBounds();
-	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRPaddle->getGlobalBounds().width, gRPaddle->getGlobalBounds().height, b2_kinematicBody) );
+	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRPaddle->getGlobalBounds().width, gRPaddle->getGlobalBounds().height, b2_dynamicBody, 1000) );
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
 	//BACKGROUND CREATING
@@ -146,46 +157,46 @@ void World::draw()
 		mWindow.draw(*mSceneLayers[i]);
 	}
 	//test
-	 //for (b2Body* BodyIterator = mPhysicWorld.GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext())
-  //      {
-  //          /*if (BodyIterator->GetType() == b2_dynamicBody)
-  //          {
-		//		SceneNode* node = static_cast<SceneNode*>(BodyIterator->GetUserData());
-		//		sf::RectangleShape Sprite;
-		//		Sprite.setSize(sf::Vector2f(32,32) );
-		//		Sprite.setFillColor(sf::Color::Red);
-  //              Sprite.setOrigin(16.f, 16.f);
-  //              Sprite.setPosition(30 * BodyIterator->GetPosition().x, 30 * BodyIterator->GetPosition().y);
-  //              Sprite.setRotation(BodyIterator->GetAngle() * 180/b2_pi);
-  //              mWindow.draw(Sprite);                
-  //          }*/
-  //          if (BodyIterator->GetType() == b2_staticBody)
-  //          {
-		//		sf::RectangleShape GroundSprite;
-		//		GroundSprite.setSize(sf::Vector2f(32, 32));
-		//		GroundSprite.setFillColor(sf::Color::Black);
-  //              GroundSprite.setOrigin(16, 16.f);
-		//		auto posx = BodyIterator->GetPosition().x * 30;
-		//		auto posy = BodyIterator->GetPosition().y * 30;
-  //              GroundSprite.setPosition(posx, posy);
-  //              GroundSprite.setRotation(180/b2_pi * BodyIterator->GetAngle());
-  //              mWindow.draw(GroundSprite);
-  //          }
-		//	if (BodyIterator->GetType() == b2_kinematicBody)
-  //          {
-		//		sf::RectangleShape GroundSprite;
-		//		SceneNode* node = static_cast<SceneNode*>(BodyIterator->GetUserData());
-		//		GroundSprite.setSize(sf::Vector2f(25, 100));
-		//		GroundSprite.setFillColor(sf::Color::Green);
-  //              GroundSprite.setOrigin(12.5, 50.f);
-		//		auto posx = BodyIterator->GetPosition().x * 30;
-		//		auto posy = BodyIterator->GetPosition().y * 30;
-  //              GroundSprite.setPosition(posx, posy);
-  //              GroundSprite.setRotation(180/b2_pi * BodyIterator->GetAngle());
-  //              mWindow.draw(GroundSprite);
-  //          }
-  //      }
-	//
+	 /*for (b2Body* BodyIterator = mPhysicWorld.GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext())
+        {
+            if (BodyIterator->GetType() == b2_dynamicBody)
+            {
+				SceneNode* node = static_cast<SceneNode*>(BodyIterator->GetUserData());
+				sf::RectangleShape Sprite;
+				Sprite.setSize(sf::Vector2f(32,32) );
+				Sprite.setFillColor(sf::Color::Red);
+                Sprite.setOrigin(16.f, 16.f);
+                Sprite.setPosition(30 * BodyIterator->GetPosition().x, 30 * BodyIterator->GetPosition().y);
+                Sprite.setRotation(BodyIterator->GetAngle() * 180/b2_pi);
+                mWindow.draw(Sprite);                
+            }
+            if (BodyIterator->GetType() == b2_staticBody)
+            {
+				sf::RectangleShape GroundSprite;
+				GroundSprite.setSize(sf::Vector2f(32, 32));
+				GroundSprite.setFillColor(sf::Color::Black);
+                GroundSprite.setOrigin(16, 16.f);
+				auto posx = BodyIterator->GetPosition().x * 30;
+				auto posy = BodyIterator->GetPosition().y * 30;
+                GroundSprite.setPosition(posx, posy);
+                GroundSprite.setRotation(180/b2_pi * BodyIterator->GetAngle());
+                mWindow.draw(GroundSprite);
+            }
+			if (BodyIterator->GetType() == b2_kinematicBody)
+            {
+				sf::RectangleShape GroundSprite;
+				SceneNode* node = static_cast<SceneNode*>(BodyIterator->GetUserData());
+				GroundSprite.setSize(sf::Vector2f(25, 100));
+				GroundSprite.setFillColor(sf::Color::Green);
+                GroundSprite.setOrigin(12.5, 50.f);
+				auto posx = BodyIterator->GetPosition().x * 30;
+				auto posy = BodyIterator->GetPosition().y * 30;
+                GroundSprite.setPosition(posx, posy);
+                GroundSprite.setRotation(180/b2_pi * BodyIterator->GetAngle());
+                mWindow.draw(GroundSprite);
+            }
+        }*/
+	
 }
 
 void World::update(sf::Time dt)
@@ -297,7 +308,7 @@ CommandQueue& World::getCommandQueue()
 	return mCommandQueue;
 }
 
-bool matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2)
+bool World::matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2, b2Contact* contact)
 {
 	auto category1 = colliders.first->getNodeType();
 	auto category2 = colliders.second->getNodeType();
@@ -313,7 +324,7 @@ bool matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type
 	return false;
 }
 
-b2Body* World::createBoxBody(float pos_x, float pos_y, float height, float width, b2BodyType type)
+b2Body* World::createBoxBody(float pos_x, float pos_y, float height, float width, b2BodyType type, float dens)
 {
 	b2BodyDef BodyDef;
 	BodyDef.position = b2Vec2(pixel_to_metr(pos_x), pixel_to_metr(pos_y));
@@ -325,8 +336,11 @@ b2Body* World::createBoxBody(float pos_x, float pos_y, float height, float width
 	Shape.SetAsBox(pixel_to_metr(height / 2), pixel_to_metr(width / 2) );
 
 	b2FixtureDef fixDef;
-	fixDef.density = 0.f;
+	fixDef.density = dens;
 	fixDef.shape = &Shape;
+	fixDef.restitution = 1;
+	
+	Body->SetLinearDamping(0);
 
 	Body->CreateFixture(&fixDef);
 	return Body;
