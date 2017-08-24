@@ -7,12 +7,14 @@ class PauseState: public State
 public:
 	enum OptionNames{BackToPlay, ExitToMenu};
 
-	PauseState(StateStack& stack, Context context);
+	PauseState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
 	~PauseState();
 
 	void						draw();
 	bool						update(sf::Time dt);
 	bool						handleEvent(const sf::Event& event);
+	
+	void						handleParameter(){}
 
 protected:
 	void						setColorOfText();

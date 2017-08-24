@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 #include "PauseState.h"
+#include "GameOverState.h"
 
 const sf::Time TPF = sf::seconds(1.f/60.f);
 
@@ -74,4 +75,5 @@ void Application::registerStates()
 	mStateStack.registerState<GameState>(ID::Game);
 	mStateStack.registerState<MainMenuState>(ID::MainMenu);
 	mStateStack.registerState<PauseState>(ID::Pause);
+	mStateStack.registerState<GameOverState>(ID::GameOver);
 }

@@ -2,8 +2,8 @@
 #include <assert.h>
 #include "Utility.h"
 
-MainMenuState::MainMenuState(StateStack& stack, Context context):
-	State(stack, context)
+MainMenuState::MainMenuState(StateStack& stack, Context context, state_param_ptr param):
+	State(stack, context, move(param) )
 {
 	assert(mFont.loadFromFile("res/sansation.ttf"));
 	sf::Text playText;

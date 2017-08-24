@@ -6,9 +6,9 @@ State::~State()
 	
 }
 
-void State::requestStackPush(ID stateID)
+void State::requestStackPush(ID stateID, state_param_ptr param)
 {
-	mStack->pushState(stateID);
+	mStack->pushState(stateID, move(param) );
 }
 
 void State::requestStackPop()

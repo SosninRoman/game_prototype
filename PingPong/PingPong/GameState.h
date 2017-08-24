@@ -6,14 +6,15 @@
 class GameState: public State
 {
 public:
-	GameState(StateStack& stack, Context context);
+	GameState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
 	~GameState(){}
 
-	void draw();
-	bool update(sf::Time dt);
-	bool handleEvent(const sf::Event& event);
+	void			draw();
+	bool			update(sf::Time dt);
+	bool			handleEvent(const sf::Event& event);
+	void			handleParameter(){}
 private:
-	Player& mPlayer;
-	World   mWorld;
+	Player&			mPlayer;
+	World			mWorld;
 };
 

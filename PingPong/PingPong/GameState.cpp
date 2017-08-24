@@ -1,8 +1,8 @@
 #include "GameState.h"
 #include <random>
 
-GameState::GameState(StateStack& stack, Context context):
-	State(stack, context),  mWorld(*context.window, *context.textures), mPlayer(*context.player)
+GameState::GameState(StateStack& stack, Context context, state_param_ptr param):
+	State(stack, context, move(param) ),  mWorld(*context.window, *context.textures), mPlayer(*context.player)
 {
 }
 
@@ -18,8 +18,9 @@ bool GameState::update(sf::Time dt)
 	mPlayer.handleRealtimeInput(queue);
 	if (mWorld.theEnd())
 	{
-		requestStateCLear();
-		requestStackPush(ID::Title);
+		requestStackPush(ID::GameOver,state_param_ptr(new GameOverParam(mWorld.getWinner() ) ) );
+		//requestStateCLear();
+		//requestStackPush(ID::Title);
 	}
 	return true;
 }
@@ -49,3 +50,4 @@ bool GameState::handleEvent(const sf::Event& event)
 			}
 	return true;
 }
+

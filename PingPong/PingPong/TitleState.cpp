@@ -2,8 +2,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <assert.h>
 
-TitleState::TitleState(StateStack& stack, Context context):
-	State(stack, context), mTextEffectTime(sf::Time::Zero), mShow(true)
+TitleState::TitleState(StateStack& stack, Context context, state_param_ptr param):
+	State(stack, context, std::move(param) ), mTextEffectTime(sf::Time::Zero), mShow(true)
 {
 	mText.setFont(getContext().fonts->get(MainMenuFont));
 	mText.setColor(sf::Color::Black);

@@ -5,12 +5,13 @@
 class TitleState: public State
 {
 public:
-	TitleState(StateStack& stack, Context context);
+	TitleState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
 	~TitleState(){}
 
 	void draw();
 	bool update(sf::Time dt);
 	virtual bool handleEvent(const sf::Event& event);
+	void handleParameter(){}
 private:
 	sf::Text mText;
 

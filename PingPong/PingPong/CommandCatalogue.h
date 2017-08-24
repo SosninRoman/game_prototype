@@ -80,7 +80,10 @@ public:
 	{
 		sf::RenderWindow& window = world->getWindow();
 		if(node.getPosition().x - node.getSize().x / 2 < 0.f || node.getPosition().x + node.getSize().x / 2 > window.getSize().x )
+		{
 			world->setEndGame();
+			world->setWinner(node.getMaster());
+		}
 	}
 private:
 	World* world;

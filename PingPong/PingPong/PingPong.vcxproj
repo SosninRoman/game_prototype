@@ -73,6 +73,7 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="Context.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameData.h" />
+    <ClInclude Include="GameOverState.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="SpriteNode.h" />

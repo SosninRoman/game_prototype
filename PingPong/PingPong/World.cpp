@@ -74,7 +74,7 @@ void World::buildScene()
 	gLPaddle->setPosition(l_pos);
 	//
 	auto gLbounds = gLPaddle->getGlobalBounds();
-	gLPaddle->setBody(createBoxBody(l_pos.x, l_pos.y, gLbounds.width, gLbounds.height, b2_dynamicBody, 1000) );
+	gLPaddle->setBody(createBoxBody(l_pos.x, l_pos.y, gLbounds.width, gLbounds.height, b2_dynamicBody, 10000) );
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
 	//RIGHT PADDLE CREATING
@@ -91,7 +91,7 @@ void World::buildScene()
 	gRPaddle->switchAnimation("paddle_down");
 	//
 	auto gRbounds = gRPaddle->getGlobalBounds();
-	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRbounds.width, gRbounds.height, b2_dynamicBody, 1000) );
+	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRbounds.width, gRbounds.height, b2_dynamicBody, 10000) );
 	//
 	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
 	//FILLING SCENE BY OBJECTS FROM THE MAP

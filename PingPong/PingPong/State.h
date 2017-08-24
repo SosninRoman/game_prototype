@@ -6,11 +6,27 @@
 
 class StateStack;
 
+struct StateCreationParam
+{
+	StateCreationParam() {}
+	virtual ~StateCreationParam() {}
+};
+
+struct GameOverParam: public StateCreationParam
+{
+	GameOverParam(RecieverType type): mType(type) {}
+	virtual ~GameOverParam() {}
+	RecieverType mType;
+};
+
+typedef std::unique_ptr<StateCreationParam> state_param_ptr;
+
 enum class ID{None,
 	Game,
 	Title,
 	MainMenu,
-	Pause
+	Pause,
+	GameOver
 };
 
 class State
@@ -18,24 +34,28 @@ class State
 public:
 	typedef  std::unique_ptr<State> Ptr;
 
-	State(StateStack& stack, Context context):mStack(&stack), mContext(context){}
+	State(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) ):mStack(&stack), mContext(context), mStateParam(std::move(param)){}
 	virtual ~State();
 
-	virtual void	draw() = 0;
-	virtual bool	update(sf::Time dt) = 0;
-	virtual bool	handleEvent(const sf::Event& event) = 0;
+	virtual void		draw() = 0;
+	virtual bool		update(sf::Time dt) = 0;
+	virtual bool		handleEvent(const sf::Event& event) = 0;
 protected:
-	void			requestStackPush(ID stateID);
-	void			requestStackPop();
-	void			requestStateCLear();
+	void				requestStackPush(ID stateID, state_param_ptr param = state_param_ptr(nullptr));
+	void				requestStackPop();
+	void				requestStateCLear();
 
-	Context			getContext() const;
-	void			setBackGround(sf::Texture*);
-	sf::Texture*	getTexture();
-	void			renderBackGround(sf::RenderWindow& window);
+	Context				getContext() const;
+	void				setBackGround(sf::Texture*);
+	sf::Texture*		getTexture();
+	void				renderBackGround(sf::RenderWindow& window);
+	virtual void		handleParameter() = 0;
+	state_param_ptr		mStateParam;
 private:
-	StateStack*		mStack;
-	Context			mContext;
+	StateStack*			mStack;
+	Context				mContext;
 	//
-	sf::Texture*	mTexture;
+	sf::Texture*		mTexture;
+	//
+	
 };

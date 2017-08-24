@@ -31,7 +31,7 @@ class World: public sf::NonCopyable
 			if (myWorld->matchesCategories(p, NodeType::Ball, NodeType::Paddle, contact))
 			{
 				Ball* t_ball = dynamic_cast<Ball*>(p.first);
-				Cube* t_paddle = dynamic_cast<Cube*>(p.second);
+				Paddle* t_paddle = dynamic_cast<Paddle*>(p.second);
 				t_ball->setMaster(t_paddle->getActionType());
 			}
 		}
@@ -116,6 +116,8 @@ public:
 
 	bool									matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2, b2Contact* contact = nullptr);
 	void									setEndGame();
+	void									setWinner(RecieverType type){winner = type;}
+	RecieverType							getWinner(){return winner;}
 private:
 	std::array<SceneNode::Ptr, LayerCount>	mSceneLayers;
 	sf::RenderWindow&						mWindow;
@@ -124,6 +126,7 @@ private:
 	void									buildScene();
 
 	bool									the_end;
+	RecieverType							winner;
 
 	CommandQueue							mCommandQueue;
 

@@ -2,8 +2,8 @@
 
 void centerOrigin_local(sf::Text& txt);
 
-PauseState::PauseState(StateStack& stack, Context context):
-	State(stack, context)
+PauseState::PauseState(StateStack& stack, Context context, state_param_ptr param):
+	State(stack, context, std::move(param) )
 {
 	assert(mFont.loadFromFile("res/sansation.ttf"));
 	sf::Text playText;

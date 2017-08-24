@@ -7,16 +7,16 @@ StateStack::~StateStack()
 
 //States managament
 
-State::Ptr StateStack::createState(ID stateID)
+State::Ptr StateStack::createState(ID stateID, state_param_ptr param)
 {
 	auto ptr = mStatesFactory.find(stateID);
 	assert(ptr != mStatesFactory.end());
-	return ptr->second();
+	return ptr->second(std::move(param) );
 }
 
-void StateStack::pushState(ID stateID)
+void StateStack::pushState(ID stateID, state_param_ptr param)
 {
-	mPendingChanges.push_back(PendingChange(Push, stateID));
+	mPendingChanges.push_back(PendingChange(Push, stateID, std::move(param) ) );
 }
 
 void StateStack::popState()
@@ -36,7 +36,7 @@ void StateStack::applyPendingChanges()
 		switch(tmp->action)
 		{
 		case Push:
-			mStack.push_back(createState(tmp->stateID));
+			mStack.push_back(createState(tmp->stateID, std::move(tmp->param) ) );
 			break;
 		case Pop:
 			mStack.pop_back();
