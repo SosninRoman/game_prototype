@@ -19,6 +19,8 @@ Application::Application():
 	mTextureHolder.load(PaddleTexture,"res/paddle.png");
 	mTextureHolder.load(CubeTexture,"res/box.tsx");
 	mTextureHolder.load(ServiceTexture, "res/ball.tsx");
+	mTextureHolder.load(MenuBackGround, "res/menu_background.png");
+	mTextureHolder.load(TitleBackGround, "res/title_background.jpg");
 }
 
 

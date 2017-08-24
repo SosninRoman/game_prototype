@@ -23,6 +23,8 @@ MainMenuState::MainMenuState(StateStack& stack, Context context):
 
 	mActiveOption = 0;
 	setColorOfText();
+	//
+	setBackGround(&getContext().textures->get(MenuBackGround).getTexture());
 }
 
 
@@ -34,6 +36,14 @@ bool MainMenuState::update(sf::Time dt)
 void MainMenuState::draw()
 {
 	sf::RenderWindow& window = *getContext().window;
+	//
+	/*sf::Vector2u sz = window.getSize();
+	sf::Sprite background_sprite(*getTexture());
+	sf::Vector2u sz_rend = getTexture()->getSize();
+	background_sprite.setScale(sz.x/sz_rend.x, sz.y/sz_rend.y);
+	window.draw(background_sprite);*/
+	renderBackGround(window);
+	//
 	for(auto text:mOptions)
 		window.draw(text);
 }
@@ -73,7 +83,7 @@ void MainMenuState::setColorOfText()
 {
 	for(std::vector<sf::Text>::iterator itr = mOptions.begin(); itr != mOptions.end(); ++itr)
 	{
-		itr->setColor(sf::Color::Black);
+		itr->setColor(sf::Color::White);
 	}
 	mOptions[mActiveOption].setColor(sf::Color::Red);
 }

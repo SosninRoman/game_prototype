@@ -32,7 +32,7 @@ class World: public sf::NonCopyable
 			{
 				Ball* t_ball = dynamic_cast<Ball*>(p.first);
 				Cube* t_paddle = dynamic_cast<Cube*>(p.second);
-				//p.second->getBody()->SetType(b2_staticBody);
+				t_ball->setMaster(t_paddle->getActionType());
 			}
 		}
 

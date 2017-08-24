@@ -8,14 +8,18 @@ class Ball :
 {
 public:
 	Ball(TextureHolder& textures, sf::Vector2f center);
-	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	//
-	sf::FloatRect getGlobalBounds() const;
-	NodeType getNodeType() const;
-	RecieverType getActionType() const;
 
-	virtual void centerOrigin();
+	void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	//
+	sf::FloatRect			getGlobalBounds() const;
+	NodeType				getNodeType() const;
+	RecieverType			getActionType() const;
+
+	virtual void			centerOrigin();
+	void					setMaster(RecieverType type);
 protected:
-	void updateCurrent(sf::Time dt);
+	void					updateCurrent(sf::Time dt);
+private:
+	RecieverType			master;
 };
 

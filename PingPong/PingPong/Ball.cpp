@@ -1,7 +1,7 @@
 #include "Ball.h"
 
 Ball::Ball(TextureHolder& textures, sf::Vector2f center):
-	SceneNode(),AnimatedNode(textures)
+	SceneNode(),AnimatedNode(textures), master(RecieverType::None)
 {
 	setPosition(center);
 }
@@ -22,9 +22,7 @@ NodeType Ball::getNodeType() const
 }
 
 void Ball::updateCurrent(sf::Time dt)
-{
-	
-	//MoveableNode::updateCurrent(dt);
+{	
 	SceneNode::updateCurrent(dt);
 	AnimatedNode::updateCurrent(dt);
 }
@@ -38,4 +36,9 @@ sf::FloatRect Ball::getGlobalBounds() const
 {
 	//return getTransform().transformRect( getSpriteBounds() );
 	return AnimatedNode::getGlobalBounds();
+}
+
+void Ball::setMaster(RecieverType type)
+{
+	master = type;
 }

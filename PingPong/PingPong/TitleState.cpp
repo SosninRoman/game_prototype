@@ -14,11 +14,14 @@ TitleState::TitleState(StateStack& stack, Context context):
 	auto tmpor = sf::Vector2f( (textLRect.left + textLRect.width / 2.0f) ,std::floor(textLRect.top + textLRect.height / 2.0f) );
 	mText.setOrigin(tmpor.x , tmpor.y);
 	mText.setPosition(context.window->getView().getSize() / 2.f);
+	//
+	setBackGround(&getContext().textures->get(TitleBackGround).getTexture());
 }
 
 void TitleState::draw()
 {
 	sf::RenderWindow& window = *getContext().window;
+	renderBackGround(window);
 	if (mShow) 
 		window.draw(mText);
 }

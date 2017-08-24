@@ -30,7 +30,12 @@ protected:
 	void			requestStateCLear();
 
 	Context			getContext() const;
+	void			setBackGround(sf::Texture*);
+	sf::Texture*	getTexture();
+	void			renderBackGround(sf::RenderWindow& window);
 private:
 	StateStack*		mStack;
 	Context			mContext;
+	//
+	sf::Texture*	mTexture;
 };
