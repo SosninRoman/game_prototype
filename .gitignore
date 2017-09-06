@@ -9,5 +9,7 @@
 *.filters
 *.user
 
+/PingPong/*
+/build/*
 /PingPong/PingPong/Debug/*
 
