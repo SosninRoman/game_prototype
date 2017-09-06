@@ -14,14 +14,14 @@ Application::Application():
 	registerStates();
 	mStateStack.pushState(ID::Title);
 
-	mFontHolder.load(MainMenuFont, "res/sansation.ttf");
-	mTextureHolder.load(BackGroundTexture,"res/back.jpg");
-	mTextureHolder.load(BallTexture,"res/ball_sprites.png");
-	mTextureHolder.load(PaddleTexture,"res/paddle.png");
-	mTextureHolder.load(CubeTexture,"res/box.tsx");
-	mTextureHolder.load(ServiceTexture, "res/ball.tsx");
-	mTextureHolder.load(MenuBackGround, "res/menu_background.png");
-	mTextureHolder.load(TitleBackGround, "res/title_background.jpg");
+	mFontHolder.load(MainMenuFont, "../res/sansation.ttf");
+	mTextureHolder.load(BackGroundTexture,"../res/back.jpg");
+	mTextureHolder.load(BallTexture,"../res/ball_sprites.png");
+	mTextureHolder.load(PaddleTexture,"../res/paddle.png");
+	mTextureHolder.load(CubeTexture,"../res/box.tsx");
+	mTextureHolder.load(ServiceTexture, "../res/ball.tsx");
+	mTextureHolder.load(MenuBackGround, "../res/menu_background.png");
+	mTextureHolder.load(TitleBackGround, "../res/title_background.jpg");
 }
 
 

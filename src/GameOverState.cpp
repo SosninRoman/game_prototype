@@ -5,7 +5,8 @@ void centerOrigin_local1(sf::Text& txt);
 GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr param):
 	State(stack, context, move(param) )
 {
-	assert(mFont.loadFromFile("res/sansation.ttf"));
+	//assert(mFont.loadFromFile("res/sansation.ttf"));
+	mFont = getContext().fonts->get(MainMenuFont);
 	sf::Text playText;
 	playText.setFont(mFont);
 	playText.setString("RESTART");

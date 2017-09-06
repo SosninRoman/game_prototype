@@ -33,7 +33,7 @@ World::~World()
 
 void World::buildScene()
 {
-	mLevel.loadFromFile("res/pong_map.tmx", mTextures);
+	mLevel.loadFromFile("../res/pong_map.tmx", mTextures);
 	//
 	for(int i = 0; i < LayerCount; ++i)
 	{

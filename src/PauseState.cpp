@@ -5,7 +5,8 @@ void centerOrigin_local(sf::Text& txt);
 PauseState::PauseState(StateStack& stack, Context context, state_param_ptr param):
 	State(stack, context, std::move(param) )
 {
-	assert(mFont.loadFromFile("res/sansation.ttf"));
+	//assert(mFont.loadFromFile("res/sansation.ttf"));
+	mFont = getContext().fonts->get(MainMenuFont);
 	sf::Text playText;
 	playText.setFont(mFont);
 	playText.setString("RESUME");
