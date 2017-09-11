@@ -11,13 +11,14 @@ public:
 	~GameOverState();
 
 	void						draw();
+	
 	bool						update(sf::Time dt);
+	
 	bool						handleEvent(const sf::Event& event);
 	
-	void						handleParameter();
-
-	protected:
+protected:
 	void						setColorOfText();
+
 private:
 	sf::Font					mFont;
 	std::vector<sf::Text>		mOptions;

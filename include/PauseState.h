@@ -11,16 +11,20 @@ public:
 	~PauseState();
 
 	void						draw();
-	bool						update(sf::Time dt);
-	bool						handleEvent(const sf::Event& event);
 	
-	void						handleParameter(){}
+	bool						update(sf::Time dt);
+	
+	bool						handleEvent(const sf::Event& event);
 
 protected:
+	
 	void						setColorOfText();
+
 private:
 	sf::Font					mFont;
+	
 	std::vector<sf::Text>		mOptions;
+	
 	int							mActiveOption;
 };
 

@@ -101,23 +101,31 @@ public:
 		Ground,
 		LayerCount
 	};
+
 	World(sf::RenderWindow& window, TextureHolder& textures);
 	~World();
 	
 	void									draw();
+	
 	void									update(sf::Time dt);
-	//
+
 	void									handleEvent(const sf::Event& event);
+	
 	bool									theEnd(){return the_end;}
 
 	CommandQueue&							getCommandQueue() ;
+	
 	void									handleCollisions();
+	
 	sf::RenderWindow&						getWindow() const;
 
 	bool									matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2, b2Contact* contact = nullptr);
+	
 	void									setEndGame();
-	void									setWinner(RecieverType type){winner = type;}
-	RecieverType							getWinner(){return winner;}
+	
+	void									setWinner(RecieverType type){mWinner = type;}
+	
+	RecieverType							getWinner(){return mWinner;}
 private:
 	std::array<SceneNode::Ptr, LayerCount>	mSceneLayers;
 	sf::RenderWindow&						mWindow;
@@ -126,7 +134,7 @@ private:
 	void									buildScene();
 
 	bool									the_end;
-	RecieverType							winner;
+	RecieverType							mWinner;
 
 	CommandQueue							mCommandQueue;
 
@@ -136,8 +144,10 @@ private:
 
 	b2World									mPhysicWorld; 
 
-	b2Body*									createBoxBody(float pos_x, float pos_y, float height, float width, b2BodyType type, float dens = 0.f);
+	b2Body*									createBoxBody(float pos_x, float pos_y, float height, float width, b2BodyType type, float dens = 0.f, bool fixRotation = false);
+	
 	b2Body*									createCircleBody(float pos_x, float pos_y, float r, b2BodyType type, float dens = 0.f);
+	
 	myContactListener						mContactListener;
 
 	

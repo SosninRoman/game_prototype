@@ -10,9 +10,10 @@ public:
 	~GameState(){}
 
 	void			draw();
+	
 	bool			update(sf::Time dt);
+	
 	bool			handleEvent(const sf::Event& event);
-	void			handleParameter(){}
 private:
 	Player&			mPlayer;
 	World			mWorld;

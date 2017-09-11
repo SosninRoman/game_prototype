@@ -11,9 +11,10 @@ public:
 	~MainMenuState(){}
 
 	void						draw();
+	
 	bool						update(sf::Time dt);
+	
 	bool						handleEvent(const sf::Event& event);
-	void handleParameter(){}
 protected:
 	void						setColorOfText();
 private:

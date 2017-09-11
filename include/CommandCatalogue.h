@@ -23,6 +23,7 @@ public:
 	void operator() (SceneNode& node, sf::Time dt) const
 	{
 		float speed = dynamic_cast<MoveableNode&>(node).getSpeed();
+		
 		node.SetLinearVelocity(b2Vec2(v.x * pixel_to_metr(speed),v.y * pixel_to_metr(speed)));
 	}
 private:
@@ -39,9 +40,13 @@ public:
 		sf::FloatRect viewBounds(mView.getCenter() - mView.getSize() / 2.f, mView.getSize());
 
 		sf::Vector2f position = node.getPosition();
-		auto sz = node.getSize();
-		if ( (position.y - node.getSize().y / 2) < viewBounds.top) position.y = viewBounds.top + node.getSize().y / 2;
-		if ( (position.y + node.getSize().y / 2) > viewBounds.top + viewBounds.height) position.y = viewBounds.top + viewBounds.height - node.getSize().y / 2;
+
+		if ( (position.y - node.getSize().y / 2) < viewBounds.top) 
+			position.y = viewBounds.top + node.getSize().y / 2;
+		
+		if ( (position.y + node.getSize().y / 2) > viewBounds.top + viewBounds.height) 
+			position.y = viewBounds.top + viewBounds.height - node.getSize().y / 2;
+		
 		node.setPosition(position);
 	}
 private:
@@ -82,7 +87,11 @@ public:
 		if(node.getPosition().x - node.getSize().x / 2 < 0.f || node.getPosition().x + node.getSize().x / 2 > window.getSize().x )
 		{
 			world->setEndGame();
-			world->setWinner(node.getMaster());
+			
+			if(node.getPosition().x - node.getSize().x / 2 < 0.f)
+				world->setWinner(RecieverType::RightPaddle);
+			else
+				world->setWinner(RecieverType::LeftPaddle);
 		}
 	}
 private:
