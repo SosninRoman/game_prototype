@@ -14,7 +14,7 @@ GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr
 	
 	centerOrigin(playText);
 	
-	playText.setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 4.f * 2.f);
+	playText.setPosition(getContext().window->getResolution().x / 2.f, getContext().window->getResolution().y / 4.f * 2.f);
 
 	sf::Text exitText;
 	
@@ -24,7 +24,7 @@ GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr
 	
 	centerOrigin(exitText);
 	
-	exitText.setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 4.f * 3.f);
+	exitText.setPosition(getContext().window->getResolution().x / 2.f, getContext().window->getResolution().y / 4.f * 3.f);
 
 	sf::Text congratText;
 	
@@ -39,7 +39,7 @@ GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr
 	
 	centerOrigin(congratText);
 	
-	congratText.setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 4.f );
+	congratText.setPosition(getContext().window->getResolution().x / 2.f, getContext().window->getResolution().y / 4.f );
 	
 	congratText.setColor(sf::Color::Black);
 

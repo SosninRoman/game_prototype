@@ -19,7 +19,9 @@ protected:
 	void						setColorOfText();
 private:
 	sf::Font					mFont;
+	
 	std::vector<sf::Text>		mOptions;
+	
 	int							mActiveOption;
 };
 

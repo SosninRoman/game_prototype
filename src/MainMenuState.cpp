@@ -14,11 +14,8 @@ MainMenuState::MainMenuState(StateStack& stack, Context context, state_param_ptr
 	playText.setString("PLAY");
 	
 	centerOrigin(playText);
-	
-	//
-	auto wsz = getContext().window->getSize();
 
-	playText.setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 4.f);
+	playText.setPosition(getContext().window->getResolution().x / 2.f, getContext().window->getResolution().y / 4.f);
 
 	sf::Text exitText;
 	
@@ -28,7 +25,7 @@ MainMenuState::MainMenuState(StateStack& stack, Context context, state_param_ptr
 	
 	centerOrigin(exitText);
 	
-	exitText.setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 4.f * 3.f);
+	exitText.setPosition(getContext().window->getResolution().x / 2.f, getContext().window->getResolution().y / 4.f * 3.f);
 
 	mOptions.push_back(playText);
 	

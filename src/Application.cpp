@@ -8,19 +8,28 @@
 const sf::Time TPF = sf::seconds(1.f/60.f);
 
 Application::Application():
-	mWindow(sf::VideoMode(640, 480), "PingPong", sf::Style::Default),
+	//mWindow(sf::VideoMode(640, 480), "PingPong", sf::Style::Default),
+	mWindow(640, 480, "PingPong", sf::Style::Default),
 	mStateStack(Context(mWindow, mFontHolder, mPlayer, mTextureHolder))
 {
 	registerStates();
+	
 	mStateStack.pushState(ID::Title);
 
 	mFontHolder.load(MainMenuFont, "../res/sansation.ttf");
+	
 	mTextureHolder.load(BackGroundTexture,"../res/back.jpg");
+	
 	mTextureHolder.load(BallTexture,"../res/ball_sprites.png");
+	
 	mTextureHolder.load(PaddleTexture,"../res/paddle.png");
+	
 	mTextureHolder.load(CubeTexture,"../res/box.tsx");
+	
 	mTextureHolder.load(ServiceTexture, "../res/ball.tsx");
+	
 	mTextureHolder.load(MenuBackGround, "../res/menu_background.png");
+	
 	mTextureHolder.load(TitleBackGround, "../res/title_background.jpg");
 }
 
@@ -52,19 +61,28 @@ void Application::handleInput()
 void Application::run()
 {
 	sf::Clock clock;
+	
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	
 	while(mWindow.isOpen())
 	{
 		mWindow.setFramerateLimit(90);
+		
 		sf::Time dt = clock.restart();
+		
 		timeSinceLastUpdate += dt;
+		
 		while(timeSinceLastUpdate > TPF)
 		{
 			timeSinceLastUpdate -= TPF;
+			
 			handleInput();
+			
 			update(TPF);
+			
 			if(mStateStack.isEmpty()) mWindow.close();
 		}
+		
 		draw();
 	}
 }

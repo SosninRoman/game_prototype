@@ -3,12 +3,9 @@
 
 float pi = 3.14159f;
 
-b2Body* tstBody;
-
-World::World(sf::RenderWindow& window, TextureHolder& textures):
+World::World(GameWindow& window, TextureHolder& textures):
 	mWindow(window), 
-	mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getSize().x), 
-	static_cast<float>(mWindow.getSize().y)), 
+	mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getResolution().x), static_cast<float>(mWindow.getResolution().y)), 
 	the_end(false), 
 	mCommandQueue(), 
 	mTextures(textures),
@@ -73,7 +70,7 @@ void World::buildScene()
 
 	sf::Vector2u tmp_sz = (*gLPaddle).getSize();
 	
-	sf::Vector2f l_pos(static_cast<float>(tmp_sz.x) / 2, static_cast<float>(mWindow.getSize().y / 2));
+	sf::Vector2f l_pos(static_cast<float>(tmp_sz.x) / 2, static_cast<float>(mWindow.getResolution().y / 2));
 	
 	gLPaddle->setPosition(l_pos);
 
@@ -86,7 +83,7 @@ void World::buildScene()
 	//RIGHT PADDLE CREATING
 	std::unique_ptr<Paddle> gRPaddle(new Paddle(RecieverType::RightPaddle, mTextures));
 	
-	sf::Vector2f r_pos(static_cast<float>(mWindow.getSize().x - tmp_sz.x / 2), static_cast<float>(mWindow.getSize().y / 2)); 
+	sf::Vector2f r_pos(static_cast<float>(mWindow.getResolution().x - tmp_sz.x / 2), static_cast<float>(mWindow.getResolution().y / 2)); 
 	
 	gRPaddle->setPosition(r_pos);
 
@@ -178,7 +175,7 @@ void World::update(sf::Time dt)
 	//Запускаем команды реакций объектов на мир
 	Command LeftPaddleAdopter;
 	
-	LeftPaddleAdopter.action = derivedAction<Paddle>(PositionAdopter<Paddle>(mWindow.getView()));
+	LeftPaddleAdopter.action = derivedAction<Paddle>( PositionAdopter<Paddle>(mWindow.getView() ) );
 	
 	LeftPaddleAdopter.category = RecieverType::LeftPaddle;
 	
@@ -186,7 +183,7 @@ void World::update(sf::Time dt)
 	
 	Command RightPaddleAdopter;
 	
-	RightPaddleAdopter.action = derivedAction<Paddle>(PositionAdopter<Paddle>(mWindow.getView()));
+	RightPaddleAdopter.action = derivedAction<Paddle>( PositionAdopter<Paddle>(mWindow.getView() ) );
 	
 	RightPaddleAdopter.category = RecieverType::RightPaddle;
 	
@@ -194,7 +191,7 @@ void World::update(sf::Time dt)
 
 	Command CheckEnd;
 	
-	CheckEnd.action = derivedAction<Ball>(CheckEndOfGame<Ball, World>(this));
+	CheckEnd.action = derivedAction<Ball>( CheckEndOfGame<Ball, World>(this) );
 	
 	CheckEnd.category = RecieverType::Ball;
 	
@@ -288,7 +285,7 @@ b2Body* World::createCircleBody(float pos_x, float pos_y, float r, b2BodyType ty
 	return Body;
 }
 
-sf::RenderWindow& World::getWindow() const
+GameWindow& World::getWindow() const
 {
 	return mWindow;
 }

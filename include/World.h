@@ -11,6 +11,7 @@
 #include "CommandCatalogue.h"
 #include "ResourceHolder.h"
 #include "Level.h"
+#include "Window.h"
 #include <Box2D\Box2D.h>
 
 class World: public sf::NonCopyable
@@ -102,7 +103,7 @@ public:
 		LayerCount
 	};
 
-	World(sf::RenderWindow& window, TextureHolder& textures);
+	World(GameWindow& window, TextureHolder& textures);
 	~World();
 	
 	void									draw();
@@ -117,7 +118,7 @@ public:
 	
 	void									handleCollisions();
 	
-	sf::RenderWindow&						getWindow() const;
+	GameWindow&							getWindow() const;
 
 	bool									matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2, b2Contact* contact = nullptr);
 	
@@ -128,12 +129,16 @@ public:
 	RecieverType							getWinner(){return mWinner;}
 private:
 	std::array<SceneNode::Ptr, LayerCount>	mSceneLayers;
-	sf::RenderWindow&						mWindow;
+	
+	//sf::RenderWindow&						mWindow;
+	GameWindow&									mWindow;
+	
 	sf::FloatRect							mWorldBounds;
 
 	void									buildScene();
 
 	bool									the_end;
+	
 	RecieverType							mWinner;
 
 	CommandQueue							mCommandQueue;
@@ -149,7 +154,5 @@ private:
 	b2Body*									createCircleBody(float pos_x, float pos_y, float r, b2BodyType type, float dens = 0.f);
 	
 	myContactListener						mContactListener;
-
-	
 };
 
