@@ -1,20 +1,20 @@
 #pragma once
-#include "State.h"
+#include "SBTAbstractApplicationState.h"
 #include <vector>
 
-class PauseState: public State
+class PauseState: public SBTAbstractApplicationState
 {
 public:
 	enum OptionNames{BackToPlay, ExitToMenu};
 
-	PauseState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
-	~PauseState();
+	PauseState(SBTStateStack& stack, SBTContext context, state_param_ptr param = state_param_ptr(nullptr) );
+	~PauseState() = default;
 
-	void						draw();
+	void						draw() final;
 	
-	bool						update(sf::Time dt);
+	bool						update(sf::Time dt) final;
 	
-	bool						handleEvent(const sf::Event& event);
+	bool						handleEvent(const sf::Event& event) final;
 
 protected:
 	

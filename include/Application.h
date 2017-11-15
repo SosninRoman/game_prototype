@@ -1,34 +1,15 @@
 #pragma once
-#include <SFML\Graphics.hpp>
-#include "StateStack.h"
+#include "SBTStateStack.h"
 #include "ResourceHolder.h"
-#include "Player.h"
-#include "Window.h"
+#include "SBTAbstractCommandManager.h"
+#include "SBTGameWindow.h"
+#include "SBTAbstractApplication.h"
 
-class Application
+class Application: public SBTAbstractApplication
 {
 public:
 	Application();
-	
-	void                run();
-private:
+protected:
 	void				registerStates();
-	
-	void				update(sf::Time dt);
-	
-	void				draw();
-	
-	void				handleInput();
-	
-	GameWindow			mWindow;
-	
-	Player				mPlayer;
-	
-	StateStack			mStateStack;
-	
-	//resources
-	FontHolder			mFontHolder;	
-	
-	TextureHolder		mTextureHolder;
 };
 

@@ -7,24 +7,24 @@ namespace
 }
 
 Paddle::Paddle(RecieverType type , TextureHolder& textures): 
-	SceneNode(), AnimatedNode(textures), mRecieverType(type)
+	SBTAbstractSceneNode(), SBTAbstractAnimatedNode(textures), mRecieverType(type)
 {
 	mType = PaddleType::RightPaddle;
 }
 
 void Paddle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const 
 {
-	AnimatedNode::drawCurrent(target, states);
+	SBTAbstractAnimatedNode::drawCurrent(target, states);
 }
 
-RecieverType Paddle::getActionType() const
+int Paddle::getActionType() const
 {
 	return mRecieverType;
 }
 
-NodeType Paddle::getNodeType() const
+int Paddle::getNodeType() const
 {
-	return NodeType::Paddle;
+	return NodeType::PaddleNodeType;
 }
 
 float Paddle::getSpeed() const
@@ -34,19 +34,17 @@ float Paddle::getSpeed() const
 
 sf::FloatRect Paddle::getGlobalBounds() const
 {
-	return AnimatedNode::getGlobalBounds();
+	return SBTAbstractAnimatedNode::getGlobalBounds();
 }
 
 void Paddle::updateCurrent(sf::Time dt)
 {
-	SceneNode::updateCurrent(dt);
-	//MoveableNode::updateCurrent(dt);
-	//MoveableNode::setVelocity(0,0);
-	AnimatedNode::updateCurrent(dt);
+	SBTAbstractSceneNode::updateCurrent(dt);
+	SBTAbstractAnimatedNode::updateCurrent(dt);
 }
 
 void Paddle::centerOrigin()
 {
-	AnimatedNode::centerOrigin();
+	SBTAbstractAnimatedNode::centerOrigin();
 	int a = 1;
 }

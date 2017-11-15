@@ -1,13 +1,13 @@
 #pragma once
-#include "State.h"
+#include "SBTAbstractApplicationState.h"
 #include <vector>
 
-class MainMenuState: public State
+class MainMenuState: public SBTAbstractApplicationState
 {
 public:
 	enum OptionNames{Play, Exit};
 
-	MainMenuState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
+	MainMenuState(SBTStateStack& stack, SBTContext context, state_param_ptr param = state_param_ptr(nullptr) );
 	~MainMenuState(){}
 
 	void						draw();

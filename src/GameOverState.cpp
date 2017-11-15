@@ -1,8 +1,11 @@
 #include "GameOverState.h"
-#include "Utility.h"
+#include "SBTUtility.h"
+#include "GameOverStateParam.h"
+#include "StateIDEnum.h"
+#include "ResourcesIDEnum.h"
 
-GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr param):
-	State(stack, context, move(param) )
+GameOverState::GameOverState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
+		SBTAbstractApplicationState(stack, context, move(param) )
 {
 	mFont = getContext().fonts->get(MainMenuFont);
 	
@@ -32,7 +35,7 @@ GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr
 	
 	GameOverParam* param_of_the_state = dynamic_cast<GameOverParam*>(mStateParam.get());
 	
-	if (param_of_the_state->mWinnerType == RecieverType::LeftPaddle)
+	if (param_of_the_state->mWinnerType == RecieverType::LeftPaddleRecieverType)
 		congratText.setString("LEFT PLAYER WIN!");
 	else
 		congratText.setString("RIGHT PLAYER WIN!");
@@ -41,7 +44,7 @@ GameOverState::GameOverState(StateStack& stack, Context context, state_param_ptr
 	
 	congratText.setPosition(getContext().window->getResolution().x / 2.f, getContext().window->getResolution().y / 4.f );
 	
-	congratText.setColor(sf::Color::Black);
+	congratText.setFillColor(sf::Color::Black);
 
 	mOptions.push_back(playText);
 	
@@ -62,9 +65,9 @@ void GameOverState::setColorOfText()
 {
 	for(std::vector<sf::Text>::iterator itr = mOptions.begin(); itr != mOptions.end(); ++itr)
 	{
-		itr->setColor(sf::Color::Black);
+		itr->setFillColor(sf::Color::Black);
 	}
-	mOptions[mActiveOption].setColor(sf::Color::Red);
+	mOptions[mActiveOption].setFillColor(sf::Color::Red);
 }
 
 bool GameOverState::update(sf::Time dt)
@@ -102,12 +105,12 @@ bool GameOverState::handleEvent(const sf::Event& event)
 			if( mActiveOption == Restart)
 			{
 				requestStateCLear();
-				requestStackPush(ID::Game);
+				requestStackPush(StateID::Game);
 			}
 			if(mActiveOption == ExitToMenu)
 			{
 				requestStateCLear();
-				requestStackPush(ID::MainMenu);
+				requestStackPush(StateID::MainMenu);
 			}
 		}
 	}

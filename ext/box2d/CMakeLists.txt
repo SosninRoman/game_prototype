@@ -13,4 +13,4 @@ file(GLOB_RECURSE SOURCES
 
 include_directories("./")
 
-add_library(${PROJECT} STATIC ${HEADERS} ${SOURCES})
+add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES})

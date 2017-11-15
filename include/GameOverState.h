@@ -1,13 +1,13 @@
 #pragma once
-#include "State.h"
+#include "SBTAbstractApplicationState.h"
 
 
-class GameOverState: public State
+class GameOverState: public SBTAbstractApplicationState
 {
 public:
 	enum OptionNames{Restart, ExitToMenu};
 
-	GameOverState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
+	GameOverState(SBTStateStack& stack, SBTContext context, state_param_ptr param = state_param_ptr(nullptr) );
 	~GameOverState();
 
 	void						draw();

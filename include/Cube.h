@@ -1,16 +1,15 @@
 #pragma once
-#include "Animator.h"
-#include "AnimatedNode.h"
-#include "SpriteNode.h"
+#include "SBTAbstractSpriteNode.h"
+#include "LayerNode.h"
 
-class Cube: public SpriteNode
+class Cube: public SBTAbstractSpriteNode
 {
 public:
 	Cube(sf::Sprite& textures);
 
-	virtual RecieverType getActionType() const;
+	virtual int getActionType() const;
 	
-	virtual NodeType getNodeType() const;
+	virtual int getNodeType() const;
 
 	virtual sf::FloatRect getGlobalBounds() const;
 	

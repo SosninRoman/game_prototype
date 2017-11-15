@@ -4,94 +4,40 @@
 #include "MainMenuState.h"
 #include "PauseState.h"
 #include "GameOverState.h"
+#include "StateIDEnum.h"
+#include "ResourcesIDEnum.h"
 
-const sf::Time TPF = sf::seconds(1.f/60.f);
+//const sf::Time TPF = sf::seconds(1.f/60.f);
 
 Application::Application():
-	//mWindow(sf::VideoMode(640, 480), "PingPong", sf::Style::Default),
-	mWindow(640, 480, "PingPong", sf::Style::Default),
-	mStateStack(Context(mWindow, mFontHolder, mPlayer, mTextureHolder))
+    SBTAbstractApplication(new SBTGameWindow(640, 480, "PingPong", sf::Style::Default), new Player, new FontHolder, new TextureHolder)
 {
 	registerStates();
-	
-	mStateStack.pushState(ID::Title);
 
-	mFontHolder.load(MainMenuFont, "../res/sansation.ttf");
-	
-	mTextureHolder.load(BackGroundTexture,"../res/back.jpg");
-	
-	mTextureHolder.load(BallTexture,"../res/ball_sprites.png");
-	
-	mTextureHolder.load(PaddleTexture,"../res/paddle.png");
-	
-	mTextureHolder.load(CubeTexture,"../res/box.tsx");
-	
-	mTextureHolder.load(ServiceTexture, "../res/ball.tsx");
-	
-	mTextureHolder.load(MenuBackGround, "../res/menu_background.png");
-	
-	mTextureHolder.load(TitleBackGround, "../res/title_background.jpg");
-}
+    loadFont(MainMenuFont, "../res/sansation.ttf");
 
+    loadTexture(BackGroundTexture,"../res/back.jpg");
 
-void Application::update(sf::Time dt)
-{
-	mStateStack.update(dt);
-}
+    loadTexture(BallTexture,"../res/ball_sprites.png");
 
-void Application::draw()
-{
-	mWindow.clear(sf::Color::White);
-	mStateStack.draw();
-	mWindow.display();
-}
+    loadTexture(PaddleTexture,"../res/paddle.png");
 
-void Application::handleInput()
-{
-	sf::Event event;
-	while(mWindow.pollEvent(event))
-	{
-		mStateStack.handleEvent(event);
+    loadTexture(CubeTexture,"../res/box.tsx");
 
-		if(event.type == sf::Event::Closed)
-			mWindow.close();
-	}
-}
+    loadTexture(ServiceTexture, "../res/ball.tsx");
 
-void Application::run()
-{
-	sf::Clock clock;
-	
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	
-	while(mWindow.isOpen())
-	{
-		mWindow.setFramerateLimit(90);
-		
-		sf::Time dt = clock.restart();
-		
-		timeSinceLastUpdate += dt;
-		
-		while(timeSinceLastUpdate > TPF)
-		{
-			timeSinceLastUpdate -= TPF;
-			
-			handleInput();
-			
-			update(TPF);
-			
-			if(mStateStack.isEmpty()) mWindow.close();
-		}
-		
-		draw();
-	}
+    loadTexture(MenuBackGround, "../res/menu_background.png");
+
+    loadTexture(TitleBackGround, "../res/title_background.jpg");
+
+    pushState(StateID::Title);
 }
 
 void Application::registerStates()
 {
-	mStateStack.registerState<TitleState>(ID::Title);
-	mStateStack.registerState<GameState>(ID::Game);
-	mStateStack.registerState<MainMenuState>(ID::MainMenu);
-	mStateStack.registerState<PauseState>(ID::Pause);
-	mStateStack.registerState<GameOverState>(ID::GameOver);
+    registerState<TitleState>(StateID::Title);
+    registerState<GameState>(StateID::Game);
+    registerState<MainMenuState>(StateID::MainMenu);
+    registerState<PauseState>(StateID::Pause);
+    registerState<GameOverState>(StateID::GameOver);
 }

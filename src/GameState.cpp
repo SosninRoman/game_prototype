@@ -1,10 +1,12 @@
 #include "GameState.h"
 #include <random>
+#include "StateIDEnum.h"
+#include "GameOverStateParam.h"
 
-GameState::GameState(StateStack& stack, Context context, state_param_ptr param):
-	State(stack, context, move(param) ),  
+GameState::GameState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
+		SBTAbstractApplicationState(stack, context, move(param) ),
 	mWorld(*context.window, *context.textures), 
-	mPlayer(*context.player)
+	mPlayer(dynamic_cast<Player*>(context.player) )
 {
 }
 
@@ -17,15 +19,13 @@ bool GameState::update(sf::Time dt)
 {
 	mWorld.update(dt);
 	
-	CommandQueue& queue = mWorld.getCommandQueue();
+	SBTCommandQueue& queue = mWorld.getCommandQueue();
 	
-	mPlayer.handleRealtimeInput(queue);
+	mPlayer->handleRealtimeInput(queue);
 	
 	if (mWorld.theEnd())
 	{
-		requestStackPush(ID::GameOver,state_param_ptr(new GameOverParam(mWorld.getWinner() ) ) );
-		//requestStateCLear();
-		//requestStackPush(ID::Title);
+		requestStackPush(StateID::GameOver,state_param_ptr(new GameOverParam(mWorld.getWinner() ) ) );
 	}
 	return true;
 }
@@ -45,14 +45,14 @@ bool GameState::handleEvent(const sf::Event& event)
 			case sf::Event::EventType::KeyPressed:
 				{
 					if(event.key.code == sf::Keyboard::Escape)
-						requestStackPush(ID::Pause);
-					CommandQueue& queue = mWorld.getCommandQueue();
-					mPlayer.handleEvent(event, queue);
+						requestStackPush(StateID::Pause);
+					SBTCommandQueue& queue = mWorld.getCommandQueue();
+					mPlayer->handleEvent(event, queue);
 				}
 			case sf::Event::KeyReleased:
 				{
-					CommandQueue& queue = mWorld.getCommandQueue();
-					mPlayer.handleEvent(event, queue);
+					SBTCommandQueue& queue = mWorld.getCommandQueue();
+					mPlayer->handleEvent(event, queue);
 				}
 			}
 	return true;

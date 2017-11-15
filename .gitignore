@@ -13,4 +13,6 @@
 /build/*
 /bin/*
 /PingPong/PingPong/Debug/*
+/.idea/*
+/cmake-build-debug/*
 

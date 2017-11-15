@@ -1,15 +1,16 @@
 #include "TitleState.h"
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <assert.h>
+#include "StateIDEnum.h"
+#include "ResourcesIDEnum.h"
 
-TitleState::TitleState(StateStack& stack, Context context, state_param_ptr param):
-	State(stack, context, std::move(param) ), 
+TitleState::TitleState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
+		SBTAbstractApplicationState(stack, context, std::move(param) ),
 	mTextEffectTime(sf::Time::Zero), 
 	mShow(true)
 {
 	mText.setFont(getContext().fonts->get(MainMenuFont));
 	
-	mText.setColor(sf::Color::Black);
+	mText.setFillColor(sf::Color::Black);
 	
 	mText.setCharacterSize(20);
 	
@@ -56,7 +57,7 @@ bool TitleState::handleEvent(const sf::Event& event)
 	{
 		requestStackPop();
 		
-		requestStackPush(ID::MainMenu);
+		requestStackPush(StateID::MainMenu);
 	}
 	
 	return true;

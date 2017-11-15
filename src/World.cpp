@@ -1,41 +1,33 @@
 #include "World.h"
 #include <iostream>
+#include "CommandCatalogue.h"
+#include "ResourcesIDEnum.h"
 
 float pi = 3.14159f;
 
-World::World(GameWindow& window, TextureHolder& textures):
-	mWindow(window), 
-	mWorldBounds(0.f, 0.f, static_cast<float>(mWindow.getResolution().x), static_cast<float>(mWindow.getResolution().y)), 
-	the_end(false), 
-	mCommandQueue(), 
-	mTextures(textures),
-	mPhysicWorld(b2Vec2(0,00)),
-	mContactListener(this)
+World::World(SBTGameWindow& window, TextureHolder& textures):
+    SBTAbstractWorld(static_cast<int>(LayerCount), window,textures, sf::FloatRect(0.f, 0.f, static_cast<float>(window.getResolution().x), static_cast<float>(window.getResolution().y)),
+    new myContactListener(this), b2Vec2(0,00), new SBTCommandQueue() )
 {
-	mPhysicWorld.SetContactListener(&mContactListener);
-	
 	buildScene();
-}
-
-World::~World()
-{
 }
 
 void World::buildScene()
 {
-	mLevel.loadFromFile("../res/pong_map.tmx", mTextures);
+    loadLevel("../res/pong_map.tmx");
 	//
-	for(int i = 0; i < LayerCount; ++i)
+	for(size_t i = 0; i < layerCount(); ++i)
 	{
-		SceneNode::Ptr layer(new SceneNode());
-		mSceneLayers[i] = std::move(layer);
+		//SceneNode::Ptr layer(new SceneNode());
+        SBTAbstractSceneNode::Ptr layer(new LayerNode() );
+        getSceneLayer(i) = std::move(layer);
 	}
-	sf::View gameView = mWindow.getView();	
+    sf::View gameView = getWindow().getView();
 	
 	//BALL CREATING
 	sf::Vector2f ball_center(gameView.getCenter().x, gameView.getCenter().y);
-	
-	std::unique_ptr<Ball> gBall( new Ball(mTextures, ball_center) );
+
+    std::unique_ptr<Ball> gBall( new Ball(getTextures(), ball_center) );
 
 	gBall->createAnimation("ball_animation", BallTexture, sf::seconds(2), false);
 	
@@ -49,10 +41,10 @@ void World::buildScene()
 
 	gBall->setBody(Body);
 
-	mSceneLayers[Ground]->attachChild(std::move(gBall));
+    getSceneLayer(Ground)->attachChild(std::move(gBall));
 	
 	//LEFT PADDLE CREATING
-	std::unique_ptr<Paddle> gLPaddle(new Paddle(RecieverType::LeftPaddle, mTextures));
+    std::unique_ptr<Paddle> gLPaddle(new Paddle(RecieverType::LeftPaddleRecieverType, getTextures() ) );
 
 	gLPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
 	
@@ -69,8 +61,8 @@ void World::buildScene()
 	gLPaddle->centerOrigin();
 
 	sf::Vector2u tmp_sz = (*gLPaddle).getSize();
-	
-	sf::Vector2f l_pos(static_cast<float>(tmp_sz.x) / 2, static_cast<float>(mWindow.getResolution().y / 2));
+
+    sf::Vector2f l_pos(static_cast<float>(tmp_sz.x) / 2, static_cast<float>(getWindow().getResolution().y / 2));
 	
 	gLPaddle->setPosition(l_pos);
 
@@ -78,12 +70,12 @@ void World::buildScene()
 	
 	gLPaddle->setBody(createBoxBody(l_pos.x, l_pos.y, gLbounds.width, gLbounds.height, b2_dynamicBody, 10000, true) );
 
-	mSceneLayers[Ground]->attachChild(std::move(gLPaddle));
+	getSceneLayer(Ground)->attachChild(std::move(gLPaddle));
 	
 	//RIGHT PADDLE CREATING
-	std::unique_ptr<Paddle> gRPaddle(new Paddle(RecieverType::RightPaddle, mTextures));
-	
-	sf::Vector2f r_pos(static_cast<float>(mWindow.getResolution().x - tmp_sz.x / 2), static_cast<float>(mWindow.getResolution().y / 2)); 
+    std::unique_ptr<Paddle> gRPaddle(new Paddle(RecieverType::RightPaddleRecieverType, getTextures() ) );
+
+    sf::Vector2f r_pos(static_cast<float>(getWindow().getResolution().x - tmp_sz.x / 2), static_cast<float>(getWindow().getResolution().y / 2));
 	
 	gRPaddle->setPosition(r_pos);
 
@@ -103,10 +95,10 @@ void World::buildScene()
 	
 	gRPaddle->setBody(createBoxBody(r_pos.x, r_pos.y, gRbounds.width, gRbounds.height, b2_dynamicBody, 10000, true) );
 
-	mSceneLayers[Ground]->attachChild(std::move(gRPaddle));
+	getSceneLayer(Ground)->attachChild(std::move(gRPaddle));
 	
 	//FILLING SCENE BY OBJECTS FROM THE MAP
-	vector<LevelObject>& objects = mLevel.getAllObjects();
+    vector<LevelObject>& objects = getLevel().getAllObjects();
 	
 	for( auto& obj : objects)
 	{
@@ -124,7 +116,7 @@ void World::buildScene()
 			map_Cube->setBody(createBoxBody(map_Cube->getPosition().x, map_Cube->getPosition().y, 
 				obj.sprite.getTextureRect().height, obj.sprite.getTextureRect().width, b2_staticBody));
 
-			mSceneLayers[Ground]->attachChild(std::move(map_Cube));
+			getSceneLayer(Ground)->attachChild(std::move(map_Cube));
 		}
 		if(obj.type == "Wall")
 		{
@@ -136,161 +128,44 @@ void World::buildScene()
 
 			map_Wall->setBody(createBoxBody(obj.rect.left + obj.rect.width / 2, obj.rect.top + obj.rect.height / 2,  obj.rect.width, obj.rect.height, b2_staticBody) );
 
-			mSceneLayers[Ground]->attachChild(std::move(map_Wall));
+			getSceneLayer(Ground)->attachChild(std::move(map_Wall));
 		}
 	}
 }
 
-void World::draw()
+void World::postfix()
 {
-	mLevel.draw(mWindow);
-
-	for(int i = 0; i < LayerCount; ++i)
-	{
-		mWindow.draw(*mSceneLayers[i]);
-	}	
-}
-
-void World::update(sf::Time dt)
-{
-	//Обновляем физику
-	mPhysicWorld.Step(1/60.f, 8, 3);
-	
-	//Выполняем все команды из стека команд//
-	while(!mCommandQueue.isEmpty())
-	{
-		for(int i = 0; i < LayerCount; ++i)
-		{
-			mSceneLayers[i]->onCommand(mCommandQueue.Top(), dt);
-		}
-		mCommandQueue.Pop();
-	}
-	
-	//Обновляем все слои//
-	for(int i = 0; i < LayerCount; ++i)
-	{
-		mSceneLayers[i]->update(dt);
-	}
-	
-	//Запускаем команды реакций объектов на мир
-	Command LeftPaddleAdopter;
-	
-	LeftPaddleAdopter.action = derivedAction<Paddle>( PositionAdopter<Paddle>(mWindow.getView() ) );
-	
-	LeftPaddleAdopter.category = RecieverType::LeftPaddle;
-	
-	mCommandQueue.Push(LeftPaddleAdopter);
-	
-	Command RightPaddleAdopter;
-	
-	RightPaddleAdopter.action = derivedAction<Paddle>( PositionAdopter<Paddle>(mWindow.getView() ) );
-	
-	RightPaddleAdopter.category = RecieverType::RightPaddle;
-	
-	mCommandQueue.Push(RightPaddleAdopter);
-
-	Command CheckEnd;
-	
-	CheckEnd.action = derivedAction<Ball>( CheckEndOfGame<Ball, World>(this) );
-	
-	CheckEnd.category = RecieverType::Ball;
-	
-	mCommandQueue.Push(CheckEnd);
-	
-	//Очистка помеченых на удаление объектов	
-	mSceneLayers[Ground]->removeWrecks();
-}
-
-CommandQueue& World::getCommandQueue() 
-{
-	return mCommandQueue;
-}
-
-bool World::matchesCategories(SceneNode::Pair& colliders, NodeType type1, NodeType type2, b2Contact* contact)
-{
-	auto category1 = colliders.first->getNodeType();
-	
-	auto category2 = colliders.second->getNodeType();
-
-	if(static_cast<unsigned int>(type1) & static_cast<unsigned int>(category1) && 
-		static_cast<unsigned int>(type2) & static_cast<unsigned int>(category2)) return true;
-	else if (static_cast<unsigned int>(type1) & static_cast<unsigned int>(category2) && 
-		static_cast<unsigned int>(type2) & static_cast<unsigned int>(category1)) 
-		{
-			std::swap(colliders.first, colliders.second);
-			return true;
-		}
-	return false;
-}
-
-b2Body* World::createBoxBody(float pos_x, float pos_y, float height, float width, b2BodyType type, float dens, bool fixRotation)
-{
-	b2BodyDef BodyDef;
-	
-	BodyDef.position = b2Vec2(pixel_to_metr(pos_x), pixel_to_metr(pos_y));
-	
-	BodyDef.type = type;
-
-	BodyDef.fixedRotation = fixRotation;
-
-	b2Body* Body = mPhysicWorld.CreateBody(&BodyDef);
-
-	b2PolygonShape Shape;
-	
-	Shape.SetAsBox(pixel_to_metr(height / 2), pixel_to_metr(width / 2) );
-
-	b2FixtureDef fixDef;
-	
-	fixDef.density = dens;
-	
-	fixDef.shape = &Shape;
-	
-	fixDef.restitution = 1;
-	
-	Body->SetLinearDamping(0);
-
-	Body->CreateFixture(&fixDef);
-	
-	return Body;
-}
-
-b2Body* World::createCircleBody(float pos_x, float pos_y, float r, b2BodyType type, float dens)
-{
-	b2BodyDef BodyDef;
-	
-	BodyDef.position = b2Vec2(pixel_to_metr<double>(pos_x), pixel_to_metr<double>(pos_y));
-	
-	BodyDef.type = type;
-
-	b2Body* Body = mPhysicWorld.CreateBody(&BodyDef);
-
-	b2CircleShape Shape;
-	
-	Shape.m_radius = pixel_to_metr<double>(r);
-
-	b2FixtureDef fixDef;
-	
-	fixDef.density = dens;
-	
-	fixDef.shape = &Shape;
-	
-	fixDef.restitution = 1;
-	
-	fixDef.friction = 0.7;
-	
-	Body->SetLinearDamping(0);
-
-	Body->CreateFixture(&fixDef);
-	
-	return Body;
-}
-
-GameWindow& World::getWindow() const
-{
-	return mWindow;
+    getSceneLayer(Ground)->removeWrecks();
 }
 
 void World::setEndGame()
 {
 	the_end = true;
+}
+
+void World::produceAndPushCommands()
+{
+    SBTCommand LeftPaddleAdopter;
+
+    LeftPaddleAdopter.action = derivedAction<Paddle>( PositionAdopter<Paddle>(getWindow().getView() ) );
+
+    LeftPaddleAdopter.category = RecieverType::LeftPaddleRecieverType;
+
+    getCommandQueue().Push(LeftPaddleAdopter);
+
+    SBTCommand RightPaddleAdopter;
+
+    RightPaddleAdopter.action = derivedAction<Paddle>( PositionAdopter<Paddle>(getWindow().getView() ) );
+
+    RightPaddleAdopter.category = RecieverType::RightPaddleRecieverType;
+
+    getCommandQueue().Push(RightPaddleAdopter);
+
+    SBTCommand CheckEnd;
+
+    CheckEnd.action = derivedAction<Ball>( CheckEndOfGame<Ball, World>(this) );
+
+    CheckEnd.category = RecieverType::BallRecieverType;
+
+    getCommandQueue().Push(CheckEnd);
 }

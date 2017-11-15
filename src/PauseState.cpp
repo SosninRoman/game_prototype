@@ -1,8 +1,10 @@
 #include "PauseState.h"
-#include "Utility.h"
+#include "SBTUtility.h"
+#include "StateIDEnum.h"
+#include "ResourcesIDEnum.h"
 
-PauseState::PauseState(StateStack& stack, Context context, state_param_ptr param):
-	State(stack, context, std::move(param) )
+PauseState::PauseState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
+	SBTAbstractApplicationState(stack, context, std::move(param) )
 {
 	mFont = getContext().fonts->get(MainMenuFont);
 	
@@ -35,18 +37,14 @@ PauseState::PauseState(StateStack& stack, Context context, state_param_ptr param
 	setColorOfText();
 }
 
-PauseState::~PauseState()
-{
-}
-
 void PauseState::setColorOfText()
 {
 	for(std::vector<sf::Text>::iterator itr = mOptions.begin(); itr != mOptions.end(); ++itr)
 	{
-		itr->setColor(sf::Color::Black);
+		itr->setFillColor(sf::Color::Black);
 	}
 	
-	mOptions[mActiveOption].setColor(sf::Color::Red);
+	mOptions[mActiveOption].setFillColor(sf::Color::Red);
 }
 
 bool PauseState::update(sf::Time dt)
@@ -58,7 +56,7 @@ void PauseState::draw()
 {
 	sf::RenderWindow& window = *getContext().window;
 	
-	for(auto text:mOptions)
+	for(const auto& text : mOptions)
 		window.draw(text);
 }
 
@@ -89,7 +87,7 @@ bool PauseState::handleEvent(const sf::Event& event)
 			{
 				requestStateCLear();
 				
-				requestStackPush(ID::MainMenu);
+				requestStackPush(StateID::MainMenu);
 			}
 		}
 	}

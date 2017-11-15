@@ -1,14 +1,13 @@
 #pragma once
-#include <map>
-#include "CommandQueue.h"
-#include <SFML\Graphics.hpp>
+#include "SBTCommandQueue.h"
 #include "Paddle.h"
 #include "CommandCatalogue.h"
+#include "SBTAbstractCommandManager.h"
 
-class Player
+class Player: public SBTAbstractCommandManager
 {
 public:
-	enum class ActionType
+	enum ActionType
 	{
 		LeftPaddleUp,
 		LeftPaddleDown,
@@ -20,13 +19,10 @@ public:
 
 	Player();
 public:
-	void handleEvent(const sf::Event& event, CommandQueue& commands);
-	void handleRealtimeInput(CommandQueue& commands);
+	void handleEvent(const sf::Event& event, SBTCommandQueue& commands);
 
-	bool isRealtimeAction(ActionType type) const;
+	bool isRealtimeAction(int type) const;
+
 	void InitializeCommands();
-private:
-	std::map<ActionType,Command>           mActions;
-	std::map<sf::Keyboard::Key,ActionType> mKeyBinding;
 };
 

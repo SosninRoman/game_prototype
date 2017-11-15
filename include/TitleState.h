@@ -1,10 +1,10 @@
 #pragma once
-#include "StateStack.h"
+#include "SBTStateStack.h"
 
-class TitleState: public State
+class TitleState: public SBTAbstractApplicationState
 {
 public:
-	TitleState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
+	TitleState(SBTStateStack& stack, SBTContext context, state_param_ptr param = state_param_ptr(nullptr) );
 	~TitleState(){}
 
 	void draw();

@@ -1,40 +1,40 @@
 #include "Cube.h"
+#include "RecieverTypeEnum.h"
 
 Cube::Cube(sf::Sprite& textures):
-	SceneNode(), SpriteNode(textures),  mRemove(false)
+	SBTAbstractSceneNode(), SBTAbstractSpriteNode(textures),  mRemove(false)
 {
 	
 }
 
-RecieverType Cube::getActionType() const
+int Cube::getActionType() const
 {
-	return RecieverType::Cube;
+	return RecieverType::CubeRecieverType;
 }
 
-NodeType Cube::getNodeType() const
+int Cube::getNodeType() const
 {
-	return NodeType::Cube;
+	return NodeType::CubeNodeType;
 }
 
 sf::FloatRect Cube::getGlobalBounds() const
 {
-	return SpriteNode::getGlobalBounds();
+	return SBTAbstractSpriteNode::getGlobalBounds();
 }
 
 void Cube::centerOrigin()
 {
-	SpriteNode::centerOrigin();
+	SBTAbstractSpriteNode::centerOrigin();
 }
 
 void Cube::updateCurrent(sf::Time dt)
 {
-	//SpriteNode::updateCurrent(dt);
-	SceneNode::updateCurrent(dt);
+	SBTAbstractSceneNode::updateCurrent(dt);
 }
 
 void Cube::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	SpriteNode::drawCurrent(target, states);
+	SBTAbstractSpriteNode::drawCurrent(target, states);
 }
 
 void Cube::kill()

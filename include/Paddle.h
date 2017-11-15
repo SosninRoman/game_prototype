@@ -1,8 +1,9 @@
 #pragma once
-#include "Animator.h"
-#include "AnimatedNode.h"
+#include "SBTABstractAnimatedNode.h"
+#include "LayerNode.h"
+#include "RecieverTypeEnum.h"
 
-class Paddle: public AnimatedNode
+class Paddle: public SBTAbstractAnimatedNode
 {
 public:
 	enum class PaddleType
@@ -14,18 +15,18 @@ public:
 
 	Paddle(RecieverType type , TextureHolder& textures);
 	
-	sf::FloatRect			getGlobalBounds() const;
+	sf::FloatRect			getGlobalBounds() const override;
 	
 	float					getSpeed() const;
 		
-	NodeType				getNodeType() const;
-	RecieverType			getActionType() const;
+	int				getNodeType() const override;
+	int			getActionType() const override;
 
-	virtual void			centerOrigin();
+	void			centerOrigin() override;
 
 private:
-	void					updateCurrent(sf::Time dt);
-	void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void					updateCurrent(sf::Time dt) override;
+	void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	RecieverType			mRecieverType;
 	PaddleType				mType;

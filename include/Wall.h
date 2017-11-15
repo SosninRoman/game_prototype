@@ -1,12 +1,13 @@
 #pragma once
-#include "SpriteNode.h"
+#include "SBTAbstractSpriteNode.h"
+#include "LayerNode.h"
 
-class Wall:public SpriteNode
+class Wall:public SBTAbstractSpriteNode
 {
 public:
 	Wall();
 	~Wall();
-	virtual RecieverType getActionType() const;
-	virtual NodeType getNodeType() const;
+	virtual int getActionType() const;
+	virtual int getNodeType() const;
 };
 

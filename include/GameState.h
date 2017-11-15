@@ -1,12 +1,12 @@
 #pragma once
-#include "State.h"
+#include "SBTAbstractApplicationState.h"
 #include "World.h"
 #include "Player.h"
 
-class GameState: public State
+class GameState: public SBTAbstractApplicationState
 {
 public:
-	GameState(StateStack& stack, Context context, state_param_ptr param = state_param_ptr(nullptr) );
+	GameState(SBTStateStack& stack, SBTContext context, state_param_ptr param = state_param_ptr(nullptr) );
 	~GameState(){}
 
 	void			draw();
@@ -15,7 +15,7 @@ public:
 	
 	bool			handleEvent(const sf::Event& event);
 private:
-	Player&			mPlayer;
+	Player*			mPlayer;
 	World			mWorld;
 };
 

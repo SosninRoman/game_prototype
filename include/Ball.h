@@ -1,10 +1,9 @@
 #pragma once
-#include "Animator.h"
-#include "ResourceHolder.h"
-#include "AnimatedNode.h"
+#include "SBTAbstractAnimatedNode.h"
+#include "LayerNode.h"
 
 class Ball :
-	public AnimatedNode
+	public SBTAbstractAnimatedNode
 {
 public:
 	Ball(TextureHolder& textures, sf::Vector2f center);
@@ -13,18 +12,18 @@ public:
 	//
 	sf::FloatRect			getGlobalBounds() const;
 	
-	NodeType				getNodeType() const;
+	int				getNodeType() const;
 	
-	RecieverType			getActionType() const;
+	int			getActionType() const;
 
 	virtual void			centerOrigin();
 	
-	void					setMaster(RecieverType type);
+	void					setMaster(int type);
 	
-	RecieverType			getMaster(){return master;}
+	int			getMaster(){return master;}
 protected:
 	void					updateCurrent(sf::Time dt);
 private:
-	RecieverType			master;
+	int			master;
 };
 

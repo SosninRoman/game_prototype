@@ -1,9 +1,10 @@
 #include "MainMenuState.h"
-#include <assert.h>
-#include "Utility.h"
+#include "SBTUtility.h"
+#include "StateIDEnum.h"
+#include "ResourcesIDEnum.h"
 
-MainMenuState::MainMenuState(StateStack& stack, Context context, state_param_ptr param):
-	State(stack, context, move(param) )
+MainMenuState::MainMenuState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
+		SBTAbstractApplicationState(stack, context, move(param) )
 {
 	mFont = getContext().fonts->get(MainMenuFont);
 	
@@ -50,7 +51,7 @@ void MainMenuState::draw()
 
 	renderBackGround(window);
 
-	for(auto text:mOptions)
+	for(const auto& text:mOptions)
 		window.draw(text);
 }
 
@@ -76,7 +77,7 @@ bool MainMenuState::handleEvent(const sf::Event& event)
 			{
 				requestStackPop();
 				
-				requestStackPush(ID::Game);
+				requestStackPush(StateID::Game);
 			}
 			if(mActiveOption == Exit)
 			{
@@ -90,7 +91,7 @@ bool MainMenuState::handleEvent(const sf::Event& event)
 void MainMenuState::setColorOfText()
 {
 	for(std::vector<sf::Text>::iterator itr = mOptions.begin(); itr != mOptions.end(); ++itr)
-		itr->setColor(sf::Color::White);
+		itr->setFillColor(sf::Color::White);
 	
-	mOptions[mActiveOption].setColor(sf::Color::Red);
+	mOptions[mActiveOption].setFillColor(sf::Color::Red);
 }

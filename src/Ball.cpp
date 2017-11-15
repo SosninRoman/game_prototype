@@ -1,44 +1,44 @@
 #include "Ball.h"
+#include "RecieverTypeEnum.h"
 
 Ball::Ball(TextureHolder& textures, sf::Vector2f center):
-	SceneNode(),AnimatedNode(textures), master(RecieverType::None)
+	SBTAbstractSceneNode(),SBTAbstractAnimatedNode(textures), master(RecieverType::NoneRecieverType)
 {
 	setPosition(center);
 }
 
 void Ball::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const 
-{	
-	AnimatedNode::drawCurrent(target, states);
+{
+	SBTAbstractAnimatedNode::drawCurrent(target, states);
 }
 
-RecieverType Ball::getActionType() const
+int Ball::getActionType() const
 {
-	return RecieverType::Ball;
+	return RecieverType::BallRecieverType;
 }
 
-NodeType Ball::getNodeType() const
+int Ball::getNodeType() const
 {
-	return NodeType::Ball;
+	return NodeType::BallNodeType;
 }
 
 void Ball::updateCurrent(sf::Time dt)
 {	
-	SceneNode::updateCurrent(dt);
-	AnimatedNode::updateCurrent(dt);
+	SBTAbstractSceneNode::updateCurrent(dt);
+	SBTAbstractAnimatedNode::updateCurrent(dt);
 }
 
 void Ball::centerOrigin()
 {
-	AnimatedNode::centerOrigin();
+	SBTAbstractAnimatedNode::centerOrigin();
 }
 
 sf::FloatRect Ball::getGlobalBounds() const
 {
-	//return getTransform().transformRect( getSpriteBounds() );
-	return AnimatedNode::getGlobalBounds();
+	return SBTAbstractAnimatedNode::getGlobalBounds();
 }
 
-void Ball::setMaster(RecieverType type)
+void Ball::setMaster(int type)
 {
 	master = type;
 }

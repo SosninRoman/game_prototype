@@ -1,22 +1,21 @@
 #include "Wall.h"
-
+#include "RecieverTypeEnum.h"
 
 Wall::Wall():
-	SpriteNode(sf::Sprite())
+	SBTAbstractSpriteNode(sf::Sprite())
 {
 }
-
 
 Wall::~Wall()
 {
 }
 
-RecieverType Wall::getActionType() const
+int Wall::getActionType() const
 {
-	return RecieverType::Wall;
+	return RecieverType::WallRecieverType;
 }
 
-NodeType Wall::getNodeType() const
+int Wall::getNodeType() const
 {
-	return NodeType::Wall;
+	return NodeType::WallNodeType;
 }
