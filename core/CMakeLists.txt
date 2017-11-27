@@ -37,6 +37,7 @@ include_directories("./graphicsystem/include/")
 include_directories("../ext/sfml/include/")
 #include_directories("../ext/tinyxml2/")
 include_directories("../ext/box2d/")
+#include_directories(./new_gs/)
 include_directories(${SFML_INCLUDE_DIR})
 
 #build ext libs
@@ -53,7 +54,7 @@ endforeach ()
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/../ext/sfml bin/sfml)
 
-add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} scenegraph/include/SBTAnimation.h scenegraph/src/SBTAnimation.cpp)
+add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} scenegraph/include/SBTAnimation.h scenegraph/src/SBTAnimation.cpp new_gs/SBTFrame.h new_gs/SBTAnimation2.h new_gs/SBTAnimator2.h new_gs/SBTSpriteSequence.h new_gs/SBTSpriteAtlas.h new_gs/SBTSpriteAtlas.cpp)
 
 target_link_libraries(${PROJECT} sfml-system sfml-window sfml-graphics sfml-audio tinyxml2 box2d)
 

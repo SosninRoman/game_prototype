@@ -12,29 +12,32 @@ template<class ID, class Resourse>
 class SBTResourceHolder
 {
 public:
-	void load(ID id, const std::string& filename)
+	typedef int SpriteAtlasesID;
+    typedef int FontID;
+
+	void load(ID id, const std::string& filepath)
 	{
-		std::unique_ptr<Resourse> res(new Resourse());
-		if(!res->loadFromFile(filename)) throw std::runtime_error("Fail to load resourse from" + filename);
+		std::unique_ptr<Resourse> res(new Resourse() );
+		if(!res->loadFromFile(filepath)) throw std::runtime_error("Fail to load resourse from" + filepath);
 		auto ins = mResourseMap.insert(std::make_pair(id, std::move(res)));
 		assert(ins.second);
 	}
 	
 	Resourse& get(ID id)
 	{
-		auto found = mResourseMap.find(id);
+		auto found = mResourseMap.find(static_cast<int>(id) );
 		assert(found != mResourseMap.end());
 		return *found->second;
 	}
 	
 	const Resourse& get(ID id) const
 	{
-		auto found = mResourseMap.find(id);
+		auto found = mResourseMap.find(static_cast<int>(id) );
 		assert(found != mResourseMap.end());
 		return *found->second;
 	}
 
-	Resourse& get(std::string filename)
+	Resourse& get(const std::string& filename)
 	{
 		for (auto itr = mResourseMap.begin(); itr != mResourseMap.end(); ++itr)
 		{
@@ -45,7 +48,7 @@ public:
 		throw std::runtime_error("Can't find resourse " + filename);
 	}
 
-	const Resourse& get(std::string filename) const
+	const Resourse& get(const std::string& filename) const
 	{
 		for (auto itr = mResourseMap.begin(); itr != mResourseMap.end(); ++itr)
 		{

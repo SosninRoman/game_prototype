@@ -11,17 +11,17 @@
 
 struct SBTAnimation
 {
-    int				mTextureID;
+    int				                mTextureID;
 
-    sf::Time				mDuration;
+    sf::Time				        mDuration;
 
-    bool					mLooping;
+    bool					        mLooping;
 
     std::vector<sf::IntRect>		mFrames;
 
-    bool                    mRotation;
+    bool                            mRotation;
 
-    float                   mAngle;
+    float                           mAngle;
 
     SBTAnimation(int textureID, sf::Time& duration, bool looping, bool rotate = false, float degree = 0):
             mTextureID(textureID),
