@@ -43,7 +43,7 @@ target_include_directories(${PROJECT} PRIVATE
         "${PROJECT_SOURCE_DIR}/core/commandsystem/include"
         "${PROJECT_SOURCE_DIR}/core/statesystem/include"
         "${PROJECT_SOURCE_DIR}/core/graphicsystem/include"
-		"${PROJECT_SOURCE_DIR}/core/new_gs"
+#		"${PROJECT_SOURCE_DIR}/core/new_gs"
 )
 
 target_link_libraries(${PROJECT} core)

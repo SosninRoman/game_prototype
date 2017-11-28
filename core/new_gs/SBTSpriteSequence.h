@@ -8,43 +8,41 @@
 #include <map>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "SBTFrame.h"
 
+class SBTSpriteAtlas;
+class SBTFrame;
 //Сущность, являющаяся набором логически связанных спрайтов
 //Содержит именованные последовательности, представляющие собой произвольное подмножество набора кадров
 //Анимация в контексте данного класса - просто набор кадров, в отличии от класса SBTAnimation, где
-//вводится время, за которое данная последовательность проигрывается
+//вводится время, за которое данная последовательность проигрывается и признак повторяемости
 //m_frames_basis - базис, состоящий из множества произвольных кадров. Кадр(SBTFrame) - сущность, описывающая границы спрайта.
-//m_animations - набор последовательностей, образующих анимацию, каждая из которых имеет строковый идентификатор
+//depricated: m_animations - набор последовательностей, образующих анимацию, каждая из которых имеет строковый идентификатор
 //m_texture - указатель на текстуру, из которой отображаются кадры
 class SBTSpriteSequence
 {
 public:
-    typedef std::string animationID;
-    typedef int animationPos;
+    typedef std::string frameID;
 
-    SBTSpriteSequence(){};
-    explicit SBTSpriteSequence(sf::Texture* texture):m_texture(texture){};
-    SBTSpriteSequence(sf::Texture* texture, const std::vector<SBTFrame>& frames_basis):
-            m_texture(texture), m_frames_basis(frames_basis){}
-    SBTSpriteSequence(sf::Texture* texture, const std::vector<SBTFrame>& frames_basis,
-                   std::map<animationID, std::vector<animationPos> >& animations):
-            m_texture(texture), m_frames_basis(frames_basis), m_animations(animations){}
+    SBTSpriteSequence():m_atlas(nullptr){}
 
-    void addFrame(SBTFrame frame);
-    void addFrame(const std::string& name, int rectLeft, int rectTop, int rectWidth, int rectHeight);
-    void addFramesSet(const std::vector<SBTFrame>& set);
+    explicit SBTSpriteSequence(SBTSpriteAtlas* texture, std::vector<frameID> frames_basis = std::vector<frameID>());
 
-    void addFrameToSequence(animationID animID, animationPos animPos);
-    void addSequence(animationID animID, std::vector<animationPos> framesIDs);
+    void addFrame(const frameID& frame){m_frames_basis.push_back(frame);}
 
-    void setTexture(sf::Texture* texture);
-    void setTextureAndClear(sf::Texture* texture);
+    void addFramesSet(const std::vector<frameID>& set);
 
-    const std::vector<animationPos>& getSequence(const animationID& seqID);
+    void clearBasis(sf::Texture* texture){m_frames_basis.clear();}
+
+    const std::vector<frameID>& getBasis(){return m_frames_basis;}
+
+    const SBTFrame& getFrame(int frameNum) const;
+
+    const std::string& getMyAtlasFileName() const;
+
+    int size() const {return m_frames_basis.size();}
 private:
-    sf::Texture* m_texture;
-    std::vector<SBTFrame> m_frames_basis;
-    std::map<animationID, std::vector<animationPos> > m_animations;
+    std::vector<frameID> m_frames_basis;
+
+    SBTSpriteAtlas* m_atlas;
 };
-#endif //GAME_PROTOTYPE_SBTSPRITESHEET_H
+#endif

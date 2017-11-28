@@ -8,9 +8,11 @@
 #include <string>
 #include <map>
 #include <memory>
-#include "SBTSpriteSequence.h"
 
+//class SBTFrame;
 #include "SBTFrame.h"
+//class SBTSpriteSequence;
+#include "SBTSpriteSequence.h"
 //Сущность, представляющая абстракцию текстуры, состоящей из множества изображений.
 //Текстура может содержать метаинформацию в формате xml, описывающую расположение конкретных кадров.
 //Текстура также может содержать информацию в формате xml о составах логически
@@ -32,29 +34,41 @@ public:
     explicit SBTSpriteAtlas(const std::string& atlasMetaFilePath);
     SBTSpriteAtlas(const std::string& atlasMetaFilePath, const std::string& sequencesMetaFilePath);
 
-    void clearAll();//выгрузить текстуру, удалить последовательности
+    void clearAll();//выгрузить текстуру, удалить последовательности и кадры
+
+    void clearFrames();//удвлить кадры и последовательности
+
     void clearSequences();//удалить заполненные последовательности
 
     void loadTexture(const std::string& textureFilePath);
+
     void  addSequencesFromFile(const std::string& SpriteSequencesMetaFilePath );
-    void addSequence(const SpriteSequenceID& sequenceID, const std::vector<FrameID>& sequnceBasis = std::vector<FrameID>()
-            , std::map<AnimationID,std::vector<int> > seqAnimations =  std::map<AnimationID,std::vector<int> >());
+
+    void addSequence(const SpriteSequenceID& sequenceID, const std::vector<FrameID>& sequnceBasis = std::vector<FrameID>());
+
+    void addFrameToSequence(const SpriteSequenceID& seqID, const FrameID& frID);
+
     void addFrame(SBTFrame& frame);
 
-    sf::Texture& getTexture();
     const sf::Texture& getTexture()const {return *m_texture;}
+
     const SBTFrame& getFrame(const FrameID& frmID) const;
-    SBTSpriteSequence& getSequence(const SpriteSequenceID& seqID);
+
     const SBTSpriteSequence& getSequence(const SpriteSequenceID& seqID) const;
 
-    void loadFromFile(const std::string& textureFilePath);
-    const std::string& getFileName() const;
+    void loadFromFile(const std::string& sequencesMetaFilePath);
 
+    const std::string& getFileName() const;
 private:
     void loadMetaInfo(const std::string& atlasMetaFilePath);
+    void loadSequencesFromMetaFile(const std::string& sequencesMetaFilePath);
+
     std::unique_ptr<sf::Texture> m_texture;
+
     std::map<FrameID, SBTFrame> m_framesCollection;
+
     std::string m_fileName;
+
     std::map<SpriteSequenceID, SBTSpriteSequence> m_spriteSequences;
 };
 #endif //GAME_PROTOTYPE_SBTSPRITEATLAS_H

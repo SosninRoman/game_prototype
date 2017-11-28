@@ -10,6 +10,8 @@
 class SBTFrame
 {
 public:
+    SBTFrame() = default;
+
     SBTFrame(std::string name, int rectLeft, int rectTop, int rectWidth, int rectHeight):
             m_name(std::move(name) ),
             m_frame_rectangle(rectLeft, rectTop, rectWidth, rectHeight){}
@@ -21,6 +23,8 @@ public:
     int height() {return m_frame_rectangle.height;}
     int width() {return m_frame_rectangle.width;}
     const std::string& name() {return m_name;}
+
+    const sf::IntRect getRect() const {return m_frame_rectangle;}
 private:
     std::string m_name;
     sf::IntRect m_frame_rectangle;

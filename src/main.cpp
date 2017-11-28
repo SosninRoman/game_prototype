@@ -3,7 +3,6 @@
 #include <ctime>
 #include "Application.h"
 
-
 int main(int argc, char* argv[])
 {
 	std::srand(time(NULL));

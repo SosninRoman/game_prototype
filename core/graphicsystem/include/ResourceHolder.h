@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <SFML\Graphics.hpp>
 #include "SBTTileSheet.h"
+#include "../../new_gs/SBTSpriteAtlas.h"
 
 //class SBTTileSheet;
 
@@ -63,3 +64,4 @@ private:
 
 typedef SBTResourceHolder<int, sf::Font> FontHolder;
 typedef SBTResourceHolder<int, SBTTileSheet> TextureHolder;
+typedef SBTResourceHolder<int, SBTSpriteAtlas> AtlasesHolder;

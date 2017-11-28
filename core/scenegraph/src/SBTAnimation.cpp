@@ -3,6 +3,7 @@
 //
 
 #include "SBTAnimation.h"
+#include "../../new_gs/SBTFrame.h"
 
 void SBTAnimation::AddFrames(sf::Vector2i startFrom, const sf::Vector2i& frameSize, size_t frames)
 {

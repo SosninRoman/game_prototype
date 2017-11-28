@@ -1,0 +1,14 @@
+<TextureAtlas>
+	<sequence name="player_death">
+		<frame frameid = "Player_Death_01"/>
+		<frame frameid = "Player_Death_02"/>
+		<frame frameid = "Player_Death_03"/>
+		<frame frameid = "Player_Death_05"/>
+</sequence>
+<sequence name="player_walk">
+		<frame frameid = "Player_Death_06"/>
+		<frame frameid = "Player_Death_04"/>
+		<frame frameid = "Player_Death_08"/>
+		<frame frameid = "Player_Death_09"/>
+	</sequence>
+</TextureAtlas>

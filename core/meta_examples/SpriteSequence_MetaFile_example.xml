@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SpriteAtlas>
- <sequence name="player"/>
-  <basis>
+<TextureAtlas>
+ <sequence name="player_death">
 	<frame frameid = "Player_Death_01">
 	<frame frameid = "Player_Death_02">
 	<frame frameid = "Player_Death_03">
 	<frame frameid = "Player_Death_05">
-  </basis>
-  <animation name="player_death"/>
-   <frame frameid="Player_Death_02" duration="100"/>
-   <frame frameid="Player_Death_05" duration="100"/>
-   <frame frameid="Player_Death_03" duration="100"/>
-   <frame frameid="Player_Death_01" duration="100"/>
-  </animation>
  </sequence>
- <sequence name="tower"/>
-  <basis>
-	<frame frameid = "Player_Death_06">
-	<frame frameid = "Player_Death_04">
-	<frame frameid = "Player_Death_08">
-	<frame frameid = "Player_Death_09">
-  </basis>
-  <animation name="tower_burn"/>
-   <frame frameid="Player_Death_06" duration="100"/>
-   <frame frameid="Player_Death_04" duration="100"/>
-   <frame frameid="Player_Death_09" duration="100"/>
-   <frame frameid="Player_Death_08" duration="100"/>
-  </animation>
+ <sequence name="player_walk">
+	<frame frameid = "Player_Walk_06">
+	<frame frameid = "Player_Walk_04">
+	<frame frameid = "Player_Walk_08">
+	<frame frameid = "Player_Walk_09">
  </sequence>
-</SpriteAtlas>
+</TextureAtlas>

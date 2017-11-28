@@ -6,30 +6,36 @@
 #define GAME_PROTOTYPE_SBTANIMATION_H
 #include <SFML/Graphics.hpp>
 #include <string>
-#include "SBTFrame.h"
 
+class SBTFrame;
 class SBTSpriteSequence;
-
-//Сущность, являющаяся одной из анимаций, заданных в m_sheet
-//m_sheet - набор спрайтов, из которого берется анимация
-//m_animationID - строка, идентифицирующая конкретную анимацию из m_sheet, которую представляет экземпляр SBTAnimation
+//Сущность, являющаяся анимацией, заданной в m_sequence, дополненной временем выполнения и признаком повторяемости
+//m_sequence - набор спрайтов, на базе которого строится анимация
+//depricated: m_animationID - строка, идентифицирующая конкретную анимацию из m_sequence, которую представляет экземпляр SBTAnimation
 //m_duration - время, за которое должна быть прокручена анимация
 //m_looping - признак, определяющий, будет ли анимация повторяться (false - играем один раз и замрет в последнем кадре)
 class SBTAnimation
 {
-    SBTAnimation(SBTSpriteSequence* sheet, const std::string& animationID, sf::Time& duration, bool looping):
-            m_sequence(sheet),
-            m_animationID(animationID),
+public:
+    SBTAnimation(const SBTSpriteSequence* sequence, sf::Time& duration, bool looping):
+            m_sequence(sequence),
             m_duration(duration),
             m_looping(looping)
     {
     }
 
     /*Возвращаем кадр по его порядковому номеру в анимации*/
-    SBTFrame* getFrame(int frameNum){}
+    const SBTFrame& getFrame(int frameNum);
+
+    std::string getMyAtlasFileName();
+
+    const sf::Time& getDuration(){return m_duration;}
+
+    int size() const;
+
+    bool isLooping(){return m_looping;}
 private:
-    SBTSpriteSequence* m_sequence;
-    std::string m_animationID;
+    const SBTSpriteSequence* m_sequence;
     sf::Time m_duration;
     bool m_looping;
 };
