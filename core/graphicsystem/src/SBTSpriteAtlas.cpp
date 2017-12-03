@@ -3,11 +3,8 @@
 //
 
 #include "SBTSpriteAtlas.h"
-//#include "SBTFrame.h"
-//#include "SBTSpriteSequence.h"
 #include <tinyxml2.h>
 #include <assert.h>
-#include <utility>
 
 
 //Загрузка атдаса с использованием xml файлов с информацией об месторасположении самой текстуры, метаинформацией об
@@ -99,9 +96,15 @@ void SBTSpriteAtlas::loadSequencesFromMetaFile(const std::string& sequencesMetaF
         while(frame != nullptr)
         {
             std::string frameName = frame->Attribute("frameid");
+            int frameAngle = frame->IntAttribute("angle");
             auto itr = m_framesCollection.find(frameName);
             if(itr != m_framesCollection.end() )
-                seq.addFrame(frameName);
+            {
+                if(frameAngle)
+                    seq.addFrame(frameName, frameAngle);
+                else
+                    seq.addFrame(frameName);
+            }
             else
                 throw std::runtime_error("Can't find frame" + frameName +" in sequences meta file \"" + sequencesMetaFilePath);
             frame = frame->NextSiblingElement("frame");
@@ -112,9 +115,10 @@ void SBTSpriteAtlas::loadSequencesFromMetaFile(const std::string& sequencesMetaF
     }
 }
 
-void SBTSpriteAtlas::loadFromFile(const std::string &sequencesMetaFilePath)
+bool SBTSpriteAtlas::loadFromFile(const std::string &sequencesMetaFilePath)
 {
     loadSequencesFromMetaFile(sequencesMetaFilePath);
+    return true;
 }
 
 const SBTFrame& SBTSpriteAtlas::getFrame(const FrameID& frmID) const
@@ -173,12 +177,12 @@ void SBTSpriteAtlas::clearSequences()
     m_spriteSequences.clear();
 }
 
-void SBTSpriteAtlas::addSequence(const SpriteSequenceID& seqID, const std::vector<FrameID>& seqBasis)
+void SBTSpriteAtlas::addSequence(const SpriteSequenceID& seqID, const std::vector<SBTSequenceState>& seqBasis)
 {
-    for(const FrameID& frame : seqBasis)
+    for(const SBTSequenceState& frame : seqBasis)
     {
-        if(m_framesCollection.find(frame) == m_framesCollection.end() )
-            throw std::runtime_error("frame " + frame +" is absent in atlas \"" + m_fileName);
+        if(m_framesCollection.find(frame.m_frameID) == m_framesCollection.end() )
+            throw std::runtime_error("frame " + frame.m_frameID +" is absent in atlas \"" + m_fileName);
     }
     auto res = m_spriteSequences.insert(make_pair(seqID, SBTSpriteSequence(this, seqBasis) ) );
     if(!res.second)
@@ -197,4 +201,10 @@ void SBTSpriteAtlas::addFrameToSequence(const SpriteSequenceID& seqID, const Fra
     }
     else
         throw std::runtime_error("sequence " + seqID +" is absent in atlas \"" + m_fileName);
+}
+
+bool SBTSpriteAtlas::loadFromFile(const std::string& atlasMetaFilePath, const std::string& sequencesMetaFilePath)
+{
+    loadMetaInfo(atlasMetaFilePath);
+    loadSequencesFromMetaFile(sequencesMetaFilePath);
 }

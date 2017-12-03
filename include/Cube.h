@@ -5,24 +5,24 @@
 class Cube: public SBTAbstractSpriteNode
 {
 public:
-	Cube(sf::Sprite& textures);
+	Cube(SBTSpriteAtlas& atlas, const spriteID& frameName);
 
-	virtual int getActionType() const;
+    int getActionType() const override;
 	
-	virtual int getNodeType() const;
+	int getNodeType() const override;
 
-	virtual sf::FloatRect getGlobalBounds() const;
+	sf::FloatRect getGlobalBounds() const override;
 	
-	virtual void centerOrigin();
+	void centerOrigin() override;
 	
 	void kill();
 	
-	bool isMarkedForRemove();
+	bool isMarkedForRemove() override;
 private:
-	void updateCurrent(sf::Time dt);
+	void updateCurrent(sf::Time dt) override;
 	
-	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	bool mRemove;
+	bool m_remove;
 };
 

@@ -9,10 +9,12 @@
 #include <map>
 #include <memory>
 
-//class SBTFrame;
 #include "SBTFrame.h"
-//class SBTSpriteSequence;
 #include "SBTSpriteSequence.h"
+#include "SBTSequenceState.h"
+//class SBTFrame;
+//class SBTSpriteSequence;
+
 //Сущность, представляющая абстракцию текстуры, состоящей из множества изображений.
 //Текстура может содержать метаинформацию в формате xml, описывающую расположение конкретных кадров.
 //Текстура также может содержать информацию в формате xml о составах логически
@@ -44,7 +46,7 @@ public:
 
     void  addSequencesFromFile(const std::string& SpriteSequencesMetaFilePath );
 
-    void addSequence(const SpriteSequenceID& sequenceID, const std::vector<FrameID>& sequnceBasis = std::vector<FrameID>());
+    void addSequence(const SpriteSequenceID& sequenceID, const std::vector<SBTSequenceState>& sequnceBasis = std::vector<SBTSequenceState>());
 
     void addFrameToSequence(const SpriteSequenceID& seqID, const FrameID& frID);
 
@@ -56,7 +58,9 @@ public:
 
     const SBTSpriteSequence& getSequence(const SpriteSequenceID& seqID) const;
 
-    void loadFromFile(const std::string& sequencesMetaFilePath);
+    bool loadFromFile(const std::string& sequencesMetaFilePath);
+
+    bool loadFromFile(const std::string& atlasMetaFilePath, const std::string& sequencesMetaFilePath);
 
     const std::string& getFileName() const;
 private:

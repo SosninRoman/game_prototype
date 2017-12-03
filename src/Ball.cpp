@@ -1,8 +1,8 @@
 #include "Ball.h"
 #include "RecieverTypeEnum.h"
 
-Ball::Ball(TextureHolder& textures, sf::Vector2f center):
-	SBTAbstractSceneNode(),SBTAbstractAnimatedNode(textures), master(RecieverType::NoneRecieverType)
+Ball::Ball(AtlasHolder& textures, sf::Vector2f center):
+	SBTAbstractSceneNode(),SBTAbstractAnimatedNode(textures), m_master(RecieverType::NoneRecieverType)
 {
 	setPosition(center);
 }
@@ -40,5 +40,5 @@ sf::FloatRect Ball::getGlobalBounds() const
 
 void Ball::setMaster(int type)
 {
-	master = type;
+	m_master = type;
 }

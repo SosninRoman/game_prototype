@@ -10,7 +10,8 @@
 //const sf::Time TPF = sf::seconds(1.f/60.f);
 
 Application::Application():
-    SBTAbstractApplication(new SBTGameWindow(640, 480, "PingPong", sf::Style::Default), new Player, new FontHolder, new TextureHolder)
+    SBTAbstractApplication(new SBTGameWindow(640, 480, "PingPong", sf::Style::Default), new Player, new FontHolder,
+                           new TextureHolder, new AtlasHolder, new TileSheetHolder)
 {
 	registerStates();
 

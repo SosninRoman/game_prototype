@@ -5,7 +5,6 @@ SBTTileSheet::SBTTileSheet()
 {
 }
 
-
 SBTTileSheet::~SBTTileSheet()
 {
 }
@@ -41,19 +40,19 @@ bool SBTTileSheet::loadFromFile(const std::string& filename, const sf::IntRect& 
 {
 	const size_t slashPos = filename.find_last_of('/');
 	string file = filename.substr(slashPos+1, filename.size()-1);
-	mFileName = file;
+	m_fileName = file;
 	//
 	tinyxml2::XMLDocument doc;
 	if(doc.LoadFile(filename.c_str()) != tinyxml2::XML_SUCCESS)
     {
 		//Trying to load just texture
-		if(mTexture.loadFromFile(filename))
+		if(m_texture.loadFromFile(filename) )
 		{
-			mColumns = 1;
-			mCount = 1;
-			auto sz = mTexture.getSize();
-			mTileHeight = sz.y;
-			mTileWidth = sz.x;
+			m_columns = 1;
+			m_count = 1;
+			auto sz = m_texture.getSize();
+			m_tileHeight = sz.y;
+			m_tileWidth = sz.x;
 			return true;
 		}
 		else
@@ -62,17 +61,17 @@ bool SBTTileSheet::loadFromFile(const std::string& filename, const sf::IntRect& 
 
 	tinyxml2::XMLElement* tileset = doc.FirstChildElement("tileset");
 	assert(tileset != nullptr);
-	mName = tileset->Attribute("name");
-	mTileWidth = tileset->IntAttribute("tilewidth");
-	mTileHeight =  tileset->IntAttribute("tileheight");
-	mColumns = tileset->IntAttribute("columns");
-	mCount = tileset->IntAttribute("tilecount");
+	m_name = tileset->Attribute("name");
+	m_tileWidth = tileset->IntAttribute("tilewidth");
+	m_tileHeight =  tileset->IntAttribute("tileheight");
+	m_columns = tileset->IntAttribute("columns");
+	m_count = tileset->IntAttribute("tilecount");
 
 	tinyxml2::XMLElement* image = tileset->FirstChildElement("image");
 	assert(image != nullptr);
 	const std::string imageFilename = image->Attribute("source");
     const std::string imagePath = JoinPaths(GetParentDirectory(filename), imageFilename);
-	bool load_flag = mTexture.loadFromFile(imagePath);
+	bool load_flag = m_texture.loadFromFile(imagePath);
 	assert(load_flag);
 
 	tinyxml2::XMLElement* tile = doc.FirstChildElement("tileset")->FirstChildElement("tile");
@@ -82,7 +81,7 @@ bool SBTTileSheet::loadFromFile(const std::string& filename, const sf::IntRect& 
 		assert(obj != nullptr);
 		std::string frame_set_name = obj->Attribute("name");
 
-		frames_vector frames;
+		SBTTileSequence frames;
 		tinyxml2::XMLElement* animation = tile->FirstChildElement("animation");
 		if (animation != nullptr)
 		{
@@ -90,16 +89,17 @@ bool SBTTileSheet::loadFromFile(const std::string& filename, const sf::IntRect& 
 			while(frame != nullptr)
 			{
 				int tileid = frame->IntAttribute("tileid");
-				int column = tileid % mColumns;
-				int row = tileid / mColumns;
+				int column = tileid % m_columns;
+				int row = tileid / m_columns;
 				double duration = frame->FloatAttribute("duration");
 
-				sf::IntRect rect(column * mTileWidth, row * mTileHeight, mTileWidth, mTileHeight);
-				frames.push_back(rect);
+				sf::IntRect rect(column * m_tileWidth, row * m_tileHeight, m_tileWidth, m_tileHeight);
+				//frames.push_back(rect);
+				frames.addFrame(SBTFrame(rect) );
 
 				frame = frame->NextSiblingElement("frame");
 			}
-			mFrames.insert(std::pair<string, frames_vector>(frame_set_name, frames));
+			m_frames.insert(std::pair<SpriteSequenceID, SBTTileSequence>(frame_set_name, frames));
 		}
 		tile = tile->NextSiblingElement("tile");
 	}
@@ -108,38 +108,38 @@ bool SBTTileSheet::loadFromFile(const std::string& filename, const sf::IntRect& 
 
 sf::Texture& SBTTileSheet::getTexture()
 {
-	return mTexture;
+	return m_texture;
 }
 
 const sf::Texture& SBTTileSheet::getTexture() const
 {
-	return mTexture;
+	return m_texture;
 }
 
-SBTTileSheet::frames_vector SBTTileSheet::getFrame(string name) const
+SBTTileSequence SBTTileSheet::getFrame(string name) const
 {
-	auto itr = mFrames.find(name);
-	assert(itr != mFrames.end());
+	auto itr = m_frames.find(name);
+	assert(itr != m_frames.end());
 	return itr->second;
 }
 
 string SBTTileSheet::getFileName()
 {
-	return mFileName;
+	return m_fileName;
 }
 
 string SBTTileSheet::getFileName() const
 {
-	return mFileName;
+	return m_fileName;
 }
 
 sf::Sprite SBTTileSheet::getTile(int tileid)
 {
-	int column = tileid % mColumns;
-	int row = tileid / mColumns;
+	int column = tileid % m_columns;
+	int row = tileid / m_columns;
 	assert((column+1) * (row+1) <= tileid+1); 
-	sf::Sprite result(mTexture);
-	sf::IntRect frame(column * mTileWidth, row * mTileHeight, mTileWidth, mTileHeight);
+	sf::Sprite result(m_texture);
+	sf::IntRect frame(column * m_tileWidth, row * m_tileHeight, m_tileWidth, m_tileHeight);
 	result.setTextureRect(frame);
 	return result;
 }

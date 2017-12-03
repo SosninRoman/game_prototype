@@ -10,11 +10,14 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "SBTContext.h"
+#include "SBTAtlasHolder.h"
+#include "SBTTileSheetHolder.h"
 
 class SBTAbstractApplication
 {
 public:
-    SBTAbstractApplication(SBTGameWindow* window, SBTAbstractCommandManager* manager, FontHolder* fonts, TextureHolder* txtrs);
+    SBTAbstractApplication(SBTGameWindow* window, SBTAbstractCommandManager* manager, FontHolder* fonts, TextureHolder* txtrs,
+    AtlasHolder* atl, TileSheetHolder* tsh);
 
     virtual ~SBTAbstractApplication();
 
@@ -48,6 +51,10 @@ private:
     std::unique_ptr<TextureHolder>		mTextureHolder;
 
     std::unique_ptr<SBTStateStack>			mStateStack;
+
+    std::unique_ptr<TileSheetHolder>    mTileSheetHolder;
+
+    std::unique_ptr<AtlasHolder>        mAtlasHolder;
 
 };
 

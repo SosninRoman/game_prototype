@@ -10,34 +10,33 @@
 #include <map>
 #include <utility>
 #include <SFML\Graphics.hpp>
-#include "ResourceHolder.h"
-
+#include "SBTAtlasHolder.h"
+#include "SBTAnimation.h"
 
 using std::string;
 using std::vector;
 using std::map;
-#include  "SBTAnimation2.h"
-
+class SBTAnimation;
 //Класс, отвечающий за смену кадров анимации, переключение анимации, отрисовку спрайта объекта
 //m_renderSprite - спрайт, который явлюется изображением объекта в игровом окне
 //m_currentTime - текущее время отсчета, используемое для переключения кадров анимации
 //m_animations - набор анимаций, соответствующий сущности, владеющей аниматором
 //m_currentAnimation - текущая анимация аниматора
 //m_textures - ссылка на владельца всех TileSheet-ов
-class SBTAnimator2
+class SBTAnimator
 {
 public:
     typedef map<string, SBTAnimation>::iterator map_iterator;
     typedef std::string animationID;
 
-    explicit SBTAnimator2(AtlasesHolder& textures);
+    explicit SBTAnimator(AtlasHolder& textures);
 
     //Добавляем последовательность sequenceIDInAtlas из атласа SpriteAtlasID в m_animations, снабдив ее duration,
     //looping и идентификатором animationNameInAnimator
     //идентификатор animationNameInAnimator нужен из-за того, что в одном аниматоре могут быть последовательности из
     //разных атласов, а значит их идентификаторы могут совпадать
-    void addAnimation(const animationID& animationNameInAnimator, const string& sequenceIDInAtlas,
-                               const std::string& SpriteAtlasID, sf::Time duration, bool looping);
+    void addAnimation(const std::string& SpriteAtlasID, const string& sequenceIDInAtlas,
+                      const animationID& animationNameInAnimator, sf::Time duration, bool looping);
 
     void switchAnimation(const string& animationNameInAnimator);
 
@@ -64,7 +63,7 @@ private:
 
     map_iterator				m_currentAnimation;
 
-    AtlasesHolder&              m_textures;
+    AtlasHolder&              m_textures;
 };
 
 #endif //GAME_PROTOTYPE_SBTANUMATOR_H

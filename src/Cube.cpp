@@ -1,8 +1,7 @@
 #include "Cube.h"
-#include "RecieverTypeEnum.h"
 
-Cube::Cube(sf::Sprite& textures):
-	SBTAbstractSceneNode(), SBTAbstractSpriteNode(textures),  mRemove(false)
+Cube::Cube(SBTSpriteAtlas& atlas, const spriteID& frameName):
+	SBTAbstractSceneNode(), SBTAbstractSpriteNode(atlas, frameName),  m_remove(false)
 {
 	
 }
@@ -39,10 +38,10 @@ void Cube::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Cube::kill()
 {
-	mRemove = true;
+	m_remove = true;
 }
 
 bool Cube::isMarkedForRemove()
 {
-	return mRemove;
+	return m_remove;
 }

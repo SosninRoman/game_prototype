@@ -1,69 +1,49 @@
 #include "SBTAbstractAnimatedNode.h"
+#include "SBTAnimation.h"
+#include "SBTSpriteSequence.h"
+#include "SBTSequenceState.h"
 
-SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(TextureHolder& textures):
-	mAnimator(textures)
+SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(AtlasHolder& textures):
+	m_animator(textures)
 {
 }
 
-SBTAbstractAnimatedNode::~SBTAbstractAnimatedNode()
+void SBTAbstractAnimatedNode::addAnimation(const std::string& SpriteAtlasID, const string& sequenceIDInAtlas,
+				  const animationID& animationNameInAnimator, sf::Time duration, bool looping)
 {
-}
-
-void SBTAbstractAnimatedNode::createAnimation(const string& name,  int textureID, sf::Time duration, bool loop, bool rotate, float degree)
-{
-	mAnimator.createAnimation(name, textureID, duration, loop, rotate, degree);
+	m_animator.addAnimation(SpriteAtlasID, sequenceIDInAtlas, animationNameInAnimator, duration, looping);
 }
 
 SBTAnimation* SBTAbstractAnimatedNode::findAnimation(const string& name)
 {
-	return mAnimator.findAnimation(name);
-}
-
-void SBTAbstractAnimatedNode::addFrames(const string& name, sf::Vector2i startFrom, const sf::Vector2i& frameSize, size_t frames)
-{
-	SBTAnimation* animation = mAnimator.findAnimation(name);
-	animation->AddFrames(startFrom, frameSize, frames);
-}
-	
-void SBTAbstractAnimatedNode::addFrames(const string& name, vector<sf::IntRect> frames)
-{
-	SBTAnimation* animation = mAnimator.findAnimation(name);
-	animation->AddFrames(frames);
+	return m_animator.findAnimation(name);
 }
 
 void SBTAbstractAnimatedNode::switchAnimation(string& name)
 {
-	if (findAnimation(name)->mRotation)
-		rotate(findAnimation(name)->mAngle);
-	mAnimator.switchAnimation(name);
-	if (findAnimation(name)->mRotation)
-		rotate(-findAnimation(name)->mAngle);
+	m_animator.switchAnimation(name);
 	centerOrigin();
 }
 
 void SBTAbstractAnimatedNode::switchAnimation(char* name)
 {
-	if (mAnimator.getCurrentAnimation() != nullptr && mAnimator.getCurrentAnimation()->mRotation)
-		rotate(mAnimator.getCurrentAnimation()->mAngle);
-	mAnimator.switchAnimation(name);
-	if (findAnimation(string(name))->mRotation)
-		rotate(-findAnimation(string(name))->mAngle);
+	m_animator.switchAnimation(name);
 	centerOrigin();
 }
 
 void SBTAbstractAnimatedNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	mAnimator.drawCurrent(target, states);
+	m_animator.drawCurrent(target, states);
 }
 
 void SBTAbstractAnimatedNode::updateCurrent(sf::Time dt)
 {
-	mAnimator.update(dt);
+	m_animator.update(dt);
 }
 
 sf::FloatRect SBTAbstractAnimatedNode::getSpriteBounds() const
 {
-	return mAnimator.getSprite().getGlobalBounds();
+	return m_animator.getRenderSprite().getGlobalBounds();
 }
 
 void SBTAbstractAnimatedNode::centerOrigin()
@@ -74,7 +54,7 @@ void SBTAbstractAnimatedNode::centerOrigin()
 
 sf::Vector2u SBTAbstractAnimatedNode::getSize()
 {
-	return mAnimator.getSize();
+	return m_animator.getSize();
 }
 
 sf::FloatRect SBTAbstractAnimatedNode::getGlobalBounds() const

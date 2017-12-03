@@ -16,6 +16,8 @@ public:
             m_name(std::move(name) ),
             m_frame_rectangle(rectLeft, rectTop, rectWidth, rectHeight){}
 
+    SBTFrame(sf::IntRect rect):m_name(""), m_frame_rectangle(rect){}
+
     SBTFrame(const SBTFrame& rhs){m_frame_rectangle = rhs.m_frame_rectangle;}
 
     int left() {return m_frame_rectangle.left;}

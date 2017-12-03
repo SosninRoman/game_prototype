@@ -1,5 +1,4 @@
 #include "SBTLevel.h"
-#include "tinyxml2.h"
 
 int LevelObject::GetPropertyInt(string name)
 {
@@ -18,7 +17,7 @@ string LevelObject::GetPropertyString(string name)
     return properties[name];
 }
 
-bool SBTLevel::loadFromFile(const string& filename, TextureHolder& textures)
+bool SBTLevel::loadFromFile(const string& filename, TileSheetHolder& textures)
 {
 	tinyxml2::XMLDocument doc;
 	if(doc.LoadFile(filename.c_str()) != tinyxml2::XML_SUCCESS)

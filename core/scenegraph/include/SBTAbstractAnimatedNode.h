@@ -1,20 +1,19 @@
 #pragma once
 #include "SBTAnimator.h"
-#include "ResourceHolder.h"
 #include "SBTAbstractSceneNode.h"
 
 class SBTAbstractAnimatedNode: public virtual SBTAbstractSceneNode
 {
 public:
-	explicit SBTAbstractAnimatedNode(TextureHolder& textures);
-	~SBTAbstractAnimatedNode();
-	
-	void					createAnimation(const string& name, int textureID, sf::Time duration, bool loop, bool rotate = false, float degree = 0);
-	void					addFrames(const string& name, sf::Vector2i startFrom, const sf::Vector2i& frameSize, size_t frames);
-	void					addFrames(const string& name, vector<sf::IntRect> frames);
+    typedef std::string animationID;
+	explicit SBTAbstractAnimatedNode(AtlasHolder& textures);
+	~SBTAbstractAnimatedNode() override = default;
 
-	void					switchAnimation(string& name);
-	void					switchAnimation(char* name);
+	void addAnimation(const std::string& SpriteAtlasID, const string& sequenceIDInAtlas,
+					  const animationID& animationNameInAnimator, sf::Time duration, bool looping);
+
+	void					switchAnimation(string& animationNameInAnimator);
+	void					switchAnimation(char* animationNameInAnimator);
 
 	sf::FloatRect	getGlobalBounds() const override;
 	virtual sf::FloatRect	getSpriteBounds() const;
@@ -26,6 +25,6 @@ protected:
 	void			updateCurrent(sf::Time dt) override;
 private:	
 	SBTAnimation*	findAnimation(const string& name);
-	SBTAnimator				mAnimator;
+	SBTAnimator				m_animator;
 };
 

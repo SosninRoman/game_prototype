@@ -6,7 +6,7 @@ class Ball :
 	public SBTAbstractAnimatedNode
 {
 public:
-	Ball(TextureHolder& textures, sf::Vector2f center);
+	Ball(AtlasHolder& textures, sf::Vector2f center);
 
 	void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	//
@@ -20,10 +20,10 @@ public:
 	
 	void					setMaster(int type);
 	
-	int			getMaster(){return master;}
+	int			getMaster(){return m_master;}
 protected:
 	void					updateCurrent(sf::Time dt);
 private:
-	int			master;
+	int			m_master;
 };
 

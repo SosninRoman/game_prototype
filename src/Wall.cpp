@@ -1,8 +1,7 @@
 #include "Wall.h"
-#include "RecieverTypeEnum.h"
 
 Wall::Wall():
-	SBTAbstractSpriteNode(sf::Sprite())
+		SBTAbstractUnvisibleNode()
 {
 }
 

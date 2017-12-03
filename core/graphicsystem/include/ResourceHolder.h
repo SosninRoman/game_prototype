@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <SFML\Graphics.hpp>
 #include "SBTTileSheet.h"
-#include "../../new_gs/SBTSpriteAtlas.h"
 
 //class SBTTileSheet;
 
@@ -23,6 +22,15 @@ public:
 		auto ins = mResourseMap.insert(std::make_pair(id, std::move(res)));
 		assert(ins.second);
 	}
+
+    void load(ID id, const std::string& filepath1, const std::string& filepath2)
+    {
+        std::unique_ptr<Resourse> res(new Resourse() );
+        if(!res->loadFromFile(filepath1, filepath2) )
+            throw std::runtime_error("Fail to load resourse from files" + filepath1 + " , " + filepath2);
+        auto ins = mResourseMap.insert(std::make_pair(id, std::move(res)));
+        assert(ins.second);
+    }
 	
 	Resourse& get(ID id)
 	{
@@ -63,5 +71,3 @@ private:
 };
 
 typedef SBTResourceHolder<int, sf::Font> FontHolder;
-typedef SBTResourceHolder<int, SBTTileSheet> TextureHolder;
-typedef SBTResourceHolder<int, SBTSpriteAtlas> AtlasesHolder;

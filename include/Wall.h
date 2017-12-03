@@ -1,13 +1,13 @@
 #pragma once
-#include "SBTAbstractSpriteNode.h"
+#include "SBTAbstractUnvisibleNode.h"
 #include "LayerNode.h"
 
-class Wall:public SBTAbstractSpriteNode
+class Wall:public SBTAbstractUnvisibleNode
 {
 public:
 	Wall();
-	~Wall();
-	virtual int getActionType() const;
-	virtual int getNodeType() const;
+	~Wall() override;
+	int getActionType() const override;
+	int getNodeType() const override;
 };
 

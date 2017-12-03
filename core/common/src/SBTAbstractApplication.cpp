@@ -6,9 +6,10 @@
 
 const sf::Time TPF = sf::seconds(1.f/60.f);
 
-SBTAbstractApplication::SBTAbstractApplication(SBTGameWindow* window, SBTAbstractCommandManager* manager, FontHolder* fonts, TextureHolder* txtrs):
-mWindow(window), mCommandManager(manager), mFontHolder(fonts), mTextureHolder(txtrs),
-mStateStack(new SBTStateStack( SBTContext(window, fonts, manager, txtrs ) ) )
+SBTAbstractApplication::SBTAbstractApplication(SBTGameWindow* window, SBTAbstractCommandManager* manager, FontHolder* fonts,
+                                               TextureHolder* txtrs, AtlasHolder* atl, TileSheetHolder* tsh):
+mWindow(window), mCommandManager(manager), mFontHolder(fonts), mTextureHolder(txtrs), mAtlasHolder(atl), mTileSheetHolder(tsh),
+mStateStack(new SBTStateStack( SBTContext(window, fonts, manager, txtrs, atl, tsh ) ) )
 {
 
 }

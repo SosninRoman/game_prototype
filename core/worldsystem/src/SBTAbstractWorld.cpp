@@ -4,26 +4,30 @@
 
 #include "SBTAbstractWorld.h"
 
-SBTAbstractWorld::SBTAbstractWorld(int layers, SBTGameWindow& window, TextureHolder& textures, sf::FloatRect bounds,
-                                   SBTBasicContactListener* listener, b2Vec2 worldparam, SBTCommandQueue* commandqueue):
-        mSceneLayers(layers),
-        mWindow(window),
-        mWorldBounds(bounds),
-        mCommandQueue(commandqueue),
-        mTextures(textures),
-        mPhysicWorld(worldparam),
-        mContactListener(listener)
+SBTAbstractWorld::SBTAbstractWorld(int layers, SBTGameWindow& window, TextureHolder& textures, TileSheetHolder& tiles,
+                                    AtlasHolder& atlases,
+                                   sf::FloatRect bounds, SBTBasicContactListener* listener, b2Vec2 worldparam,
+                                   SBTCommandQueue* commandqueue):
+        m_sceneLayers(layers),
+        m_window(window),
+        m_worldBounds(bounds),
+        m_commandQueue(commandqueue),
+        m_textures(textures),
+        m_physicWorld(worldparam),
+        m_contactListener(listener),
+        m_tileSets(tiles),
+        m_atlases(atlases)
 {
-    mPhysicWorld.SetContactListener(mContactListener.get() );
+    m_physicWorld.SetContactListener(m_contactListener.get() );
 }
 
 void SBTAbstractWorld::draw()
 {
-    mLevel.draw(mWindow);
+    m_level.draw(m_window);
 
     for(int i = 0; i < layerCount(); ++i)
     {
-        mWindow.draw(*mSceneLayers[i]);
+        m_window.draw(*m_sceneLayers[i]);
     }
 }
 
@@ -31,20 +35,20 @@ void SBTAbstractWorld::update(sf::Time dt)
 {
     prefix();
 
-    mPhysicWorld.Step(1/60.f, 8, 3);
+    m_physicWorld.Step(1/60.f, 8, 3);
 
-    while(!mCommandQueue->isEmpty())
+    while(!m_commandQueue->isEmpty() )
     {
         for(int i = 0; i < layerCount(); ++i)
         {
-            mSceneLayers[i]->onCommand(mCommandQueue->Top(), dt);
+            m_sceneLayers[i]->onCommand(m_commandQueue->Top(), dt);
         }
-        mCommandQueue->Pop();
+        m_commandQueue->Pop();
     }
 
     for(int i = 0; i < layerCount(); ++i)
     {
-        mSceneLayers[i]->update(dt);
+        m_sceneLayers[i]->update(dt);
     }
 
     produceAndPushCommands();
@@ -54,7 +58,7 @@ void SBTAbstractWorld::update(sf::Time dt)
 
 SBTCommandQueue& SBTAbstractWorld::getCommandQueue()
 {
-    return *mCommandQueue;
+    return *m_commandQueue;
 }
 
 bool SBTAbstractWorld::matchesCategories(SBTAbstractSceneNode::Pair& colliders, int type1, int type2, b2Contact* contact)
@@ -84,7 +88,7 @@ b2Body* SBTAbstractWorld::createBoxBody(float pos_x, float pos_y, float height, 
 
     BodyDef.fixedRotation = fixRotation;
 
-    b2Body* Body = mPhysicWorld.CreateBody(&BodyDef);
+    b2Body* Body = m_physicWorld.CreateBody(&BodyDef);
 
     b2PolygonShape Shape;
 
@@ -113,7 +117,7 @@ b2Body* SBTAbstractWorld::createCircleBody(float pos_x, float pos_y, float r, b2
 
     BodyDef.type = type;
 
-    b2Body* Body = mPhysicWorld.CreateBody(&BodyDef);
+    b2Body* Body = m_physicWorld.CreateBody(&BodyDef);
 
     b2CircleShape Shape;
 
@@ -138,7 +142,7 @@ b2Body* SBTAbstractWorld::createCircleBody(float pos_x, float pos_y, float r, b2
 
 SBTGameWindow& SBTAbstractWorld::getWindow() const
 {
-    return mWindow;
+    return m_window;
 }
 
 int SBTAbstractWorld::layerCount()
@@ -148,20 +152,30 @@ int SBTAbstractWorld::layerCount()
 
 void SBTAbstractWorld::loadLevel(std::string filepath)
 {
-    mLevel.loadFromFile(filepath, mTextures);
+    m_level.loadFromFile(filepath, m_tileSets);
 }
 
 SBTLevel& SBTAbstractWorld::getLevel()
 {
-    return mLevel;
+    return m_level;
 }
 
 SBTAbstractSceneNode::Ptr& SBTAbstractWorld::getSceneLayer(size_t i)
 {
-    return mSceneLayers[i];
+    return m_sceneLayers[i];
 }
 
 TextureHolder& SBTAbstractWorld::getTextures()
 {
-    return mTextures;
+    return m_textures;
+}
+
+TileSheetHolder& SBTAbstractWorld::getTileSheets()
+{
+    return m_tileSets;
+}
+
+AtlasHolder& SBTAbstractWorld::getAtlases()
+{
+    return m_atlases;
 }

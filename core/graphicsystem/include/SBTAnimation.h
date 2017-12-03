@@ -27,6 +27,8 @@ public:
     /*Возвращаем кадр по его порядковому номеру в анимации*/
     const SBTFrame& getFrame(int frameNum);
 
+    int getAngle(int frameNum);
+
     std::string getMyAtlasFileName();
 
     const sf::Time& getDuration(){return m_duration;}

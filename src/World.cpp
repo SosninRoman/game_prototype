@@ -5,8 +5,8 @@
 
 float pi = 3.14159f;
 
-World::World(SBTGameWindow& window, TextureHolder& textures):
-    SBTAbstractWorld(static_cast<int>(LayerCount), window,textures, sf::FloatRect(0.f, 0.f, static_cast<float>(window.getResolution().x), static_cast<float>(window.getResolution().y)),
+World::World(SBTGameWindow& window, TextureHolder& textures, TileSheetHolder& tiles, AtlasHolder& atlases):
+    SBTAbstractWorld(static_cast<int>(LayerCount), window,textures, tiles, atlases, sf::FloatRect(0.f, 0.f, static_cast<float>(window.getResolution().x), static_cast<float>(window.getResolution().y)),
     new myContactListener(this), b2Vec2(0,00), new SBTCommandQueue() )
 {
 	buildScene();
@@ -18,7 +18,6 @@ void World::buildScene()
 	//
 	for(size_t i = 0; i < layerCount(); ++i)
 	{
-		//SceneNode::Ptr layer(new SceneNode());
         SBTAbstractSceneNode::Ptr layer(new LayerNode() );
         getSceneLayer(i) = std::move(layer);
 	}
@@ -27,7 +26,8 @@ void World::buildScene()
 	//BALL CREATING
 	sf::Vector2f ball_center(gameView.getCenter().x, gameView.getCenter().y);
 
-    std::unique_ptr<Ball> gBall( new Ball(getTextures(), ball_center) );
+    //std::unique_ptr<Ball> gBall( new Ball(getTextures(), ball_center) );
+	std::unique_ptr<Ball> gBall( new Ball(getAtlases(), ball_center) );
 
 	gBall->createAnimation("ball_animation", BallTexture, sf::seconds(2), false);
 	

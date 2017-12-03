@@ -1,14 +1,14 @@
 <TextureAtlas>
 	<sequence name="player_death">
-		<frame frameid = "Player_Death_01"/>
-		<frame frameid = "Player_Death_02"/>
-		<frame frameid = "Player_Death_03"/>
-		<frame frameid = "Player_Death_05"/>
+		<frame frameid = "Player_Death_01" angle = 0/>
+		<frame frameid = "Player_Death_02" angle = 0/>
+		<frame frameid = "Player_Death_03" angle = 0/>
+		<frame frameid = "Player_Death_05" angle = 0/>
 </sequence>
 <sequence name="player_walk">
-		<frame frameid = "Player_Death_06"/>
-		<frame frameid = "Player_Death_04"/>
-		<frame frameid = "Player_Death_08"/>
-		<frame frameid = "Player_Death_09"/>
+		<frame frameid = "Player_Death_06" angle = 0/>
+		<frame frameid = "Player_Death_04" angle = 0/>
+		<frame frameid = "Player_Death_08" angle = 0/>
+		<frame frameid = "Player_Death_09" angle = 0/>
 	</sequence>
 </TextureAtlas>

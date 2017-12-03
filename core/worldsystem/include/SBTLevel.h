@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include <utility>
-#include "ResourceHolder.h"
+#include "SBTTileSheetHolder.h"
 
 using std::vector;
 using std::string;
@@ -38,7 +38,7 @@ public:
 
     ~SBTLevel() = default;
 
-	bool loadFromFile(const string& filename, TextureHolder& textures);
+	bool loadFromFile(const string& filename, TileSheetHolder& textures);
 
 	void draw(sf::RenderTarget& target);
 

@@ -13,7 +13,7 @@ public:
 		NumOfTypes = 1 << 1,
 	};
 
-	Paddle(RecieverType type , TextureHolder& textures);
+	Paddle(RecieverType type , AtlasHolder& textures);
 	
 	sf::FloatRect			getGlobalBounds() const override;
 	

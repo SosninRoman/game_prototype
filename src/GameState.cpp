@@ -5,9 +5,10 @@
 
 GameState::GameState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, move(param) ),
-	mWorld(*context.window, *context.textures), 
+	mWorld(*context.window, *context.textures, *context.tilesets, *context.atlases),
 	mPlayer(dynamic_cast<Player*>(context.player) )
 {
+
 }
 
 void GameState::draw()

@@ -12,18 +12,22 @@
 #include "SBTAbstractSpriteNode.h"
 #include "SBTCommandQueue.h"
 //#include "CommandCatalogue.h"
-#include "ResourceHolder.h"
+#include "SBTTextureHolder.h"
+#include "SBTTileSheet.h"
 #include "SBTLevel.h"
 #include "SBTGameWindow.h"
 #include <Box2D\Box2D.h>
 #include "SBTBasicContactListener.h"
+#include "SBTAtlasHolder.h"
+#include "SBTTileSheetHolder.h"
 
 class SBTAbstractWorld: public sf::NonCopyable
 {
 
 public:
 
-    SBTAbstractWorld(int layers, SBTGameWindow& window, TextureHolder& textures, sf::FloatRect bounds, SBTBasicContactListener* listener,
+    SBTAbstractWorld(int layers, SBTGameWindow& window, TextureHolder& textures, TileSheetHolder& tiles, AtlasHolder& atlases,
+                     sf::FloatRect bounds, SBTBasicContactListener* listener,
                      b2Vec2 worldparam, SBTCommandQueue* commandqueue);
 
     void									    draw();
@@ -39,6 +43,10 @@ public:
     SBTAbstractSceneNode::Ptr&                             getSceneLayer(size_t i);
 
     TextureHolder&                              getTextures();
+
+    TileSheetHolder&                            getTileSheets();
+
+    AtlasHolder&                                getAtlases();
 
     bool									    matchesCategories(SBTAbstractSceneNode::Pair& colliders, int type1, int type2, b2Contact* contact = nullptr);
 
@@ -59,21 +67,25 @@ private:
     virtual void							    buildScene() = 0;
 
     //data
-    std::vector<SBTAbstractSceneNode::Ptr>	                mSceneLayers;
+    std::vector<SBTAbstractSceneNode::Ptr>	                m_sceneLayers;
 
-    SBTGameWindow&								    mWindow;
+    SBTGameWindow&								    m_window;
 
-    sf::FloatRect							    mWorldBounds;
+    sf::FloatRect							    m_worldBounds;
 
-    std::unique_ptr<SBTCommandQueue>			    mCommandQueue;
+    std::unique_ptr<SBTCommandQueue>			    m_commandQueue;
 
-    TextureHolder&							    mTextures;
+    TextureHolder&							    m_textures;
 
-    SBTLevel									    mLevel;
+    SBTLevel									    m_level;
 
-    b2World									    mPhysicWorld;
+    b2World									    m_physicWorld;
 
-    std::unique_ptr<SBTBasicContactListener>	mContactListener;
+    std::unique_ptr<SBTBasicContactListener>	m_contactListener;
+
+    TileSheetHolder&                            m_tileSets;
+
+    AtlasHolder&                                m_atlases;
 };
 
 
