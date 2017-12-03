@@ -8,7 +8,7 @@
 #include <string>
 
 class SBTFrame;
-class SBTSpriteSequence;
+class SBTSequence;
 //Сущность, являющаяся анимацией, заданной в m_sequence, дополненной временем выполнения и признаком повторяемости
 //m_sequence - набор спрайтов, на базе которого строится анимация
 //depricated: m_animationID - строка, идентифицирующая конкретную анимацию из m_sequence, которую представляет экземпляр SBTAnimation
@@ -17,7 +17,7 @@ class SBTSpriteSequence;
 class SBTAnimation
 {
 public:
-    SBTAnimation(const SBTSpriteSequence* sequence, sf::Time& duration, bool looping):
+    SBTAnimation(const SBTSequence* sequence, sf::Time& duration, bool looping):
             m_sequence(sequence),
             m_duration(duration),
             m_looping(looping)
@@ -37,7 +37,7 @@ public:
 
     bool isLooping(){return m_looping;}
 private:
-    const SBTSpriteSequence* m_sequence;
+    const SBTSequence* m_sequence;
     sf::Time m_duration;
     bool m_looping;
 };

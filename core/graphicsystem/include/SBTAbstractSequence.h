@@ -13,6 +13,10 @@ class SBTSequence
 public:
     SBTSequence() = default;
     virtual ~SBTSequence() = default;
+    virtual const SBTFrame& getSequenceStateFrame(int frameNum) const = 0;
+    virtual int getSequenceStateAngle(int frameNum) const = 0;
+    virtual const std::string& getMyResourceFileName() const = 0;
+    virtual int size() const = 0;
 };
 
 template<class Resource, class SequenceState>
@@ -50,18 +54,23 @@ public:
         return m_framesBasis;
     }
 
-    const SBTFrame& getSequenceStateFrame(int frameNum) const
-    {}
+    const SBTFrame& getSequenceStateFrame(int frameNum) const override
+    {
+        //return m_framesBasis[frameNum].m_frame;
+        return m_resource->getFrame(m_framesBasis[frameNum].m_frameID);
+    }
 
-    int getSequenceStateAngle(int frameNum) const
-    {}
+    int getSequenceStateAngle(int frameNum) const override
+    {
+        return m_framesBasis[frameNum].m_angle;
+    }
 
-    const std::string& getMyResourceFileName() const
+    const std::string& getMyResourceFileName() const override
     {
         return m_resource->getFileName();
     }
 
-    int size() const
+    int size() const override
     {
         return m_framesBasis.size();
     }

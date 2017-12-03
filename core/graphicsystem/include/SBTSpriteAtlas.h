@@ -11,9 +11,12 @@
 
 #include "SBTFrame.h"
 #include "SBTSpriteSequence.h"
-#include "SBTSequenceState.h"
+//#include "SBTSequenceState.h"
 //class SBTFrame;
 //class SBTSpriteSequence;
+class SBTSpriteAtlas;
+
+typedef SBTTemplateSequence<SBTSpriteAtlas, SBTSequenceState> SBTSpriteSequence;
 
 //Сущность, представляющая абстракцию текстуры, состоящей из множества изображений.
 //Текстура может содержать метаинформацию в формате xml, описывающую расположение конкретных кадров.

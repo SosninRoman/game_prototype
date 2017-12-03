@@ -1,5 +1,7 @@
 #include "SBTTileSheet.h"
 #include <assert.h>
+//#include "SBTTileSequence.h"
+#include "SBTTileSequence.h"
 
 SBTTileSheet::SBTTileSheet()
 {
@@ -116,12 +118,12 @@ const sf::Texture& SBTTileSheet::getTexture() const
 	return m_texture;
 }
 
-SBTTileSequence SBTTileSheet::getFrame(string name) const
-{
-	auto itr = m_frames.find(name);
-	assert(itr != m_frames.end());
-	return itr->second;
-}
+//SBTTileSequence SBTTileSheet::getFrame(string name) const
+//{
+//	auto itr = m_frames.find(name);
+//	assert(itr != m_frames.end());
+//	return itr->second;
+//}
 
 string SBTTileSheet::getFileName()
 {

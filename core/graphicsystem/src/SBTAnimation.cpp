@@ -6,6 +6,7 @@
 #include "SBTFrame.h"
 #include "SBTSpriteSequence.h"
 #include "SBTSequenceState.h"
+#include "SBTAbstractSequence.h"
 
 const SBTFrame& SBTAnimation::getFrame(int frameNum)
 {
@@ -19,7 +20,7 @@ int SBTAnimation::getAngle(int frameNum)
 
 std::string SBTAnimation::getMyAtlasFileName()
 {
-    return m_sequence->getMyAtlasFileName();
+    return m_sequence->getMyResourceFileName();
 }
 
 int SBTAnimation::size() const

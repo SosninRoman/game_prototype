@@ -5,6 +5,7 @@
 #include "SBTSpriteAtlas.h"
 #include <tinyxml2.h>
 #include <assert.h>
+//#include "SBTSpriteSequence.h"
 
 
 //Загрузка атдаса с использованием xml файлов с информацией об месторасположении самой текстуры, метаинформацией об
@@ -101,9 +102,9 @@ void SBTSpriteAtlas::loadSequencesFromMetaFile(const std::string& sequencesMetaF
             if(itr != m_framesCollection.end() )
             {
                 if(frameAngle)
-                    seq.addFrame(frameName, frameAngle);
+                    seq.addFrame(SBTSequenceState(frameName, frameAngle) );
                 else
-                    seq.addFrame(frameName);
+                    seq.addFrame(SBTSequenceState(frameName) );
             }
             else
                 throw std::runtime_error("Can't find frame" + frameName +" in sequences meta file \"" + sequencesMetaFilePath);
@@ -194,7 +195,7 @@ void SBTSpriteAtlas::addFrameToSequence(const SpriteSequenceID& seqID, const Fra
     if(m_spriteSequences.find(seqID) != m_spriteSequences.end() )
     {
         if(m_framesCollection.find(frID) != m_framesCollection.end() ) {
-            m_spriteSequences[seqID].addFrame(frID);
+            m_spriteSequences[seqID].addFrame(SBTSequenceState(frID) );
         }
         else
             throw std::runtime_error("frame " + frID +" is absent in atlas \"" + m_fileName);

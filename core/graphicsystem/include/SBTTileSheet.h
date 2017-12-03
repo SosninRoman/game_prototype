@@ -5,12 +5,17 @@
 #include <utility>
 #include "SFML\Graphics.hpp"
 #include "tinyxml2.h"
-#include "SBTTileSequence.h"
+
 #include "SBTFrame.h"
 
 using std::vector;
 using std::string;
 using std::map;
+
+//class SBTTileSequence;
+class SBTTileSheet;
+template<class Resource, class SequenceState> class SBTTemplateSequence;
+typedef SBTTemplateSequence<SBTTileSheet, SBTFrame> SBTTileSequence;
 
 class SBTTileSheet
 {
@@ -29,7 +34,7 @@ public:
 
 	const sf::Texture&				getTexture() const;
 
-	SBTTileSequence					getFrame(string name) const;
+	//SBTTileSequence					getFrame(string name) const;
 
 	explicit operator sf::Texture&() {return m_texture;}
 	
@@ -56,3 +61,4 @@ private:
     map<SpriteSequenceID, SBTTileSequence>		m_frames;
 };
 
+//#include "SBTTileSequence.h"
