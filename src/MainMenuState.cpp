@@ -6,7 +6,7 @@
 MainMenuState::MainMenuState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, move(param) )
 {
-	mFont = getContext().fonts->get(MainMenuFont);
+	mFont = getContext().fonts->getByID("MainMenuFont");
 	
 	sf::Text playText;
 	
@@ -37,7 +37,8 @@ MainMenuState::MainMenuState(SBTStateStack& stack, SBTContext context, state_par
 	setColorOfText();
 
 	//setBackGround(&getContext().textures->get(MenuBackGround).getTexture());
-	setBackGround(&getContext().textures->get(MenuBackGround));
+
+	setBackGround(&getContext().graphicResources->getByID("MenuBackGround").getTexture());
 }
 
 

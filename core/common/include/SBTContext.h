@@ -1,35 +1,26 @@
 #pragma once
 #include <SFML\Graphics.hpp>
-#include "SBTTextureHolder.h"
-#include "SBTAtlasHolder.h"
-#include "SBTTileSheetHolder.h"
+#include "SBTGraphicResourceHolder.h"
 #include "SBTAbstractCommandManager.h"
 #include "SBTGameWindow.h"
 
 struct SBTContext
 {
-	SBTContext(SBTGameWindow* window, FontHolder* fonts, SBTAbstractCommandManager* player, TextureHolder* textures,
-    AtlasHolder* atl, TileSheetHolder* tst):
+	SBTContext(SBTGameWindow* window, FontHolder* fonts, SBTAbstractCommandManager* player, GraphicResourceHolder* grld):
 		window(window),
 		fonts(fonts),
 		player(player),
-		textures(textures),
-        atlases(atl),
-        tilesets(tst)
+        graphicResources(grld)
 	{
 	}
 	~SBTContext(){}
 
-	SBTGameWindow*			window;
+	SBTGameWindow*				window;
 
-	FontHolder*			fonts;
+	FontHolder*					fonts;
 
-	TextureHolder*		textures;
+	GraphicResourceHolder* 		graphicResources;
 
-	AtlasHolder*        atlases;
-
-    TileSheetHolder*    tilesets;
-
-	SBTAbstractCommandManager*				player;
+	SBTAbstractCommandManager*	player;
 };
 

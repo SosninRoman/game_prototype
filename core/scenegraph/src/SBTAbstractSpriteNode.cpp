@@ -1,17 +1,20 @@
 #include "SBTAbstractSpriteNode.h"
 #include "SBTSpriteAtlas.h"
-#include "SBTFrame.h"
-#include "SBTSpriteSequence.h"
-#include "SBTSequenceState.h"
 
-//SBTAbstractSpriteNode::SBTAbstractSpriteNode(sf::Texture& texture, float xscale, float yscale):
-SBTAbstractSpriteNode::SBTAbstractSpriteNode(SBTSpriteAtlas& atlas, const spriteID& frameName, float xscale, float yscale):
-	m_atlas(atlas), mScaleFactor(xscale,yscale)
+//SBTAbstractSpriteNode::SBTAbstractSpriteNode(SBTSpriteAtlas& atlas, const spriteID& frameName, float xscale, float yscale):
+//	m_atlas(atlas), mScaleFactor(xscale,yscale)
+//{
+//    m_RenderSprite.setTexture(atlas.getTexture() );
+//    m_RenderSprite.setTextureRect(atlas.getFrame(frameName).getRect() );
+//	m_RenderSprite.scale(mScaleFactor.x,mScaleFactor.y);
+//	centerOrigin();
+//}
+
+SBTAbstractSpriteNode::SBTAbstractSpriteNode(sf::Sprite& sprite,float xscale, float yscale):
+m_RenderSprite(sprite), mScaleFactor(xscale,yscale)
 {
-    m_RenderSprite.setTexture(atlas.getTexture() );
-    m_RenderSprite.setTextureRect(atlas.getFrame(frameName).getRect() );
-	m_RenderSprite.scale(mScaleFactor.x,mScaleFactor.y);
-	centerOrigin();
+    m_RenderSprite.scale(mScaleFactor.x,mScaleFactor.y);
+    centerOrigin();
 }
 
 void SBTAbstractSpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

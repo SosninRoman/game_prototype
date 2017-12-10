@@ -1,17 +1,16 @@
 //
 // Created by G750 on 27.11.2017.
 //
-
 #include "SBTSpriteAtlas.h"
 #include <tinyxml2.h>
 #include <assert.h>
-//#include "SBTSpriteSequence.h"
 
 
 //Загрузка атдаса с использованием xml файлов с информацией об месторасположении самой текстуры, метаинформацией об
 // спрайтах и последовательностях, состоящих из спрайтов
 SBTSpriteAtlas::SBTSpriteAtlas(const std::string& atlasMetaFilePath):
-m_texture(new sf::Texture() ), m_fileName(atlasMetaFilePath)
+SBTAbstractGraphicResource(),
+m_fileName(atlasMetaFilePath)
 {
     loadMetaInfo(atlasMetaFilePath);
 }
@@ -30,7 +29,8 @@ void SBTSpriteAtlas::loadTexture(const std::string& textureFilePath)
 }
 
 SBTSpriteAtlas::SBTSpriteAtlas(const std::string& atlasMetaFilePath, const std::string& sequencesMetaFilePath):
-m_texture(new sf::Texture() ), m_fileName(atlasMetaFilePath)
+        SBTAbstractGraphicResource(),
+        m_fileName(atlasMetaFilePath)
 {
     loadMetaInfo(atlasMetaFilePath);
 
@@ -42,7 +42,13 @@ void SBTSpriteAtlas::loadMetaInfo(const std::string& atlasMetaFilePath)
     tinyxml2::XMLDocument atlasMetaFile;
     if(atlasMetaFile.LoadFile(atlasMetaFilePath.c_str()) != tinyxml2::XML_SUCCESS)
     {
-        throw std::runtime_error("Loading atlas meta file \"" + atlasMetaFilePath + " failed.");
+        //Trying to load just texture
+        if(m_texture->loadFromFile(atlasMetaFilePath) )
+        {
+            return;
+        }
+        else
+            throw std::runtime_error("Loading atlas meta file \"" + atlasMetaFilePath + " failed.");
     }
 
     tinyxml2::XMLElement* atlas = atlasMetaFile.FirstChildElement("TextureAtlas");
@@ -131,7 +137,8 @@ const SBTFrame& SBTSpriteAtlas::getFrame(const FrameID& frmID) const
         throw std::runtime_error("Can't find frame" + frmID +" in atlas \"" + m_fileName);
 }
 
-const SBTSpriteSequence& SBTSpriteAtlas::getSequence(const SpriteSequenceID& seqID) const
+//SBTSpriteSequence& SBTSpriteAtlas::getSequence(const SpriteSequenceID& seqID) const
+const SBTSequence& SBTSpriteAtlas::getSequence(const SpriteSequenceID& seqID) const
 {
     auto seq_id = m_spriteSequences.find(seqID);
     if(seq_id != m_spriteSequences.end() )
@@ -152,7 +159,7 @@ void  SBTSpriteAtlas::addSequencesFromFile(const std::string& SpriteSequencesMet
     loadSequencesFromMetaFile(SpriteSequencesMetaFilePath);
 }
 
-void SBTSpriteAtlas::addFrame(SBTFrame& frame)
+void SBTSpriteAtlas::addFrameToBasis(SBTFrame& frame)
 {
     auto res = m_framesCollection.insert(std::pair<const std::string, SBTFrame&>(frame.name(), frame) );
     if(!res.second)

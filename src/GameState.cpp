@@ -5,7 +5,7 @@
 
 GameState::GameState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, move(param) ),
-	mWorld(*context.window, *context.textures, *context.tilesets, *context.atlases),
+		mWorld(*context.window, *context.graphicResources),
 	mPlayer(dynamic_cast<Player*>(context.player) )
 {
 

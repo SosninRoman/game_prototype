@@ -2,53 +2,83 @@
 #include <map>
 #include <string>
 #include <memory>
-#include <assert.h>
+#include <cassert>
 #include <SFML\Graphics.hpp>
-#include "SBTTileSheet.h"
+#include <utility>
 
-//class SBTTileSheet;
-
-template<class ID, class Resourse>
+template<class ID, class Resource>
 class SBTResourceHolder
 {
 public:
 	typedef int SpriteAtlasesID;
     typedef int FontID;
 
+	template<class ConvertResource>
 	void load(ID id, const std::string& filepath)
 	{
-		std::unique_ptr<Resourse> res(new Resourse() );
+        std::unique_ptr<ConvertResource> res(new ConvertResource() );
 		if(!res->loadFromFile(filepath)) throw std::runtime_error("Fail to load resourse from" + filepath);
-		auto ins = mResourseMap.insert(std::make_pair(id, std::move(res)));
+		auto ins = m_resourceMap.insert(std::make_pair(id, std::unique_ptr<Resource>(res.release() ) ) );
 		assert(ins.second);
 	}
 
-    void load(ID id, const std::string& filepath1, const std::string& filepath2)
+    void load(ID id, const std::string& filepath)
     {
-        std::unique_ptr<Resourse> res(new Resourse() );
-        if(!res->loadFromFile(filepath1, filepath2) )
-            throw std::runtime_error("Fail to load resourse from files" + filepath1 + " , " + filepath2);
-        auto ins = mResourseMap.insert(std::make_pair(id, std::move(res)));
+        std::unique_ptr<Resource> res(new Resource() );
+        if(!res->loadFromFile(filepath)) throw std::runtime_error("Fail to load resourse from" + filepath);
+        auto ins = m_resourceMap.insert(std::make_pair(id, std::move(res)));
         assert(ins.second);
     }
-	
-	Resourse& get(ID id)
+
+    void load(ID id, const std::string& filepath1, const std::string& filepath2)
+    {
+        std::unique_ptr<Resource> res(new Resource() );
+        if(!res->loadFromFile(filepath1, filepath2) )
+            throw std::runtime_error("Fail to load resourse from files" + filepath1 + " , " + filepath2);
+        auto ins = m_resourceMap.insert(std::make_pair(id, std::move(res)));
+        assert(ins.second);
+    }
+
+    template<class ConvertResource>
+    void load(ID id, const std::string& filepath1, const std::string& filepath2)
+    {
+        std::unique_ptr<ConvertResource> res(new ConvertResource() );
+        if(!res->loadFromFile(filepath1, filepath2) )
+            throw std::runtime_error("Fail to load resourse from files" + filepath1 + " , " + filepath2);
+        auto ins = m_resourceMap.insert(std::make_pair(id, std::unique_ptr<Resource>(res.release() ) ) );
+        assert(ins.second);
+    }
+
+    void add(ID id, std::unique_ptr<Resource>&& resource)
+    {
+        if( !m_resourceMap.insert(std::pair<ID, std::unique_ptr<Resource> >(id, std::move(resource))).second )
+            throw std::runtime_error("Resource" + resource->getFileName() + " already add into holder");
+    }
+
+    template<class ConvertResource>
+	void add(ID id, std::unique_ptr<ConvertResource>&& resource)
 	{
-		auto found = mResourseMap.find(static_cast<int>(id) );
-		assert(found != mResourseMap.end());
+		if( !m_resourceMap.insert(std::pair<ID, std::unique_ptr<Resource> >(id, std::move(resource))).second )
+			throw std::runtime_error("Resource" + resource->getFileName() + " already add into holder");
+	}
+
+    Resource& getByID(ID id)
+	{
+		auto found = m_resourceMap.find(id);
+		assert(found != m_resourceMap.end());
 		return *found->second;
 	}
 	
-	const Resourse& get(ID id) const
+	const Resource& getByID(ID id) const
 	{
-		auto found = mResourseMap.find(static_cast<int>(id) );
-		assert(found != mResourseMap.end());
+		auto found = m_resourceMap.find(id);
+		assert(found != m_resourceMap.end());
 		return *found->second;
 	}
 
-	Resourse& get(const std::string& filename)
+    Resource& getByFilename(const std::string& filename)
 	{
-		for (auto itr = mResourseMap.begin(); itr != mResourseMap.end(); ++itr)
+		for (auto itr = m_resourceMap.begin(); itr != m_resourceMap.end(); ++itr)
 		{
 			auto str = itr->second->getFileName();
 			if ( str == filename)
@@ -57,9 +87,9 @@ public:
 		throw std::runtime_error("Can't find resourse " + filename);
 	}
 
-	const Resourse& get(const std::string& filename) const
+	const Resource& getByFilename(const std::string& filename) const
 	{
-		for (auto itr = mResourseMap.begin(); itr != mResourseMap.end(); ++itr)
+		for (auto itr = m_resourceMap.begin(); itr != m_resourceMap.end(); ++itr)
 		{
 			if (itr->second->getFileName() == filename)
 				return *(itr->second);
@@ -67,7 +97,7 @@ public:
 		throw std::runtime_error("Can't find resourse " + filename);
 	}
 private:
-	std::map<ID, std::unique_ptr<Resourse> > mResourseMap;
+	std::map<ID, std::unique_ptr<Resource> > m_resourceMap;
 };
 
-typedef SBTResourceHolder<int, sf::Font> FontHolder;
+typedef SBTResourceHolder<std::string, sf::Font> FontHolder;

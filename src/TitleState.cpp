@@ -8,7 +8,7 @@ TitleState::TitleState(SBTStateStack& stack, SBTContext context, state_param_ptr
 	mTextEffectTime(sf::Time::Zero), 
 	mShow(true)
 {
-	mText.setFont(getContext().fonts->get(MainMenuFont));
+	mText.setFont(getContext().fonts->getByID("MainMenuFont") );
 	
 	mText.setFillColor(sf::Color::Black);
 	
@@ -24,8 +24,7 @@ TitleState::TitleState(SBTStateStack& stack, SBTContext context, state_param_ptr
 	
 	mText.setPosition(context.window->getView().getSize() / 2.f);
 
-	//setBackGround(&getContext().textures->get(TitleBackGround).getTexture());
-	setBackGround(&getContext().textures->get(TitleBackGround));
+	setBackGround(&getContext().graphicResources->getByID("TitleBackGround").getTexture());
 }
 
 void TitleState::draw()

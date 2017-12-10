@@ -7,7 +7,7 @@
 GameOverState::GameOverState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, move(param) )
 {
-	mFont = getContext().fonts->get(MainMenuFont);
+	mFont = getContext().fonts->getByID("MainMenuFont");
 	
 	sf::Text playText;
 	

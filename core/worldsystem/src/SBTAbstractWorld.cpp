@@ -4,19 +4,16 @@
 
 #include "SBTAbstractWorld.h"
 
-SBTAbstractWorld::SBTAbstractWorld(int layers, SBTGameWindow& window, TextureHolder& textures, TileSheetHolder& tiles,
-                                    AtlasHolder& atlases,
-                                   sf::FloatRect bounds, SBTBasicContactListener* listener, b2Vec2 worldparam,
-                                   SBTCommandQueue* commandqueue):
+SBTAbstractWorld::SBTAbstractWorld(int layers, SBTGameWindow& window, GraphicResourceHolder grapRes,
+                 sf::FloatRect bounds, SBTBasicContactListener* listener,
+                 b2Vec2 worldparam, SBTCommandQueue* commandqueue):
         m_sceneLayers(layers),
         m_window(window),
         m_worldBounds(bounds),
         m_commandQueue(commandqueue),
-        m_textures(textures),
         m_physicWorld(worldparam),
         m_contactListener(listener),
-        m_tileSets(tiles),
-        m_atlases(atlases)
+        m_graphicResourses(grapRes)
 {
     m_physicWorld.SetContactListener(m_contactListener.get() );
 }
@@ -152,7 +149,7 @@ int SBTAbstractWorld::layerCount()
 
 void SBTAbstractWorld::loadLevel(std::string filepath)
 {
-    m_level.loadFromFile(filepath, m_tileSets);
+    m_level.loadFromFile(filepath, m_graphicResourses);
 }
 
 SBTLevel& SBTAbstractWorld::getLevel()
@@ -165,17 +162,7 @@ SBTAbstractSceneNode::Ptr& SBTAbstractWorld::getSceneLayer(size_t i)
     return m_sceneLayers[i];
 }
 
-TextureHolder& SBTAbstractWorld::getTextures()
+GraphicResourceHolder& SBTAbstractWorld::getGraphicResourses()
 {
-    return m_textures;
-}
-
-TileSheetHolder& SBTAbstractWorld::getTileSheets()
-{
-    return m_tileSets;
-}
-
-AtlasHolder& SBTAbstractWorld::getAtlases()
-{
-    return m_atlases;
+    return m_graphicResourses;
 }

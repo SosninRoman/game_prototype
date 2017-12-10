@@ -6,7 +6,7 @@ namespace
 	const std::vector<PaddleData> Table = initializePaddleData();
 }
 
-Paddle::Paddle(RecieverType type , AtlasHolder& textures):
+Paddle::Paddle(RecieverType type , GraphicResourceHolder& textures):
 	SBTAbstractSceneNode(), SBTAbstractAnimatedNode(textures), mRecieverType(type)
 {
 	mType = PaddleType::RightPaddle;

@@ -17,7 +17,7 @@ public:
 		LayerCount
 	};
 
-	World(SBTGameWindow& window, TextureHolder& textures, TileSheetHolder& tiles, AtlasHolder& atlases);
+	World(SBTGameWindow& window, GraphicResourceHolder& graphicRes);
 
 	bool									theEnd(){return the_end;}
 	

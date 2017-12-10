@@ -3,12 +3,9 @@
 //
 
 #include "SBTAnimation.h"
-#include "SBTFrame.h"
-#include "SBTSpriteSequence.h"
-#include "SBTSequenceState.h"
 #include "SBTAbstractSequence.h"
 
-const SBTFrame& SBTAnimation::getFrame(int frameNum)
+SBTFrame SBTAnimation::getFrame(int frameNum)
 {
     return m_sequence->getSequenceStateFrame(frameNum);
 }

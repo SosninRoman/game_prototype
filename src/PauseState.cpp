@@ -6,7 +6,7 @@
 PauseState::PauseState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 	SBTAbstractApplicationState(stack, context, std::move(param) )
 {
-	mFont = getContext().fonts->get(MainMenuFont);
+	mFont = getContext().fonts->getByID("MainMenuFont");
 	
 	sf::Text playText;
 	

@@ -25,7 +25,7 @@ public:
     }
 
     /*Возвращаем кадр по его порядковому номеру в анимации*/
-    const SBTFrame& getFrame(int frameNum);
+    SBTFrame getFrame(int frameNum);
 
     int getAngle(int frameNum);
 
@@ -38,7 +38,9 @@ public:
     bool isLooping(){return m_looping;}
 private:
     const SBTSequence* m_sequence;
+
     sf::Time m_duration;
+
     bool m_looping;
 };
 #endif //GAME_PROTOTYPE_SBTANIMATION_H

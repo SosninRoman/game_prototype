@@ -36,9 +36,9 @@ protected:
 
 	SBTContext				getContext() const;
 	
-	void				setBackGround(sf::Texture*);
+	void				setBackGround(const sf::Texture*);
 	
-	sf::Texture*		getTexture();
+	const sf::Texture*		getTexture();
 	
 	void				renderBackGround(sf::RenderWindow& window);
 	
@@ -48,5 +48,5 @@ private:
 
 	SBTContext				mContext;
 
-	sf::Texture*		mTexture;	
+	const sf::Texture*		mTexture;
 };

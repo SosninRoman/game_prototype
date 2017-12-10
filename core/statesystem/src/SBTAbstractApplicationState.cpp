@@ -26,12 +26,12 @@ SBTContext SBTAbstractApplicationState::getContext() const
 	return mContext;
 }
 
-void SBTAbstractApplicationState::setBackGround(sf::Texture* texture)
+void SBTAbstractApplicationState::setBackGround(const sf::Texture* texture)
 {
 	mTexture = texture;
 }
 
-sf::Texture* SBTAbstractApplicationState::getTexture()
+const sf::Texture* SBTAbstractApplicationState::getTexture()
 {
 	return mTexture;
 }

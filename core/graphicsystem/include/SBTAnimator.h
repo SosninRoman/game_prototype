@@ -10,8 +10,8 @@
 #include <map>
 #include <utility>
 #include <SFML\Graphics.hpp>
-#include "SBTAtlasHolder.h"
 #include "SBTAnimation.h"
+#include "SBTGraphicResourceHolder.h"
 
 using std::string;
 using std::vector;
@@ -29,13 +29,13 @@ public:
     typedef map<string, SBTAnimation>::iterator map_iterator;
     typedef std::string animationID;
 
-    explicit SBTAnimator(AtlasHolder& textures);
+    explicit SBTAnimator(GraphicResourceHolder& textures);
 
-    //Добавляем последовательность sequenceIDInAtlas из атласа SpriteAtlasID в m_animations, снабдив ее duration,
-    //looping и идентификатором animationNameInAnimator
+    //Добавляем последовательность sequenceIDInAtlas из набора тайлов\текстурного атласа SpriteAtlasID в m_animations,
+    // снабдив ее duration, looping и идентификатором animationNameInAnimator
     //идентификатор animationNameInAnimator нужен из-за того, что в одном аниматоре могут быть последовательности из
     //разных атласов, а значит их идентификаторы могут совпадать
-    void addAnimation(const std::string& SpriteAtlasID, const string& sequenceIDInAtlas,
+    void addAnimation(const std::string& GraphicResourceID, const string& sequenceIDInGraphicResource,
                       const animationID& animationNameInAnimator, sf::Time duration, bool looping);
 
     void switchAnimation(const string& animationNameInAnimator);
@@ -63,7 +63,7 @@ private:
 
     map_iterator				m_currentAnimation;
 
-    AtlasHolder&              m_textures;
+    GraphicResourceHolder&      m_graphicResources;
 };
 
 #endif //GAME_PROTOTYPE_SBTANUMATOR_H

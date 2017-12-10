@@ -1,7 +1,7 @@
 #include "Ball.h"
 #include "RecieverTypeEnum.h"
 
-Ball::Ball(AtlasHolder& textures, sf::Vector2f center):
+Ball::Ball(GraphicResourceHolder& textures, sf::Vector2f center):
 	SBTAbstractSceneNode(),SBTAbstractAnimatedNode(textures), m_master(RecieverType::NoneRecieverType)
 {
 	setPosition(center);

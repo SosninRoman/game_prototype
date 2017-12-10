@@ -1,9 +1,7 @@
 #include "SBTAbstractAnimatedNode.h"
-#include "SBTAnimation.h"
-#include "SBTSpriteSequence.h"
-#include "SBTSequenceState.h"
 
-SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(AtlasHolder& textures):
+//SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(AtlasHolder& textures):
+SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(GraphicResourceHolder& textures):
 	m_animator(textures)
 {
 }

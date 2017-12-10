@@ -5,31 +5,57 @@
 #include "PauseState.h"
 #include "GameOverState.h"
 #include "StateIDEnum.h"
-#include "ResourcesIDEnum.h"
-
-//const sf::Time TPF = sf::seconds(1.f/60.f);
+#include "SBTTexture.h"
 
 Application::Application():
     SBTAbstractApplication(new SBTGameWindow(640, 480, "PingPong", sf::Style::Default), new Player, new FontHolder,
-                           new TextureHolder, new AtlasHolder, new TileSheetHolder)
+                           new GraphicResourceHolder)
 {
 	registerStates();
 
-    loadFont(MainMenuFont, "../res/sansation.ttf");
+    loadFont("MainMenuFont", "../res/sansation.ttf");
 
-    loadTexture(BackGroundTexture,"../res/back.jpg");
+    //loadTexture("BackGroundTexture", "../res/back.jpg");
+    loadGraphicResource<SBTTexture>("BackGroundTexture", "../res/back.jpg");
 
-    loadTexture(BallTexture,"../res/ball_sprites.png");
+    std::unique_ptr<SBTTileSheet> ball_sheet(new SBTTileSheet);
+    ball_sheet->loadTexture("../res/ball_sprites.png");
+    ball_sheet->setColumsCount(2);
+    ball_sheet->setTileCount(4);
+    ball_sheet->setTileHeight(25);
+    ball_sheet->setTileWidth(25);
 
-    loadTexture(PaddleTexture,"../res/paddle.png");
+    ball_sheet->addSequence("ball_animation");
+    ball_sheet->addTileToSequence("ball_animation", 0);
 
-    loadTexture(CubeTexture,"../res/box.tsx");
+    //loadTexture(BallTexture,"../res/ball_sprites.png");
+    addGraphicResource<SBTTileSheet>("BallTexture", std::move(ball_sheet) );
 
-    loadTexture(ServiceTexture, "../res/ball.tsx");
+    //sf::Vector2i(0,0), sf::Vector2i(25,128)
+    std::unique_ptr<SBTTileSheet> paddle_sheet(new SBTTileSheet);
+    paddle_sheet->loadTexture("../res/paddle.png");
+    paddle_sheet->setTileWidth(25);
+    paddle_sheet->setTileHeight(128);
+    paddle_sheet->setTileCount(1);
+    paddle_sheet->setColumsCount(1);
 
-    loadTexture(MenuBackGround, "../res/menu_background.png");
+    paddle_sheet->addSequence("paddle_animation");
+    paddle_sheet->addTileToSequence("paddle_animation", 0);
 
-    loadTexture(TitleBackGround, "../res/title_background.jpg");
+    addGraphicResource("PaddleTexture", std::move(paddle_sheet) );
+    //loadTexture(PaddleTexture,"../res/paddle.png");
+
+    //loadTexture("CubeTexture", "../res/box.tsx");//Нужно добавить в Application загрузку ресурсов
+    loadGraphicResource<SBTTexture>("CubeTexture", "../res/box.tsx");
+
+    //loadTexture("ServiceTexture", "../res/ball.tsx");
+    loadGraphicResource<SBTTexture>("ServiceTexture", "../res/ball.tsx");
+
+    //loadTexture("MenuBackGround", "../res/menu_background.png");
+    loadGraphicResource<SBTTexture>("MenuBackGround", "../res/menu_background.png");
+
+    //loadTexture("TitleBackGround", "../res/title_background.jpg");
+    loadGraphicResource<SBTTexture>("TitleBackGround", "../res/title_background.jpg");
 
     pushState(StateID::Title);
 }

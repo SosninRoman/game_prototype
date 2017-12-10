@@ -11,22 +11,19 @@
 #include "SBTAbstractSceneNode.h"
 #include "SBTAbstractSpriteNode.h"
 #include "SBTCommandQueue.h"
-//#include "CommandCatalogue.h"
-#include "SBTTextureHolder.h"
 #include "SBTTileSheet.h"
 #include "SBTLevel.h"
 #include "SBTGameWindow.h"
 #include <Box2D\Box2D.h>
 #include "SBTBasicContactListener.h"
-#include "SBTAtlasHolder.h"
-#include "SBTTileSheetHolder.h"
+#include "SBTGraphicResourceHolder.h"
 
 class SBTAbstractWorld: public sf::NonCopyable
 {
 
 public:
 
-    SBTAbstractWorld(int layers, SBTGameWindow& window, TextureHolder& textures, TileSheetHolder& tiles, AtlasHolder& atlases,
+    SBTAbstractWorld(int layers, SBTGameWindow& window, GraphicResourceHolder grapRes,
                      sf::FloatRect bounds, SBTBasicContactListener* listener,
                      b2Vec2 worldparam, SBTCommandQueue* commandqueue);
 
@@ -42,11 +39,7 @@ public:
 
     SBTAbstractSceneNode::Ptr&                             getSceneLayer(size_t i);
 
-    TextureHolder&                              getTextures();
-
-    TileSheetHolder&                            getTileSheets();
-
-    AtlasHolder&                                getAtlases();
+    GraphicResourceHolder&                      getGraphicResourses();
 
     bool									    matchesCategories(SBTAbstractSceneNode::Pair& colliders, int type1, int type2, b2Contact* contact = nullptr);
 
@@ -75,17 +68,13 @@ private:
 
     std::unique_ptr<SBTCommandQueue>			    m_commandQueue;
 
-    TextureHolder&							    m_textures;
-
     SBTLevel									    m_level;
 
     b2World									    m_physicWorld;
 
     std::unique_ptr<SBTBasicContactListener>	m_contactListener;
 
-    TileSheetHolder&                            m_tileSets;
-
-    AtlasHolder&                                m_atlases;
+    GraphicResourceHolder&                      m_graphicResourses;
 };
 
 

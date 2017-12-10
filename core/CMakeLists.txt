@@ -54,7 +54,7 @@ endforeach ()
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/../ext/sfml bin/sfml)
 
-add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} graphicsystem/include/SBTAnimation.h graphicsystem/src/SBTAnimation.cpp graphicsystem/include/SBTSequenceState.h graphicsystem/include/SBTTileSheetHolder.h graphicsystem/include/SBTTextureHolder.h scenegraph/include/SBTAbstractUnvisibleNode.h scenegraph/src/SBTAbstractUnvisibleNode.cpp graphicsystem/include/SBTAtlasHolder.h graphicsystem/include/SBTTileSequence.h graphicsystem/include/SBTAbstractSequence.h)
+add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} )
 
 target_link_libraries(${PROJECT} sfml-system sfml-window sfml-graphics sfml-audio tinyxml2 box2d)
 

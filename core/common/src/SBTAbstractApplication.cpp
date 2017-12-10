@@ -2,19 +2,15 @@
 // Created by G750 on 12.11.2017.
 //
 
+#include <SBTSpriteAtlas.h>
 #include "SBTAbstractApplication.h"
 
 const sf::Time TPF = sf::seconds(1.f/60.f);
 
 SBTAbstractApplication::SBTAbstractApplication(SBTGameWindow* window, SBTAbstractCommandManager* manager, FontHolder* fonts,
-                                               TextureHolder* txtrs, AtlasHolder* atl, TileSheetHolder* tsh):
-mWindow(window), mCommandManager(manager), mFontHolder(fonts), mTextureHolder(txtrs), mAtlasHolder(atl), mTileSheetHolder(tsh),
-mStateStack(new SBTStateStack( SBTContext(window, fonts, manager, txtrs, atl, tsh ) ) )
-{
-
-}
-
-SBTAbstractApplication::~SBTAbstractApplication()
+                                               GraphicResourceHolder* grapRes):
+m_window(window), m_commandManager(manager), m_fontHolder(fonts), m_graphicResourcesHolder(grapRes),
+m_stateStack(new SBTStateStack( SBTContext(window, fonts, manager, grapRes ) ) )
 {
 
 }
@@ -25,9 +21,9 @@ void SBTAbstractApplication::run()
 
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-    while(mWindow->isOpen())
+    while(m_window->isOpen())
     {
-        mWindow->setFramerateLimit(90);
+        m_window->setFramerateLimit(90);
 
         sf::Time dt = clock.restart();
 
@@ -41,7 +37,7 @@ void SBTAbstractApplication::run()
 
             update(TPF);
 
-            if(mStateStack->isEmpty()) mWindow->close();
+            if(m_stateStack->isEmpty()) m_window->close();
         }
 
         draw();
@@ -50,39 +46,34 @@ void SBTAbstractApplication::run()
 
 void SBTAbstractApplication::update(sf::Time dt)
 {
-    mStateStack->update(dt);
+    m_stateStack->update(dt);
 }
 
 void SBTAbstractApplication::draw()
 {
-    mWindow->clear(sf::Color::White);
-    mStateStack->draw();
-    mWindow->display();
+    m_window->clear(sf::Color::White);
+    m_stateStack->draw();
+    m_window->display();
 }
 
 void SBTAbstractApplication::handleInput()
 {
     sf::Event event;
-    while(mWindow->pollEvent(event))
+    while(m_window->pollEvent(event))
     {
-        mStateStack->handleEvent(event);
+        m_stateStack->handleEvent(event);
 
         if(event.type == sf::Event::Closed)
-            mWindow->close();
+            m_window->close();
     }
 }
 
-void SBTAbstractApplication::loadTexture(int id, const std::string& filepath)
+void SBTAbstractApplication::loadFont(GraphicResourceID id, const std::string& filepath)
 {
-    mTextureHolder->load(id, filepath);
-}
-
-void SBTAbstractApplication::loadFont(int id, const std::string& filepath)
-{
-    mFontHolder->load(id, filepath);
+    m_fontHolder->load(id, filepath);
 }
 
 void SBTAbstractApplication::pushState(int id, state_param_ptr param )
 {
-    mStateStack->pushState(id, std::move(param) );
+    m_stateStack->pushState(id, std::move(param) );
 }

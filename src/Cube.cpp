@@ -1,7 +1,7 @@
 #include "Cube.h"
 
-Cube::Cube(SBTSpriteAtlas& atlas, const spriteID& frameName):
-	SBTAbstractSceneNode(), SBTAbstractSpriteNode(atlas, frameName),  m_remove(false)
+Cube::Cube(sf::Sprite& sprite):
+	SBTAbstractSceneNode(), SBTAbstractSpriteNode(sprite),  m_remove(false)
 {
 	
 }
