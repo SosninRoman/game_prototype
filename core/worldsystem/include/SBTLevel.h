@@ -40,8 +40,7 @@ public:
 
     ~SBTLevel() = default;
 
-	//bool loadFromFile(const string& filename, TileSheetHolder& textures);
-	bool loadFromFile(const string& filename, GraphicResourceHolder& textures);
+	bool loadFromFile(const string& filename, GraphicResourceHolder* textures);
 
 	void draw(sf::RenderTarget& target);
 

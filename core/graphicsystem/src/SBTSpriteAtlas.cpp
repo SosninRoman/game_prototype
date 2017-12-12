@@ -137,7 +137,6 @@ const SBTFrame& SBTSpriteAtlas::getFrame(const FrameID& frmID) const
         throw std::runtime_error("Can't find frame" + frmID +" in atlas \"" + m_fileName);
 }
 
-//SBTSpriteSequence& SBTSpriteAtlas::getSequence(const SpriteSequenceID& seqID) const
 const SBTSequence& SBTSpriteAtlas::getSequence(const SpriteSequenceID& seqID) const
 {
     auto seq_id = m_spriteSequences.find(seqID);

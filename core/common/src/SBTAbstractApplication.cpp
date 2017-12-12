@@ -23,7 +23,7 @@ void SBTAbstractApplication::run()
 
     while(m_window->isOpen())
     {
-        m_window->setFramerateLimit(90);
+        m_window->setFramerateLimit(60);
 
         sf::Time dt = clock.restart();
 
@@ -70,7 +70,7 @@ void SBTAbstractApplication::handleInput()
 
 void SBTAbstractApplication::loadFont(GraphicResourceID id, const std::string& filepath)
 {
-    m_fontHolder->load(id, filepath);
+    m_fontHolder->load<sf::Font>(id, filepath);
 }
 
 void SBTAbstractApplication::pushState(int id, state_param_ptr param )

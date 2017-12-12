@@ -4,7 +4,7 @@
 
 #include "SBTAbstractWorld.h"
 
-SBTAbstractWorld::SBTAbstractWorld(int layers, SBTGameWindow& window, GraphicResourceHolder grapRes,
+SBTAbstractWorld::SBTAbstractWorld(int layers, SBTGameWindow& window, GraphicResourceHolder* grapRes,
                  sf::FloatRect bounds, SBTBasicContactListener* listener,
                  b2Vec2 worldparam, SBTCommandQueue* commandqueue):
         m_sceneLayers(layers),
@@ -162,7 +162,7 @@ SBTAbstractSceneNode::Ptr& SBTAbstractWorld::getSceneLayer(size_t i)
     return m_sceneLayers[i];
 }
 
-GraphicResourceHolder& SBTAbstractWorld::getGraphicResourses()
+GraphicResourceHolder* SBTAbstractWorld::getGraphicResourses()
 {
     return m_graphicResourses;
 }

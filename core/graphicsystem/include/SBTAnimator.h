@@ -29,7 +29,7 @@ public:
     typedef map<string, SBTAnimation>::iterator map_iterator;
     typedef std::string animationID;
 
-    explicit SBTAnimator(GraphicResourceHolder& textures);
+    explicit SBTAnimator(GraphicResourceHolder* textures);
 
     //Добавляем последовательность sequenceIDInAtlas из набора тайлов\текстурного атласа SpriteAtlasID в m_animations,
     // снабдив ее duration, looping и идентификатором animationNameInAnimator
@@ -63,7 +63,7 @@ private:
 
     map_iterator				m_currentAnimation;
 
-    GraphicResourceHolder&      m_graphicResources;
+    GraphicResourceHolder*      m_graphicResources;
 };
 
 #endif //GAME_PROTOTYPE_SBTANUMATOR_H

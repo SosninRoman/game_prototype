@@ -6,8 +6,7 @@ class SBTAbstractAnimatedNode: public virtual SBTAbstractSceneNode
 {
 public:
     typedef std::string animationID;
-	//explicit SBTAbstractAnimatedNode(AtlasHolder& textures);
-	explicit SBTAbstractAnimatedNode(GraphicResourceHolder& textures);
+	explicit SBTAbstractAnimatedNode(GraphicResourceHolder* textures);
 	~SBTAbstractAnimatedNode() override = default;
 
 	void addAnimation(const std::string& SpriteAtlasID, const string& sequenceIDInAtlas,

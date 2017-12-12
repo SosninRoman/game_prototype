@@ -23,7 +23,7 @@ class SBTAbstractWorld: public sf::NonCopyable
 
 public:
 
-    SBTAbstractWorld(int layers, SBTGameWindow& window, GraphicResourceHolder grapRes,
+    SBTAbstractWorld(int layers, SBTGameWindow& window, GraphicResourceHolder* grapRes,
                      sf::FloatRect bounds, SBTBasicContactListener* listener,
                      b2Vec2 worldparam, SBTCommandQueue* commandqueue);
 
@@ -39,7 +39,7 @@ public:
 
     SBTAbstractSceneNode::Ptr&                             getSceneLayer(size_t i);
 
-    GraphicResourceHolder&                      getGraphicResourses();
+    GraphicResourceHolder*                      getGraphicResourses();
 
     bool									    matchesCategories(SBTAbstractSceneNode::Pair& colliders, int type1, int type2, b2Contact* contact = nullptr);
 
@@ -64,17 +64,17 @@ private:
 
     SBTGameWindow&								    m_window;
 
-    sf::FloatRect							    m_worldBounds;
+    sf::FloatRect							        m_worldBounds;
 
     std::unique_ptr<SBTCommandQueue>			    m_commandQueue;
 
     SBTLevel									    m_level;
 
-    b2World									    m_physicWorld;
+    b2World									        m_physicWorld;
 
-    std::unique_ptr<SBTBasicContactListener>	m_contactListener;
+    std::unique_ptr<SBTBasicContactListener>	    m_contactListener;
 
-    GraphicResourceHolder&                      m_graphicResourses;
+    GraphicResourceHolder*                          m_graphicResourses;
 };
 
 

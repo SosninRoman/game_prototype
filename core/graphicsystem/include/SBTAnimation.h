@@ -29,7 +29,7 @@ public:
 
     int getAngle(int frameNum);
 
-    std::string getMyAtlasFileName();
+    std::string getMyResourceFileName();
 
     const sf::Time& getDuration(){return m_duration;}
 

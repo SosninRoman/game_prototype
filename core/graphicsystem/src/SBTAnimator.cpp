@@ -6,7 +6,7 @@
 #include "SBTFrame.h"
 #include "SBTSpriteAtlas.h"
 
-SBTAnimator::SBTAnimator(GraphicResourceHolder& textures):
+SBTAnimator::SBTAnimator(GraphicResourceHolder* textures):
         m_graphicResources(textures), m_currentAnimation(m_animations.end())
 {
 }
@@ -14,7 +14,7 @@ SBTAnimator::SBTAnimator(GraphicResourceHolder& textures):
 void SBTAnimator::addAnimation(const std::string& GraphicResourceID, const string& sequenceIDInGraphicResource,
                   const animationID& animationNameInAnimator, sf::Time duration, bool looping)
 {
-    const SBTAbstractGraphicResource& resource = m_graphicResources.getByID(GraphicResourceID);
+    const SBTAbstractGraphicResource& resource = m_graphicResources->getByID(GraphicResourceID);
     const SBTSequence& seq = resource.getSequence(sequenceIDInGraphicResource);
     SBTAnimation anim(&seq, duration, looping);
     auto itr = m_animations.insert(make_pair(animationNameInAnimator, anim) );
@@ -28,7 +28,7 @@ void SBTAnimator::switchAnimation(const string& animationNameInAnimator)
     if(m_currentAnimation == m_animations.end() )
         throw std::runtime_error("Can't find animation" + animationNameInAnimator +" in animator \"" );
 
-    const SBTSpriteAtlas& atlas = dynamic_cast<SBTSpriteAtlas&>(m_graphicResources.getByFilename(m_currentAnimation->second.getMyAtlasFileName() ) );
+    const SBTAbstractGraphicResource& atlas = m_graphicResources->getByFilename(m_currentAnimation->second.getMyResourceFileName() );
     m_renderSprite.setTexture(atlas.getTexture() );
 
     m_currentTime = sf::Time::Zero;

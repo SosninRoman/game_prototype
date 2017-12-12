@@ -17,7 +17,7 @@ public:
 		LayerCount
 	};
 
-	World(SBTGameWindow& window, GraphicResourceHolder& graphicRes);
+	World(SBTGameWindow& window, GraphicResourceHolder* graphicRes);
 
 	bool									theEnd(){return the_end;}
 	
@@ -35,7 +35,7 @@ public:
 private:
 	void									buildScene() override;
 
-	bool									the_end;
+	bool									the_end = false;
 	
 	RecieverType							mWinner;
 };

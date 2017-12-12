@@ -45,18 +45,14 @@ protected:
         m_graphicResourcesHolder->load<ResourceClass>(id, filePath1, filePath2);
     }
 
-    template<class ConvertResource>
-    void addGraphicResource(GraphicResourceID id, std::unique_ptr<ConvertResource> tilesheet)
-    {
-        m_graphicResourcesHolder->add(id, std::move(tilesheet) );
-    }
-
     void loadFont(GraphicResourceID id, const std::string& filepath);
 
     void pushState(int id, state_param_ptr param = state_param_ptr(nullptr) );
 
     template<class GameStateClass>
     void registerState(int stateID);
+
+    GraphicResourceHolder* getGraphicResourceHolder(){return m_graphicResourcesHolder.get();}
 private:
     std::unique_ptr<SBTGameWindow>			    m_window;
 

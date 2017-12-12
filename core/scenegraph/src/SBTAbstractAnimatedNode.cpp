@@ -1,7 +1,6 @@
 #include "SBTAbstractAnimatedNode.h"
 
-//SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(AtlasHolder& textures):
-SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(GraphicResourceHolder& textures):
+SBTAbstractAnimatedNode::SBTAbstractAnimatedNode(GraphicResourceHolder* textures):
 	m_animator(textures)
 {
 }

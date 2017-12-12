@@ -87,12 +87,7 @@ bool SBTTileSheet::loadFromFile(const std::string& filename)
 			while(frame != nullptr)
 			{
 				int tileid = frame->IntAttribute("tileid");
-				//int column = tileid % m_columns;
-				//int row = tileid / m_columns;
-				//double duration = frame->FloatAttribute("duration");
 
-				//sf::IntRect rect(column * m_tileWidth, row * m_tileHeight, m_tileWidth, m_tileHeight);
-				//frames.addFrame(SBTFrame(rect) );
                 frames.addFrame(tileid);
 
 				frame = frame->NextSiblingElement("frame");
@@ -122,15 +117,13 @@ sf::Sprite SBTTileSheet::getTile(int tileid) const
 
 void SBTTileSheet::loadTexture(const std::string& textureFilePath)
 {
-	if(m_texture != nullptr)
-		m_texture.release();
-	else
 		m_texture.reset(new sf::Texture() );
 
 	if( !m_texture->loadFromFile(textureFilePath) )
 	{
 		throw std::runtime_error("Loading texture \"" + textureFilePath  + " failed.");
 	}
+	m_fileName = textureFilePath;
 }
 
 SBTTileSequence& SBTTileSheet::addSequence(const SpriteSequenceID& seqID, std::vector<int> seqBasis)

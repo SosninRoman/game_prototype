@@ -6,7 +6,7 @@ class Ball :
 	public SBTAbstractAnimatedNode
 {
 public:
-	Ball(GraphicResourceHolder& textures, sf::Vector2f center);
+	Ball(GraphicResourceHolder* textures, sf::Vector2f center);
 
 	void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	//

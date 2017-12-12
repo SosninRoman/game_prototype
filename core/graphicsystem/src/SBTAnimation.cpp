@@ -15,7 +15,7 @@ int SBTAnimation::getAngle(int frameNum)
     return m_sequence->getSequenceStateAngle(frameNum);
 }
 
-std::string SBTAnimation::getMyAtlasFileName()
+std::string SBTAnimation::getMyResourceFileName()
 {
     return m_sequence->getMyResourceFileName();
 }

@@ -5,7 +5,7 @@
 
 float pi = 3.14159f;
 
-World::World(SBTGameWindow& window, GraphicResourceHolder& graphicRes):
+World::World(SBTGameWindow& window, GraphicResourceHolder* graphicRes):
     SBTAbstractWorld(static_cast<int>(LayerCount), window, graphicRes, sf::FloatRect(0.f, 0.f, static_cast<float>(window.getResolution().x), static_cast<float>(window.getResolution().y)),
     new myContactListener(this), b2Vec2(0,00), new SBTCommandQueue() )
 {
@@ -26,13 +26,9 @@ void World::buildScene()
 	//BALL CREATING
 	sf::Vector2f ball_center(gameView.getCenter().x, gameView.getCenter().y);
 
-    //std::unique_ptr<Ball> gBall( new Ball(getTextures(), ball_center) );
 	std::unique_ptr<Ball> gBall( new Ball(getGraphicResourses(), ball_center) );
 
-	//gBall->createAnimation("ball_animation", BallTexture, sf::seconds(2), false);
-	gBall->addAnimation("BallTexture", "ball_animation", "ball_animation", sf::seconds(2), false);
-
-	//gBall->addFrames(string("ball_animation"),sf::Vector2i(0,0), sf::Vector2i(25,25),1);
+	gBall->addAnimation("BallTexture", "ball_animation", "ball_animation", sf::seconds(2), true);
 
 	gBall->switchAnimation("ball_animation");
 
@@ -47,17 +43,11 @@ void World::buildScene()
 	//LEFT PADDLE CREATING
     std::unique_ptr<Paddle> gLPaddle(new Paddle(RecieverType::LeftPaddleRecieverType, getGraphicResourses() ) );
 
-	//gLPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
     gLPaddle->addAnimation("PaddleTexture", "paddle_animation", "paddle_up", sf::seconds(2), false);
-
-	//gLPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,128),1);
 
 	gLPaddle->switchAnimation("paddle_up");
 
-	//gLPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
-    gLPaddle->addAnimation("PaddleTexture", "paddle_down", "paddle_down", sf::seconds(2), false);
-
-	//gLPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,128),1);
+    gLPaddle->addAnimation("PaddleTexture", "paddle_animation", "paddle_down", sf::seconds(2), false);
 
 	gLPaddle->switchAnimation("paddle_down");
 
@@ -82,17 +72,11 @@ void World::buildScene()
 
 	gRPaddle->setPosition(r_pos);
 
-	//gRPaddle->createAnimation("paddle_up",PaddleTexture,sf::seconds(2),false);
-    gRPaddle->addAnimation("PaddleTexture", "paddle_down", "paddle_down", sf::seconds(2), false);
-
-	//gRPaddle->addFrames(string("paddle_up"),sf::Vector2i(0,0), sf::Vector2i(25,128),1);
+    gRPaddle->addAnimation("PaddleTexture", "paddle_animation", "paddle_up", sf::seconds(2), false);
 
 	gRPaddle->switchAnimation("paddle_up");
 
-	//gRPaddle->createAnimation("paddle_down",PaddleTexture,sf::seconds(2),false, true, 180);
-    gRPaddle->addAnimation("PaddleTexture", "paddle_down", "paddle_down", sf::seconds(2), false);
-
-	//gRPaddle->addFrames(string("paddle_down"), sf::Vector2i(0,0), sf::Vector2i(25,128),1);
+    gRPaddle->addAnimation("PaddleTexture", "paddle_animation", "paddle_down", sf::seconds(2), false);
 
 	gRPaddle->switchAnimation("paddle_down");
 

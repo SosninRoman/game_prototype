@@ -18,7 +18,7 @@ string LevelObject::GetPropertyString(string name)
     return properties[name];
 }
 
-bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder& textures)
+bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder* textures)
 {
 	tinyxml2::XMLDocument doc;
 	if(doc.LoadFile(filename.c_str()) != tinyxml2::XML_SUCCESS)
@@ -40,8 +40,7 @@ bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder& textu
 	while(tileset != nullptr)
 	{
 		string source = tileset->Attribute("source");
-        SBTTileSheet& map_sheet = dynamic_cast<SBTTileSheet&>(textures.getByFilename(source) );
-		//SBTTileSheet& map_sheet = textures.get(source);
+        SBTTileSheet& map_sheet = dynamic_cast<SBTTileSheet&>(textures->getByFilename(source) );
 		int first_map_id = tileset->IntAttribute("firstgid");
 
 		mSheets.insert(std::pair<int,const SBTTileSheet&>(first_map_id, map_sheet));
@@ -113,11 +112,6 @@ bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder& textu
 				//
 				sheet_iterator itr = --(mSheets.upper_bound(tileid));
 				const SBTTileSheet& map_sheet = itr->second;
-//				//
-//				new_object.sprite.setTexture(map_sheet.getTexture());
-//				sf::IntRect frame = getFrame(tileid - itr->first, map_sheet);
-//				new_object.sprite.setTextureRect(frame);
-                //
                 new_object.sprite = map_sheet.getTile(tileid - itr->first);
 			}
 			else

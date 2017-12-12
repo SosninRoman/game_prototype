@@ -36,8 +36,6 @@ MainMenuState::MainMenuState(SBTStateStack& stack, SBTContext context, state_par
 	
 	setColorOfText();
 
-	//setBackGround(&getContext().textures->get(MenuBackGround).getTexture());
-
 	setBackGround(&getContext().graphicResources->getByID("MenuBackGround").getTexture());
 }
 

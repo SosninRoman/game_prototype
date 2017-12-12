@@ -5,7 +5,6 @@
 class Cube: public SBTAbstractSpriteNode
 {
 public:
-	//Cube(SBTSpriteAtlas& atlas, const spriteID& frameName);
 	Cube(sf::Sprite& sprite);
 
     int getActionType() const override;

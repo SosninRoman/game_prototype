@@ -1,15 +1,6 @@
 #include "SBTAbstractSpriteNode.h"
 #include "SBTSpriteAtlas.h"
 
-//SBTAbstractSpriteNode::SBTAbstractSpriteNode(SBTSpriteAtlas& atlas, const spriteID& frameName, float xscale, float yscale):
-//	m_atlas(atlas), mScaleFactor(xscale,yscale)
-//{
-//    m_RenderSprite.setTexture(atlas.getTexture() );
-//    m_RenderSprite.setTextureRect(atlas.getFrame(frameName).getRect() );
-//	m_RenderSprite.scale(mScaleFactor.x,mScaleFactor.y);
-//	centerOrigin();
-//}
-
 SBTAbstractSpriteNode::SBTAbstractSpriteNode(sf::Sprite& sprite,float xscale, float yscale):
 m_RenderSprite(sprite), mScaleFactor(xscale,yscale)
 {

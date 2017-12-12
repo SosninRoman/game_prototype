@@ -15,10 +15,8 @@ Application::Application():
 
     loadFont("MainMenuFont", "../res/sansation.ttf");
 
-    //loadTexture("BackGroundTexture", "../res/back.jpg");
-    loadGraphicResource<SBTTexture>("BackGroundTexture", "../res/back.jpg");
+    SBTTileSheet* ball_sheet = getGraphicResourceHolder()->createResource<SBTTileSheet>("BallTexture");
 
-    std::unique_ptr<SBTTileSheet> ball_sheet(new SBTTileSheet);
     ball_sheet->loadTexture("../res/ball_sprites.png");
     ball_sheet->setColumsCount(2);
     ball_sheet->setTileCount(4);
@@ -27,12 +25,10 @@ Application::Application():
 
     ball_sheet->addSequence("ball_animation");
     ball_sheet->addTileToSequence("ball_animation", 0);
+    ball_sheet->addTileToSequence("ball_animation", 1);
 
-    //loadTexture(BallTexture,"../res/ball_sprites.png");
-    addGraphicResource<SBTTileSheet>("BallTexture", std::move(ball_sheet) );
+    SBTTileSheet* paddle_sheet = getGraphicResourceHolder()->createResource<SBTTileSheet>("PaddleTexture");
 
-    //sf::Vector2i(0,0), sf::Vector2i(25,128)
-    std::unique_ptr<SBTTileSheet> paddle_sheet(new SBTTileSheet);
     paddle_sheet->loadTexture("../res/paddle.png");
     paddle_sheet->setTileWidth(25);
     paddle_sheet->setTileHeight(128);
@@ -42,19 +38,12 @@ Application::Application():
     paddle_sheet->addSequence("paddle_animation");
     paddle_sheet->addTileToSequence("paddle_animation", 0);
 
-    addGraphicResource("PaddleTexture", std::move(paddle_sheet) );
-    //loadTexture(PaddleTexture,"../res/paddle.png");
+    loadGraphicResource<SBTTileSheet>("CubeTexture", "../res/box.tsx");
 
-    //loadTexture("CubeTexture", "../res/box.tsx");//Нужно добавить в Application загрузку ресурсов
-    loadGraphicResource<SBTTexture>("CubeTexture", "../res/box.tsx");
+    loadGraphicResource<SBTTileSheet>("ServiceTexture", "../res/ball.tsx");
 
-    //loadTexture("ServiceTexture", "../res/ball.tsx");
-    loadGraphicResource<SBTTexture>("ServiceTexture", "../res/ball.tsx");
-
-    //loadTexture("MenuBackGround", "../res/menu_background.png");
     loadGraphicResource<SBTTexture>("MenuBackGround", "../res/menu_background.png");
 
-    //loadTexture("TitleBackGround", "../res/title_background.jpg");
     loadGraphicResource<SBTTexture>("TitleBackGround", "../res/title_background.jpg");
 
     pushState(StateID::Title);
