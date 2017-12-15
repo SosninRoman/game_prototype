@@ -28,7 +28,7 @@ public:
         std::unique_ptr<ConvertResource> res(new ConvertResource() );
         if(!res->loadFromFile(filepath1, filepath2) )
             throw std::runtime_error("Fail to load resourse from files" + filepath1 + " , " + filepath2);
-        const auto& ins = m_resourceMap.insert(std::move(std::make_pair(id, std::move(std::unique_ptr<Resource>(res.release() ) ) ) ) );
+        const auto& ins = m_resourceMap.insert(std::make_pair(id, std::move(std::unique_ptr<Resource>(res.release() ) ) ) );
         assert(ins.second);
     }
 
@@ -38,7 +38,7 @@ public:
         if(m_resourceMap.find(id) != m_resourceMap.end() )
             throw std::runtime_error("Resource" + id + " already exist in holder");
         std::unique_ptr<Resource> new_resource( new ConvertResource);
-        const auto& result = m_resourceMap.insert(std::move(std::make_pair(id, std::move(new_resource) ) ) );
+        const auto& result = m_resourceMap.insert(std::make_pair(id, std::move(new_resource) ) );
         return dynamic_cast<ConvertResource*>((*result.first).second.get());
     }
 
