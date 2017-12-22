@@ -16,6 +16,8 @@ public:
     explicit SBTAbstractGraphicResource(const sf::Texture& texture = sf::Texture()):
             m_texture(new sf::Texture(texture) ){}
 
+    virtual ~SBTAbstractGraphicResource() = default;
+
     virtual bool loadFromFile(const std::string&) = 0;
     virtual bool loadFromFile(const std::string&, const std::string&) = 0;
     virtual const std::string& getFileName() const = 0;

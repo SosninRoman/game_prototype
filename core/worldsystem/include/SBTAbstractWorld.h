@@ -12,7 +12,7 @@
 #include "SBTAbstractSpriteNode.h"
 #include "SBTCommandQueue.h"
 #include "SBTTileSheet.h"
-#include "SBTLevel.h"
+#include "TMXMap.h"
 #include "SBTGameWindow.h"
 #include <Box2D\Box2D.h>
 #include "SBTBasicContactListener.h"
@@ -31,13 +31,13 @@ public:
 
     virtual void								update(sf::Time dt);
 
-    SBTCommandQueue&							    getCommandQueue() ;
+    SBTCommandQueue&							getCommandQueue() ;
 
-    SBTGameWindow&							        getWindow() const;
+    SBTGameWindow&							    getWindow() const;
 
-    SBTLevel&                                      getLevel();
+    TMXMap&                                     getLevel();
 
-    SBTAbstractSceneNode::Ptr&                             getSceneLayer(size_t i);
+    SBTAbstractSceneNode::Ptr&                  getSceneLayer(size_t i);
 
     GraphicResourceHolder*                      getGraphicResourses();
 
@@ -49,7 +49,7 @@ public:
 
     virtual void                                produceAndPushCommands() = 0;
 
-    virtual int                        layerCount();
+    virtual int                                 layerCount();
 
     virtual void                                loadLevel(std::string filepath);
 protected:
@@ -60,21 +60,21 @@ private:
     virtual void							    buildScene() = 0;
 
     //data
-    std::vector<SBTAbstractSceneNode::Ptr>	                m_sceneLayers;
+    std::vector<SBTAbstractSceneNode::Ptr>	    m_sceneLayers;
 
-    SBTGameWindow&								    m_window;
+    SBTGameWindow&								m_window;
 
-    sf::FloatRect							        m_worldBounds;
+    sf::FloatRect							    m_worldBounds;
 
-    std::unique_ptr<SBTCommandQueue>			    m_commandQueue;
+    std::unique_ptr<SBTCommandQueue>			m_commandQueue;
 
-    SBTLevel									    m_level;
+    TMXMap									    m_level;
 
-    b2World									        m_physicWorld;
+    b2World									    m_physicWorld;
 
-    std::unique_ptr<SBTBasicContactListener>	    m_contactListener;
+    std::unique_ptr<SBTBasicContactListener>	m_contactListener;
 
-    GraphicResourceHolder*                          m_graphicResourses;
+    GraphicResourceHolder*                      m_graphicResourses;
 };
 
 

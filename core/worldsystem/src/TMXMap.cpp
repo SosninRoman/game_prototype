@@ -1,4 +1,4 @@
-#include "SBTLevel.h"
+#include "TMXMap.h"
 #include "SBTTileSheet.h"
 
 int LevelObject::GetPropertyInt(string name)
@@ -18,7 +18,7 @@ string LevelObject::GetPropertyString(string name)
     return properties[name];
 }
 
-bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder* textures)
+bool TMXMap::loadFromFile(const string& filename, GraphicResourceHolder* textures)
 {
 	tinyxml2::XMLDocument doc;
 	if(doc.LoadFile(filename.c_str()) != tinyxml2::XML_SUCCESS)
@@ -37,13 +37,14 @@ bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder* textu
 	assert(tileset != nullptr);
 	//
 	mFirstTileId = tileset->IntAttribute("firstgid");
+    std::map<int, const SBTTileSheet&> usage_sheets;
 	while(tileset != nullptr)
 	{
 		string source = tileset->Attribute("source");
         SBTTileSheet& map_sheet = dynamic_cast<SBTTileSheet&>(textures->getByFilename(source) );
 		int first_map_id = tileset->IntAttribute("firstgid");
 
-		mSheets.insert(std::pair<int,const SBTTileSheet&>(first_map_id, map_sheet));
+        usage_sheets.insert(std::pair<int,const SBTTileSheet&>(first_map_id, map_sheet));
 
 		tileset = tileset->NextSiblingElement("tileset");
 	}
@@ -71,7 +72,7 @@ bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder* textu
 			int tileid = tile->IntAttribute("gid");			
 			if( tileid >= mFirstTileId)
 			{
-				sheet_iterator itr = --(mSheets.upper_bound(tileid));
+				sheet_iterator itr = --(usage_sheets.upper_bound(tileid));
 				const SBTTileSheet& map_sheet = itr->second;
 				//
 				sf::IntRect frame = getFrame(tileid - itr->first, map_sheet);
@@ -110,7 +111,7 @@ bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder* textu
 			{
 				new_object.without_sprite = false;
 				//
-				sheet_iterator itr = --(mSheets.upper_bound(tileid));
+				sheet_iterator itr = --(usage_sheets.upper_bound(tileid));
 				const SBTTileSheet& map_sheet = itr->second;
                 new_object.sprite = map_sheet.getTile(tileid - itr->first);
 			}
@@ -142,7 +143,7 @@ bool SBTLevel::loadFromFile(const string& filename, GraphicResourceHolder* textu
 	return true;
 }
 
-sf::IntRect SBTLevel::getFrame(int tileid, const SBTTileSheet& map_sheet)
+sf::IntRect TMXMap::getFrame(int tileid, const SBTTileSheet& map_sheet)
 {
 	int map_colums      = map_sheet.getColumns();
 	int map_tile_width  = map_sheet.getTileWidth();
@@ -154,7 +155,7 @@ sf::IntRect SBTLevel::getFrame(int tileid, const SBTTileSheet& map_sheet)
 	return frame;
 }
 
-void SBTLevel::draw(sf::RenderTarget& target)
+void TMXMap::draw(sf::RenderTarget& target)
 {
 	for(auto& layer : mLayers)
 	{
@@ -163,7 +164,7 @@ void SBTLevel::draw(sf::RenderTarget& target)
 	}
 }
 
-LevelObject* SBTLevel::getObject(const string& name)
+LevelObject* TMXMap::getObject(const string& name)
 {
 	for(auto& obj : mObjects)
 	{
@@ -173,7 +174,7 @@ LevelObject* SBTLevel::getObject(const string& name)
 	return nullptr;
 }
 
-vector<LevelObject>& SBTLevel::getAllObjects()
+vector<LevelObject>& TMXMap::getAllObjects()
 {
 	return mObjects;
 }

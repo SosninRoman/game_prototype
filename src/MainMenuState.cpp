@@ -1,7 +1,6 @@
 #include "MainMenuState.h"
 #include "SBTUtility.h"
 #include "StateIDEnum.h"
-#include "ResourcesIDEnum.h"
 
 MainMenuState::MainMenuState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, move(param) )

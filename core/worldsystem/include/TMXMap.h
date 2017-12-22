@@ -25,7 +25,7 @@ struct LevelObject
     std::string GetPropertyString(std::string name);
 };
 
-class SBTLevel
+class TMXMap
 {
 public:
 	typedef map<int, const SBTTileSheet&>::iterator sheet_iterator;
@@ -36,9 +36,9 @@ public:
 		vector<sf::Sprite> tiles;
 	};
 
-    SBTLevel() = default;
+	TMXMap() = default;
 
-    ~SBTLevel() = default;
+    ~TMXMap() = default;
 
 	bool loadFromFile(const string& filename, GraphicResourceHolder* textures);
 
@@ -63,7 +63,5 @@ private:
     vector<Layer>			   mLayers;
 
     vector<LevelObject>		   mObjects;
-
-    map<int, const SBTTileSheet&> mSheets;
 };
 

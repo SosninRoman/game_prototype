@@ -1,7 +1,6 @@
 #include "PauseState.h"
 #include "SBTUtility.h"
 #include "StateIDEnum.h"
-#include "ResourcesIDEnum.h"
 
 PauseState::PauseState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 	SBTAbstractApplicationState(stack, context, std::move(param) )

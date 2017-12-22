@@ -31,7 +31,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 include_directories(${SFML_INCLUDE_DIR})
 
-add_executable (${PROJECT} ${HEADER_FILES} ${SOURCE_FILES} include/MyContactListener.h src/MyContactListener.cpp include/RecieverTypeEnum.h include/GameOverStateParam.h include/StateIDEnum.h include/ResourcesIDEnum.h)
+add_executable (${PROJECT} ${HEADER_FILES} ${SOURCE_FILES} include/MyContactListener.h src/MyContactListener.cpp include/RecieverTypeEnum.h include/GameOverStateParam.h include/StateIDEnum.h)
 
 target_include_directories(${PROJECT} PRIVATE 
 	"${PROJECT_SOURCE_DIR}/ext/box2d"
@@ -42,8 +42,8 @@ target_include_directories(${PROJECT} PRIVATE
         "${PROJECT_SOURCE_DIR}/core/worldsystem/include"
         "${PROJECT_SOURCE_DIR}/core/commandsystem/include"
         "${PROJECT_SOURCE_DIR}/core/statesystem/include"
-        "${PROJECT_SOURCE_DIR}/core/graphicsystem/include"
-#		"${PROJECT_SOURCE_DIR}/core/new_gs"
+        "${PROJECT_SOURCE_DIR}/core/res"
+		"${PROJECT_SOURCE_DIR}/core/anim"
 )
 
 target_link_libraries(${PROJECT} core)

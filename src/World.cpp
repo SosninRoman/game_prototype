@@ -1,7 +1,6 @@
 #include "World.h"
 #include <iostream>
 #include "CommandCatalogue.h"
-#include "ResourcesIDEnum.h"
 
 float pi = 3.14159f;
 

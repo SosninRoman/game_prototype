@@ -152,7 +152,7 @@ void SBTAbstractWorld::loadLevel(std::string filepath)
     m_level.loadFromFile(filepath, m_graphicResourses);
 }
 
-SBTLevel& SBTAbstractWorld::getLevel()
+TMXMap& SBTAbstractWorld::getLevel()
 {
     return m_level;
 }

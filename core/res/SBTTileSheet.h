@@ -25,7 +25,6 @@ class SBTTileSequence;
 class SBTTileSheet: public SBTAbstractGraphicResource
 {
 public:
-    typedef std::string SpriteSequenceID;
 
 	SBTTileSheet() = default;
 
@@ -57,9 +56,9 @@ public:
 
     void                    setTileCount(int sz){m_size = sz;}
 
-    SBTTileSequence&        addSequence(const SpriteSequenceID& seqID, std::vector<int> seqBasis = std::vector<int>());
+    SBTTileSequence&        addSequence(const SequenceID& seqID, std::vector<int> seqBasis = std::vector<int>());
 
-    void                    addTileToSequence(const SpriteSequenceID& seqID, int tileNum);
+    void                    addTileToSequence(const SequenceID& seqID, int tileNum);
 
 	explicit operator sf::Texture&() {return *m_texture;}
 
@@ -84,7 +83,7 @@ private:
 	int								            m_tileWidth;
 	int								            m_tileHeight;
 
-    map<SpriteSequenceID, SBTTileSequence>		m_tileSequences; //Наборы последовательностей тайлов
+    map<SequenceID, SBTTileSequence>		    m_tileSequences; //Наборы последовательностей тайлов
 };
 
 

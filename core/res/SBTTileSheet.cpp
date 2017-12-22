@@ -92,7 +92,7 @@ bool SBTTileSheet::loadFromFile(const std::string& filename)
 
 				frame = frame->NextSiblingElement("frame");
 			}
-			m_tileSequences.insert(std::pair<SpriteSequenceID, SBTTileSequence>(frame_set_name, frames));
+			m_tileSequences.insert(std::pair<SequenceID, SBTTileSequence>(frame_set_name, frames));
 		}
 		tile = tile->NextSiblingElement("tile");
 	}
@@ -126,7 +126,7 @@ void SBTTileSheet::loadTexture(const std::string& textureFilePath)
 	m_fileName = textureFilePath;
 }
 
-SBTTileSequence& SBTTileSheet::addSequence(const SpriteSequenceID& seqID, std::vector<int> seqBasis)
+SBTTileSequence& SBTTileSheet::addSequence(const SequenceID& seqID, std::vector<int> seqBasis)
 {
     for(int frame : seqBasis)
     {
@@ -155,7 +155,7 @@ SBTFrame SBTTileSheet::getFrame(int frameNum)
     return frame;
 }
 
-void SBTTileSheet::addTileToSequence(const SpriteSequenceID& seqID, int tileNum)
+void SBTTileSheet::addTileToSequence(const SequenceID& seqID, int tileNum)
 {
     if(tileNum >= m_size)
     {

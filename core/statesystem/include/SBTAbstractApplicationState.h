@@ -22,27 +22,27 @@ public:
 	SBTAbstractApplicationState(SBTStateStack& stack, SBTContext context, state_param_ptr param = state_param_ptr(nullptr) ):mStack(&stack), mContext(context), mStateParam(std::move(param)){}
 	virtual ~SBTAbstractApplicationState();
 
-	virtual void		draw() = 0;
+	virtual void			draw() = 0;
 	
-	virtual bool		update(sf::Time dt) = 0;
+	virtual bool			update(sf::Time dt) = 0;
 	
-	virtual bool		handleEvent(const sf::Event& event) = 0;
+	virtual bool			handleEvent(const sf::Event& event) = 0;
 protected:
-	void				requestStackPush(int stateID, state_param_ptr param = state_param_ptr(nullptr));
+	void					requestStackPush(int stateID, state_param_ptr param = state_param_ptr(nullptr));
 	
-	void				requestStackPop();
+	void					requestStackPop();
 	
-	void				requestStateCLear();
+	void					requestStateCLear();
 
 	SBTContext				getContext() const;
 	
-	void				setBackGround(const sf::Texture*);
+	void					setBackGround(const sf::Texture*);
 	
 	const sf::Texture*		getTexture();
 	
-	void				renderBackGround(sf::RenderWindow& window);
+	void					renderBackGround(sf::RenderWindow& window);
 	
-	state_param_ptr		mStateParam;
+	state_param_ptr			mStateParam;
 private:
 	SBTStateStack*			mStack;
 

@@ -1,7 +1,6 @@
 #include "TitleState.h"
 #include <assert.h>
 #include "StateIDEnum.h"
-#include "ResourcesIDEnum.h"
 
 TitleState::TitleState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, std::move(param) ),

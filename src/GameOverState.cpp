@@ -2,7 +2,6 @@
 #include "SBTUtility.h"
 #include "GameOverStateParam.h"
 #include "StateIDEnum.h"
-#include "ResourcesIDEnum.h"
 
 GameOverState::GameOverState(SBTStateStack& stack, SBTContext context, state_param_ptr param):
 		SBTAbstractApplicationState(stack, context, move(param) )
